@@ -12,4 +12,4 @@ Route::get('/', function () {
 
 Route::get('/all',[CourrierController::class, 'index']);
 Route::get('/courrier',[CourrierController::class, 'read']);
-Route::post('/create',[CourrierController::class, 'creatCourrier'])->name('creation_de_courrier');
+Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_de_courrier');

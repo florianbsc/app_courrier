@@ -38,12 +38,10 @@ class CourrierController extends Controller
         ->get();
 
         $centres = DB::table('centre')->get();
-        dd($centres);
-
         $users = DB::table('utilisateur')->get();
         $services= Db::table('service')->get();
 
-        return view('visites.create', [
+        return view('courrier', [
             'courriers' => $courriers,
             'centres' => $centres,
             'users' => $users,
@@ -54,22 +52,23 @@ class CourrierController extends Controller
     public function createCourrier(){
         $date_maintenant = (new DateTime())->format('Y-m-d');
 
-        DB::table('courrier')->insert([
-            'courrier.id_courrier' => 1,
-            'courrier.id_centre' => 1,
-            'courrier.id_user' => 1,
-            'courrier.date_courrier' => $date_maintenant
-        ]);
-        //dd('courrier');
+        // DB::table('courrier')->insert([
+        //     'courrier.id_courrier' => 13,
+        //     'courrier.id_centre' => 1,
+        //     'courrier.id_user' => 1,
+        //     'courrier.date_courrier' => $date_maintenant
+        // ]);
+        
 
-//         DB::table('visiter')->insert([
-// //            request()-> ou $_POST pour recup les valeur du form
-// //
-//             'identifiant_employe' => request()->id_employe,
-//             'identifiant_professionnel_de_sante' => request()->id_prof_sante,
-//             'identifiant_medicament' => request()->id_medicament ,
-//             'derniere_visite' => $date_maintenant
-//         ]);
+        DB::table('visiter')->insert([
+//            request()-> ou $_POST pour recup les valeur du form
+//
+            'courrier.id_courrier' => request()->id_courrier,
+            'courrier.id_centre' => request()->id_centre,
+            'courrier.id_user' => request()->id_user,
+            'courrier.date_courrier' => $date_maintenant,
+        ]);
+        dd('visite');
     }
 
 }

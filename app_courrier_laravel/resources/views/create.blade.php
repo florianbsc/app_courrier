@@ -1,8 +1,3 @@
-<?php
-$centre = [
-
-]
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
