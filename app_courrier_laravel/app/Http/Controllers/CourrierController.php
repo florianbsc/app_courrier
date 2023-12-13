@@ -60,15 +60,18 @@ class CourrierController extends Controller
         // ]);
         
 
-        DB::table('visiter')->insert([
+        DB::table('courrier')->insert([
 //            request()-> ou $_POST pour recup les valeur du form
 //
-            'courrier.id_courrier' => request()->id_courrier,
+            // 'courrier.id_courrier' => request()->id_courrier,
+            'courrier.date_courrier' => $date_maintenant,
+            'courrier.objet_courrier' => request()->objet_courrier,
+            'courrier.destinataire_courrier' => request()->destinataire_courrier,
+            'courrier.description_courrier' => request()->description_courrier,
             'courrier.id_centre' => request()->id_centre,
             'courrier.id_user' => request()->id_user,
-            'courrier.date_courrier' => $date_maintenant,
         ]);
-        dd('visite');
+        dd('courrier');
     }
 
 }
