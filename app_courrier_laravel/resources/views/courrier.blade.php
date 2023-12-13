@@ -115,23 +115,33 @@
     </tbody>
 </table>
 
-    <form action="">
-    <label for="courrier">Centre</label>
-            <select name="id_centre" id="centre">
-                @foreach($centres as $centre)
-                <option value="{{$centre->id_centre}}">{{$centre->nom_centre}}</option>
-                @endforeach        
-            </select>
+<form action="">
 
-    <label for="courrier">Service</label>
-        <select name="id_service" id="service">
-            @foreach($services as $service)
-            <option value="{{service->id_service}}">{{service->nom_service}}</option>
-            @endforeach
+    <label for="courrier">Objet</label>
+    <input type="text" name="objet_courrier">
+    
+    <label for="courrier">Destinataire</label>
+    <input type="text" name="destinataire_courrier">
+
+    <label for="description">Description</label>
+    <input type="text" name="description_courrier">
+
+    <label for="centre">Centre</label>
+        <select name="id_centre" id="centre">
+            @foreach($centres as $centre)
+            <option value="{{$centre->id_centre}}">{{$centre->nom_centre}}</option>
+            @endforeach        
         </select>
 
+    <label for="service">Service</label>
+        <select name="id_service" id="service">
+            @foreach($services as $service)
+            <option value="{{$service->id_service}}">{{$service->nom_service}}</option>
+            @endforeach
+        </select>
+<input type="submit">
 
-    </form>
+</form>
 
 </body>
 
