@@ -91,6 +91,9 @@
             <th>objet</th>
             <th>Destinataire</th>
             <th>Description</th>
+            <th>user</th>
+            <th>Centre</th>
+            <th>Service</th>
             <!-- Ajoute d'autres colonnes au besoin -->
         </tr>
     </thead>
@@ -102,6 +105,9 @@
                 <td>{{ $courrier->objet_courrier }}</td>
                 <td>{{ $courrier->destinataire_courrier }}</td>
                 <td>{{ $courrier->description_courrier }}</td>
+                <td>{{$courrier->nom_user}}</td>
+                <td>{{ $courrier->nom_centre }}</td>
+                <td>{{ $courrier->nom_service }}</td>
                 
                 <!-- Ajoute d'autres cellules au besoin -->
             </tr>
@@ -109,6 +115,23 @@
     </tbody>
 </table>
 
+    <form action="">
+    <label for="courrier">Centre</label>
+            <select name="id_centre" id="centre">
+                @foreach($centres as $centre)
+                <option value="{{$centre->id_centre}}">{{$centre->nom_centre}}</option>
+                @endforeach        
+            </select>
+
+    <label for="courrier">Service</label>
+        <select name="id_service" id="service">
+            @foreach($services as $service)
+            <option value="{{service->id_service}}">{{service->nom_service}}</option>
+            @endforeach
+        </select>
+
+
+    </form>
 
 </body>
 

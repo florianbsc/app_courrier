@@ -10,7 +10,7 @@
     <h1>NEW MAIL</h1>
 
     
-    <form action="{{ route('creation_de_courrier')}}" method="post">
+    <form action="" method="post">
         @csrf
 
         <label for="courrier">Date</label>
@@ -64,7 +64,6 @@
             @endforeach
         </select> -->
 
-        <label for=""></label>
     </form> -->
 
 

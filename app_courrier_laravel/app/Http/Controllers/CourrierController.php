@@ -6,22 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
+use function Laravel\Prompts\select;
+
 // back end de l'app
 
 
 class CourrierController extends Controller
 {
-    public function index()
-    {
-        $courriers = DB::table('courrier')->get();
-// dd($courriers);
+    // public function index()
+    // {
+    //     $courriers = DB::table('courrier')
+    //     ->select('courrier.*')->get();
 
-        return view('courrier', [
-            'courriers' => $courriers,
-        ]);
-    }
-
-
+    //     return view('courrier', [
+    //         'courriers' => $courriers,
+    //     ]);
+    // }
 
     public function read()
     {
@@ -32,16 +32,17 @@ class CourrierController extends Controller
         // select de 4 tables, de 4 attributs donc troi jointures
         ->select('courrier.*', 'centre.nom_centre', 'service.nom_service', 'utilisateur.nom_user', 'utilisateur.prenom_user')
         // jointure entre id 
-        ->join('centre', 'courrier.id_centre', '=', 'centre.id_centre')
-        ->join('service', 'courrier.id_service', '=', 'service.id_service')
-        ->join('utilisateur', 'courrier.id_user', '=', 'utilisateur.id_user')
+        ->leftJoin('centre', 'courrier.id_centre', '=', 'centre.id_centre')
+        ->leftJoin('service', 'courrier.id_service', '=', 'service.id_service')
+        ->leftJoin('utilisateur', 'courrier.id_user', '=', 'utilisateur.id_user')
         ->get();
-
         $centres = DB::table('centre')->get();
         $users = DB::table('utilisateur')->get();
         $services= Db::table('service')->get();
 
+
         return view('courrier', [
+            
             'courriers' => $courriers,
             'centres' => $centres,
             'users' => $users,
