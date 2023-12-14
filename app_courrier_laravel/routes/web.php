@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('create');
+    return view('welcome');
 });
 
-// Route::get('/index',[CourrierController::class, 'index']);
-Route::get('/courrier',[CourrierController::class, 'read']);
-// Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_de_courrier');
+Route::get('/courrier',[CourrierController::class, 'showCourrier']);
+Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_de_courrier');
