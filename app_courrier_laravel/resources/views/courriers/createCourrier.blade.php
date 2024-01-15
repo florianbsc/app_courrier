@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>new mail</title>
-</head>
+@extends('layout.app')
+@section('title', 'liste employer')
+@section('contenu')
 
-<body>
+
+{{dd('dans la view create mail')}};
     <h1>NEW MAIL</h1>
 
-    
+<!--     
     <form action="" method="post">
         @csrf
 
@@ -39,10 +36,10 @@
         <input type="text" name="description_courrier">
 
         <input type="submit" value="Envoyer">
-    </form>
+    </form> -->
 
 
-    <!-- <form action="{{ route('creation_de_courrier')}}" method="post">
+    <form action="{{ route('creation_de_courrier')}}" method="post">
         @csrf
 
         <label type="hidden" for="courrier">Date</label>
@@ -64,9 +61,6 @@
             @endforeach
         </select> -->
 
-    </form> -->
+    </form>
 
-
-</body>
-
-</html>
+@stop

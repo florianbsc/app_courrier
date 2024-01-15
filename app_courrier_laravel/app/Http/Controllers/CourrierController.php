@@ -58,7 +58,7 @@ class CourrierController extends Controller
         $users = User::all();
         $services = Service::all();
 
-        return view('courrier', [
+        return view('courriers.courrier', [
             'courriers' => $courriers,
             'centres' => $centres,
             'users' => $users,
