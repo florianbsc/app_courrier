@@ -1,9 +1,8 @@
 @extends('layout.app')
-@section('title', 'liste employer')
+@section('title', 'Ajouter Courrier')
 @section('contenu')
 
 
-{{dd('dans la view create mail')}};
     <h1>NEW MAIL</h1>
 
 <!--     

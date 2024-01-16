@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('courriers.createCourrier');
-    // return view('welcome');
+    return view('welcome');
 });
 
 
@@ -25,12 +24,13 @@ Route::prefix('users')->group(function()
 
 Route::prefix('courriers')->group(function()
 {
-    Route::get('/',[CourrierController::class, 'showCourrier']);
-    Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_de_courrier');
+    Route::get('/liste',[CourrierController::class, 'showCourrier'])->name('liste_courriers');
+    Route::get('/create',[CourrierController::class, 'createCourrier'])->name('creation_de_courrier');
 });
 
 Route::prefix('centres')->group(function()
 {
+    Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centre');
 
 });
 Route::prefix('services')->group(function()

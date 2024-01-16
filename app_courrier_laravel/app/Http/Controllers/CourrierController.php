@@ -71,17 +71,19 @@ class CourrierController extends Controller
         // $date_maintenant = (new DateTime())->format('Y-m-d');
         $date_maintenant = now()->toDateString();
 
-        DB::table('courrier')->insert([
+        DB::table('courriers')->insert([
 //            request()-> ou $_POST pour recup les valeur du form
 //
             // 'courrier.id_courrier' => request()->id_courrier,
-            'courrier.date_courrier' => $date_maintenant,
-            'courrier.objet_courrier' => request()->objet_courrier,
-            'courrier.destinataire_courrier' => request()->destinataire_courrier,
-            'courrier.description_courrier' => request()->description_courrier,
-            'courrier.id_centre' => request()->id_centre,
-            'courrier.id_user' => request()->id_user,
+            'courriers.date_courrier' => $date_maintenant,
+            'courriers.objet_courrier' => request()->objet_courrier,
+            'courriers.destinataire_courrier' => request()->destinataire_courrier,
+            'courriers.description_courrier' => request()->description_courrier,
+            'courriers.id_centre' => request()->id_centre,
+            'courriers.id_user' => request()->id_user,
+            'courriers.id_service' => request()->id_service,
         ]);
+        
         dd('courrier');
     }
 
