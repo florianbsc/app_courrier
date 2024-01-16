@@ -9,11 +9,20 @@ class CentreController extends Controller
 {
     public function showCentre ()
     {
-        $AllCentres = Centres::all();
-        dd($AllCentres);
+        $centres = Centre::all();
+        // dd($AllCentres);
 
-        return view('centre.listeCentre',[
-            'centres' => $AllCentres,
+        return view('centres.listeCentres',[
+            'centres' => $centres,
+        ]);
+    }
+    public function showCreateCentre ()
+    {
+        $centres = Centre::all();
+        // dd($AllCentres);
+
+        return view('centres.createCentre',[
+            'centres' => $centres,
         ]);
     }
 }

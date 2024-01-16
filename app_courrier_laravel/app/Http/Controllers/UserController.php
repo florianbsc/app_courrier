@@ -16,17 +16,25 @@ class UserController extends Controller
         'users' => $users,
     ]);
     }
+    public function showCreateUser()
+    {
+      $users =  User::all();
+    //   dd($users);
+
+    return view('users.createUser',[
+        'users' => $users,
+    ]);
+    }
 
     public function createUser()
     {
-        dd('vontrollerusre');
-        $newUser = User::create([
-            'nom_user' => request()->nom_user,
-            'prenom_user' => request()->prenom_user,
-            'mail_user' => request()->mail_user,
-            'mdp_user' => bcrypt(request()->mdp_user), // Assurez-vous de hasher le mot de passe
-        ]);
-        return redirect()->route('liste_users'); 
+        $newUser = new User();
+        $newUser->nom_user = request()->nom_user;
+        $newUser->prenom_user = request()->prenom_user;
+        $newUser->mail_user = request()->mail_user;
+        $newUser->mdp_user = bcrypt(request()->mdp_user); // Assurez-vous de hasher le mot de passe
+        $newUser->save();
     
+        return redirect()->route('liste_users');
     }
 }
