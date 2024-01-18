@@ -67,43 +67,22 @@ class CourrierController extends Controller
     }
 
 
-public function createCourrier(Request $request)
-{
-    // // Validez les données du formulaire
-    // $validator = Validator::make($request->all(), [
-    //     'objet_courrier' => 'required',
-    //     'destinataire_courrier' => 'required',
-    //     'description_courrier' => 'required',
-    //     'id_centre' => 'required',
-    //     'id_user' => 'required',
-    //     'id_service' => 'required',
-    // ]);
+    public function createCourrier(Request $request)
+    {    
+        $date_maintenant = now()->toDateString();
 
-    // // Si la validation échoue, redirigez avec les erreurs
-    // if ($validator->fails()) {
-    //     return redirect()->route('creation_courrier')
-    //         ->withErrors($validator)
-    //         ->withInput();
-    // }
+        Courrier::create([
+            'date_courrier' => $date_maintenant,
+            'objet_courrier' => $request->objet_courrier,
+            'destinataire_courrier' => $request->destinataire_courrier,
+            'description_courrier' => $request->description_courrier,
+            'id_centre' => $request->id_centre,
+            // 'id_user' => $request->id_user,
+            'id_user' => 2,
+            'id_service' => $request->id_service,
+        ]);    
 
-    // Si la validation réussit, insérez le nouveau courrier dans la base de données
-    $date_maintenant = now()->toDateString();
-
-    Courrier::create([
-        'date_courrier' => $date_maintenant,
-        'objet_courrier' => $request->objet_courrier,
-        'destinataire_courrier' => $request->destinataire_courrier,
-        'description_courrier' => $request->description_courrier,
-        'id_centre' => $request->id_centre,
-        // 'id_user' => $request->id_user,
-        'id_user' => 2,
-        'id_service' => $request->id_service,
-    ]);
-  
-
-    // Redirigez vers la vue de création de courrier avec un message de succès
-    return view('courriers.createCourrier')->with('success', 'Le courrier a été créé avec succès.');
-}
-
-
+        // Redirigez vers la vue de création de courrier avec un message de succès
+        return redirect()->route('liste_courriers');
+    }
 }

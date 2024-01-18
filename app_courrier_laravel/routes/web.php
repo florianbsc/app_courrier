@@ -42,5 +42,8 @@ Route::prefix('centres')->group(function()
     Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centres');
     Route::get('/create',[CentreController::class, 'showCreateCentre']);
     Route::post('/create',[CentreController::class, 'createCentre'])->name('creation_centre');
+    // Route::get('/confirm-delete/{id}', [CentreController::class, 'confirmDelete'])->name('confirm_delete_centre');
+    // Route::get('/delete/{id}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
+
     
 });

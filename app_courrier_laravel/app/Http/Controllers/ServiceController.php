@@ -15,6 +15,7 @@ class ServiceController extends Controller
             'services' => $services
         ]);
     }
+
     public function showCreateService ()
     {
         $services = Service::all();
@@ -23,14 +24,24 @@ class ServiceController extends Controller
             'services' => $services,
         ]);
     }
-    public function createService()
+
+    public function createService(Request $request)
     {
-        Service::create([
-            'nom_service' => request()->nom_service,
-            'telephone_service' => request()->telephone_service, 
+        // Validation des données
+        $request->validate([
+            'nom_service' => 'required|string|max:255',
+            'telephone_service' => 'required|string|max:20',
         ]);
-     
+
+        // Création du service
+        Service::create([
+            'nom_service' => $request->nom_service,
+            'telephone_service' => $request->telephone_service, 
+        ]);
+
+        // Redirection vers la liste des services
         return redirect()->route('liste_services');
-    }
+}
+
 
 }

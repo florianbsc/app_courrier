@@ -25,16 +25,26 @@ class UserController extends Controller
       ]);
     }
 
-    public function createUser()
-    {
+    public function createUser(Request $request)
+{
+    // Validation des données
+    $request->validate([
+        'nom_user' => 'required|string|max:255',
+        'prenom_user' => 'required|string|max:255',
+        'mail_user' => 'required|email|unique:users|max:255',
+        'mdp_user' => 'required|string|min:8',
+    ]);
 
-      User::create([
-        'nom_user' => request()->nom_user,
-        'prenom_user' => request()->prenom_user,
-        'mail_user' => request()->mail_user,
-        'password' => bcrypt(request()->mdp_user), // Assurez-vous de hasher le mot de passe
-      ]);
-    
-        return redirect()->route('liste_users');
-    }
+    // Création de l'utilisateur
+    User::create([
+        'nom_user' => $request->nom_user,
+        'prenom_user' => $request->prenom_user,
+        'mail_user' => $request->mail_user,
+        'password' => bcrypt($request->mdp_user),
+    ]);
+
+    // Redirection vers la liste des utilisateurs
+    return redirect()->route('liste_users');
+}
+
 }
