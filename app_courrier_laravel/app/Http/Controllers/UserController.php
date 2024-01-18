@@ -10,20 +10,18 @@ class UserController extends Controller
     public function showUser()
     {
       $users =  User::all();
-    //   dd($users);
 
-    return view('users.listeUsers',[
-        'users' => $users,
-    ]);
+      return view('users.listeUsers',[
+          'users' => $users,
+      ]);
     }
     public function showCreateUser()
     {
       $users =  User::all();
-    //   dd($users);
 
-    return view('users.createUser',[
-        'users' => $users,
-    ]);
+      return view('users.createUser',[
+          'users' => $users,
+      ]);
     }
 
     public function createUser()

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('accueil');
 
 
 
@@ -32,12 +32,14 @@ Route::prefix('courriers')->group(function()
 
 Route::prefix('services')->group(function()
 {
-
+    Route::get('/liste',[ServiceController::class, 'showService'])->name('liste_services');
+    Route::get('/create',[ServiceController::class, 'showCreateService']);
+    Route::post('/create',[ServiceController::class, 'createService'])->name('creation_service');
 });
 
 Route::prefix('centres')->group(function()
 {
-    Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centre');
+    Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centres');
     Route::get('/create',[CentreController::class, 'showCreateCentre']);
     Route::post('/create',[CentreController::class, 'createCentre'])->name('creation_centre');
     
