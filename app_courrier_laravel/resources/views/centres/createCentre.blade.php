@@ -2,14 +2,12 @@
 @section('title', 'Ajoute Centre')
 @section('contenu')
 
-<h5>new centre</h5>
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
-       
         <form method='POST' action = "{{route('creation_centre')}}">
             @csrf
-            <label for="nom_centre" ></label>
+            <label for="nom_centre" >Centre</label>
             <input type="text" name="nom_centre" placeholder="Nom" >
 
             <label for="adresse_centre" ></label>
@@ -20,7 +18,6 @@
 
             <label for="telephone_centre" ></label>
             <input type="text" name="telephone_centre" placeholder="Téléphone" >
-
 
             <button type="submit">Envoyer</button>
         </form>

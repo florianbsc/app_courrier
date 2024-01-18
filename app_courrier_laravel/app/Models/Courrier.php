@@ -14,5 +14,16 @@ class Courrier extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+    public $timestamps = false;
+
+    protected $fillable = [
+        'date_courrier',
+        'objet_courrier',
+        'destinataire_courrier',
+        'description_courrier',
+        'id_centre',
+        'id_user',
+        'id_service',
+    ];
+
 }

@@ -19,8 +19,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nom_user',
+        'prenom_user',
+        'mail_user',
         'password',
     ];
 
@@ -47,4 +48,6 @@ class User extends Authenticatable
 //     {
 //         return $this->hasMany(Courrier::class);    
 //     }
+    public $timestamps = false;
+
 }

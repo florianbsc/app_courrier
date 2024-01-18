@@ -26,7 +26,7 @@ Route::prefix('users')->group(function()
 Route::prefix('courriers')->group(function()
 {
     Route::get('/liste',[CourrierController::class, 'showCourrier'])->name('liste_courriers');
-    Route::get('/create',[CourrierController::class,'showCreate']);
+    Route::get('/create',[CourrierController::class,'showCreateCourrier']);
     Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_courrier');
 });
 

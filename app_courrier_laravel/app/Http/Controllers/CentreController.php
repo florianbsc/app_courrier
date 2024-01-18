@@ -29,12 +29,13 @@ class CentreController extends Controller
 
     public function createCentre()
     {
-            $newCentre = new Centre();
-            $newCentre->nom_centre = request()->nom_centre;
-            $newCentre->adresse_centre = request()->adresse_centre;
-            $newCentre->CP_centre = request()->CP_centre;
-            $newCentre->telephone_centre = request()->telephone_centre;
-            $newCentre->save();
+            Centre::create([
+                'nom_centre' => request()->nom_centre,
+                'adresse_centre' => request()->adresse_centre,
+                'CP_centre' => request()->CP_centre,
+                'telephone_centre' => request()->telephone_centre,
+            ]);
+            
         
             return redirect()->route('liste_centres');
         

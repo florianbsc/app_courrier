@@ -15,6 +15,7 @@ class UserController extends Controller
           'users' => $users,
       ]);
     }
+
     public function showCreateUser()
     {
       $users =  User::all();
@@ -26,12 +27,13 @@ class UserController extends Controller
 
     public function createUser()
     {
-        $newUser = new User();
-        $newUser->nom_user = request()->nom_user;
-        $newUser->prenom_user = request()->prenom_user;
-        $newUser->mail_user = request()->mail_user;
-        $newUser->mdp_user = bcrypt(request()->mdp_user); // Assurez-vous de hasher le mot de passe
-        $newUser->save();
+
+      User::create([
+        'nom_user' => request()->nom_user,
+        'prenom_user' => request()->prenom_user,
+        'mail_user' => request()->mail_user,
+        'password' => bcrypt(request()->mdp_user), // Assurez-vous de hasher le mot de passe
+      ]);
     
         return redirect()->route('liste_users');
     }

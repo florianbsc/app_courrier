@@ -25,11 +25,11 @@ class ServiceController extends Controller
     }
     public function createService()
     {
-        $newService = new Service();
-        $newService->nom_service = request()->nom_service;
-        $newService->telephone_service = request()->telephone_service; 
-        $newService->save();
-    
+        Service::create([
+            'nom_service' => request()->nom_service,
+            'telephone_service' => request()->telephone_service, 
+        ]);
+     
         return redirect()->route('liste_services');
     }
 
