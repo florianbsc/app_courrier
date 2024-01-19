@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('title', 'Ajouter Service')
 @section('contenu')
-
+<h1 class="h2 mb-0 ls-tight">Ajouter Service</h1>
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">

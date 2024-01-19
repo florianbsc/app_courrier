@@ -49,5 +49,9 @@ class User extends Authenticatable
 //         return $this->hasMany(Courrier::class);    
 //     }
     public $timestamps = false;
+    public function getAuthPassword()
+    {
+        return $this->attributes['mdp_user'];
+    }
 
 }

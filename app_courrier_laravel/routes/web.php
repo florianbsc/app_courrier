@@ -11,9 +11,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('accueil');
+
+//    renvoi vers la page app apres la connxion
+})->middleware('auth')->name('accueil');
 
 
+//// ---------------------------- CONNEXION
+
+Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::prefix('users')->group(function()
 {

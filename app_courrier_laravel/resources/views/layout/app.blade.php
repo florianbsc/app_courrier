@@ -58,9 +58,6 @@
     </style>
 </head>
 
-
-
-
 <!-- Dashboard -->
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
     <!-- Vertical Navbar -->
@@ -217,7 +214,6 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">Application</h1>
                         </div>
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
@@ -246,7 +242,7 @@
                             <a href="#" class="nav-link font-regular">Modiffier</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link font-regular">Supprimer</a>
+                            <a href="#a" class="nav-link font-regular">Supprimer</a>
                         </li>
                     </ul>
                 </div>
