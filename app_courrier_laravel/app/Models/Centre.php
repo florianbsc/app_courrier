@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Centre extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom_centre', 'adresse_centre', 'CP_centre', 'telephone_centre'];
+    protected $fillable = ['id_centre','nom_centre', 'adresse_centre', 'CP_centre', 'telephone_centre'];
     public $timestamps = false;
+    protected $primaryKey = 'id_centre';
 }

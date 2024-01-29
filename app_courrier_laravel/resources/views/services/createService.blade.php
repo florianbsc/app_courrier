@@ -1,7 +1,24 @@
 @extends('layout.app')
 @section('title', 'Ajouter Service')
+@section('nav')
+<h1 class="h2 mb-0 ls-tight"> Ajouter Service</h1>
+
+        <ul class="nav nav-tabs mt-4 overflow-x border-0">
+            <li class="nav-item">
+                <a href="{{route('liste_services')}}" class="nav-link font-regular">Liste</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('creation_service')}}" class="nav-link active">Ajouter</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link font-regular">Modifier</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link font-regular">Supprimer</a>
+            </li>
+        </ul>
+@endsection
 @section('contenu')
-<h1 class="h2 mb-0 ls-tight">Ajouter Service</h1>
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">

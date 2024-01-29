@@ -13,7 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 
 //    renvoi vers la page app apres la connxion
-})->middleware('auth')->name('accueil');
+})->name('accueil');
+// })->middleware('auth')->name('accueil');
 
 
 //// ---------------------------- CONNEXION
@@ -27,7 +28,6 @@ Route::prefix('users')->group(function()
     Route::get('/liste',[UserController::class,'showUser'])->name('liste_users');
     Route::get('/create',[UserController::class,'showCreateUser']);
     Route::post('/create',[UserController::class,'createUser'])->name('creation_user');
-
 });
 
 Route::prefix('courriers')->group(function()
@@ -49,6 +49,8 @@ Route::prefix('centres')->group(function()
     Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centres');
     Route::get('/create',[CentreController::class, 'showCreateCentre']);
     Route::post('/create',[CentreController::class, 'createCentre'])->name('creation_centre');
+    Route::get('/edit/{id_centre}', [CentreController::class, 'showEditCentre'])->name('edit_centre');
+    Route::put('/update/{id_centre}', [CentreController::class, 'updateCentre'])->name('update_centre');
     // Route::get('/confirm-delete/{id}', [CentreController::class, 'confirmDelete'])->name('confirm_delete_centre');
     // Route::get('/delete/{id}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
 

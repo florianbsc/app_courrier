@@ -1,6 +1,8 @@
 @extends('layout.app')
 @section('title', 'Accueil')
 @section('contenu')
+
+
 <div class="container-fluid text-center">
     <div class="welcome-container">
         <h2>Bienvenue dans votre espace de gestion de courrier</h2>

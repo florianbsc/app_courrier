@@ -20,7 +20,6 @@ class CentreController extends Controller
     public function showCreateCentre ()
     {
         $centres = Centre::all();
-        // dd($centres);
 
         return view('centres.createCentre',[
             'centres' => $centres,
@@ -48,6 +47,33 @@ class CentreController extends Controller
         // Redirection vers la liste des centres
         return redirect()->route('liste_centres');
     }
+
+    public function showEditCentre($id_centre)
+    {
+        // Récupérez le centre à éditer en fonction de l'id
+        $centre = Centre::find($id_centre);
+    
+        return view('centres.editCentre', [
+            'centre' => $centre,
+        ]);
+    }
+
+    public function updateCentre(Request $request, $id_centre)
+{
+    // Récupérez le centre à mettre à jour en fonction de l'id
+    $centre = Centre::find($id_centre);
+
+    // Mettez à jour les propriétés du centre avec les données du formulaire
+    $centre->nom_centre = $request->nom_centre;
+    $centre->adresse_centre = $request->adresse_centre;
+    $centre->CP_centre = $request->CP_centre;
+    $centre->telephone_centre = $request->telephone_centre;
+
+    // Enregistrez les modifications
+    $centre->save();
+
+    return redirect()->route('liste_centres');
+}
 
     // public function deleteCentre($id)
     // {

@@ -1,0 +1,48 @@
+@extends('layout.app')
+
+@section('title', 'Modifier Centre')
+
+@section('nav')
+<h1 class="h2 mb-0 ls-tight">Liste centres</h1>
+
+        <ul class="nav nav-tabs mt-4 overflow-x border-0">
+            <li class="nav-item">
+                <a href="{{route('liste_centres')}}" class="nav-link font-regular">Liste</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link font-regular">Ajouter</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">Modifier</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link font-regular">Supprimer</a>
+            </li>
+        </ul>
+@endsection
+
+@section('contenu')
+<div class="card shadow border-0 mb-7">
+    <div class="table-responsive">
+
+        <form action="{{ route('update_centre', ['id_centre' => $centre->id_centre]) }}" method="POST">
+            @csrf
+
+            <label for="nom_centre">Nom</label>
+            <input type="text" name="nom_centre" value="{{ $centre->nom_centre }}" required>
+
+            <label for="adresse_centre">Adresse</label>
+            <input type="text" name="adresse_centre" value="{{ $centre->adresse_centre }}" required>
+
+            <label for="CP_centre">Code postal</label>
+            <input type="number" name="CP_centre" value="{{ $centre->CP_centre }}" required>
+
+            <label for="telephone_centre">Téléphone</label>
+            <input type="text" name="telephone_centre" value="{{ $centre->telephone_centre }}" required>
+
+            <button type="submit">Mettre à jour</button>
+        </form>
+    </div>
+</div>
+
+@endsection
