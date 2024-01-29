@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Centre;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Post;
 
 
 class CentreController extends Controller
@@ -70,11 +71,19 @@ class CentreController extends Controller
     $centre->telephone_centre = $request->telephone_centre;
 
     // Enregistrez les modifications
-    $centre->save();
+    $centre->save()->update($request->all());
 
-    return redirect()->route('liste_centres');
+    return redirect()->route('liste_centres')      
+    ->with('success', 'Centre à ete mis a jour.');
 }
 
+public function deleteCentre($id_centre)
+{
+  $centre = Centre::find($id_centre);
+  $centre->delete();
+  return redirect()->route('liste_centres')
+    ->with('success', 'le centre à bien ete supprimé');
+}
     // public function deleteCentre($id)
     // {
     //     // Recherche du centre à supprimer

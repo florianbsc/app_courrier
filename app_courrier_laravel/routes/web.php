@@ -51,8 +51,8 @@ Route::prefix('centres')->group(function()
     Route::post('/create',[CentreController::class, 'createCentre'])->name('creation_centre');
     Route::get('/edit/{id_centre}', [CentreController::class, 'showEditCentre'])->name('edit_centre');
     Route::put('/update/{id_centre}', [CentreController::class, 'updateCentre'])->name('update_centre');
-    // Route::get('/confirm-delete/{id}', [CentreController::class, 'confirmDelete'])->name('confirm_delete_centre');
-    // Route::get('/delete/{id}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
+    Route::get('/confirm-delete/{id_centre}', [CentreController::class, 'confirmDelete'])->name('confirm_delete_centre');
+    Route::get('/delete/{id_centre}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
 
     
 });
