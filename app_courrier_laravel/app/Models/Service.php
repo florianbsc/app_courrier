@@ -10,4 +10,6 @@ class Service extends Model
     use HasFactory;
     protected $fillable = ['nom_service', 'telephone_service'];
     public $timestamps = false;
+    protected $primaryKey = 'id_service';
+
 }

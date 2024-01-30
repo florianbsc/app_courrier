@@ -143,7 +143,7 @@
         </div>
         <div class="txt_field">
             <label for="mdp_user"></label>
-            <input name="mdp_user" type="password" placeholder="Mot de passe" required>
+            <input name="password" type="password" placeholder="Mot de passe" required>
         </div>
 
         <input type="submit" value="Connexion">

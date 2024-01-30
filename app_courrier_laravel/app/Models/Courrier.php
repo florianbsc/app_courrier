@@ -25,5 +25,10 @@ class Courrier extends Model
         'id_user',
         'id_service',
     ];
+    // protected $primaryKey = [
+    //     'id_centre',
+    //     'id_user',
+    //     'id_service',  
+    // ];
 
 }

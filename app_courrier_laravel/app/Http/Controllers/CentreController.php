@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Centre;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Post;
 
 
 class CentreController extends Controller
@@ -20,8 +19,10 @@ class CentreController extends Controller
 
     public function showCreateCentre ()
     {
+        // Récupere toutes les donneés
         $centres = Centre::all();
 
+        // Envoi les données a la view createCentre
         return view('centres.createCentre',[
             'centres' => $centres,
         ]);
@@ -59,63 +60,41 @@ class CentreController extends Controller
         ]);
     }
 
-    public function updateCentre(Request $request, $id_centre)
-{
-    // Récupérez le centre à mettre à jour en fonction de l'id
-    $centre = Centre::find($id_centre);
+        public function updateCentre(Request $request, $id_centre)
+    {
+        // Récupérez le centre à mettre à jour en fonction de l'id
+        $centre = Centre::find($id_centre);
 
-    // Mettez à jour les propriétés du centre avec les données du formulaire
-    $centre->nom_centre = $request->nom_centre;
-    $centre->adresse_centre = $request->adresse_centre;
-    $centre->CP_centre = $request->CP_centre;
-    $centre->telephone_centre = $request->telephone_centre;
+        // Mettez à jour les propriétés du centre avec les données du formulaire
+        $centre->nom_centre = $request->nom_centre;
+        $centre->adresse_centre = $request->adresse_centre;
+        $centre->CP_centre = $request->CP_centre;
+        $centre->telephone_centre = $request->telephone_centre;
 
-    // Enregistrez les modifications
-    $centre->save()->update($request->all());
+        // Enregistrez les modifications
+        $centre->update($request->all());
 
-    return redirect()->route('liste_centres')      
-    ->with('success', 'Centre à ete mis a jour.');
-}
+        return redirect()->route('liste_centres')      
+        ->with('success', 'Centre à ete mis a jour.');
+    }
 
-public function deleteCentre($id_centre)
-{
-  $centre = Centre::find($id_centre);
-  $centre->delete();
-  return redirect()->route('liste_centres')
-    ->with('success', 'le centre à bien ete supprimé');
-}
-    // public function deleteCentre($id)
-    // {
-    //     // Recherche du centre à supprimer
-    //     $centre = Centre::find($id);
+
+    public function deleteCentre($id_centre)
+    {
+        // Recherche du centre à supprimer
+        $centre = Centre::find($id_centre);
     
-    //     // Vérification si le centre existe
-    //     if ($centre) {
-    //         // Suppression du centre
-    //         $centre->delete();
+        // Vérification si le centre existe
+        if ($centre) {
+            // Suppression du centre
+            $centre->delete();
     
-    //         // Redirection vers la liste des centres avec un message de succès
-    //         return redirect()->route('liste_centres')->with('success', 'Le centre a été supprimé avec succès.');
-    //     } else {
-    //         // Redirection vers la liste des centres avec un message d'erreur
-    //         return redirect()->route('liste_centres')->with('error', 'Le centre n\'a pas été trouvé.');
-    //     }
-    // }
-    
-    // public function confirmDelete($id)
-    // {
-    //     // Recherche du centre à supprimer
-    //     $centre = Centre::find($id);
-
-    //     // Vérification si le centre existe
-    //     if ($centre) {
-    //         // Affiche la vue de confirmation avec les détails du centre
-    //         return view('centres.confirmDelete', compact('centre'));
-    //     } else {
-    //         // Redirection vers la liste des centres avec un message d'erreur
-    //         return redirect()->route('liste_centres')->with('error', 'Le centre n\'a pas été trouvé.');
-    //     }
-    // }
-
-    
+            // Redirection vers la liste des centres avec un message de succès
+            return redirect()->route('liste_centres')->with('success', 'Le centre a été supprimé avec succès.');
+        } else {
+            // Redirection vers la liste des centres avec un message d'erreur
+            return redirect()->route('liste_centres')->with('error', 'Le centre n\'a pas été trouvé.');
+        }
+    }
+        
 }

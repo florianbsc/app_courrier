@@ -11,12 +11,6 @@
             <li class="nav-item">
                 <a href="{{route('creation_user')}}" class="nav-link active">Ajouter</a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link font-regular">Modifier</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link font-regular">Supprimer</a>
-            </li>
         </ul>
 @endsection
 @section('contenu')
@@ -35,8 +29,8 @@
             <label for="mail_user" name="mail_user"></label>
             <input type="mail" name="mail_user" placeholder="Mail" required>
 
-            <label for="mdp_user" name="mdp_user"></label>
-            <input type="text" name="mdp_user" placeholder="Mot de passe" required>
+            <label for="password" name="password"></label>
+            <input type="text" name="password" placeholder="Mot de passe" required>
 
             <!-- <label for="privilege_user" name="privilege_user"></label>
             <input type="number" name="privilege_user" placeholder="privilege_user"> -->

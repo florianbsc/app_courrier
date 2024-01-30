@@ -10,14 +10,14 @@
                 <a href="{{route('liste_centres')}}" class="nav-link font-regular">Liste</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link font-regular">Ajouter</a>
+                <a href="{{route('creation_centre')}}" class="nav-link font-regular">Ajouter</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link active">Modifier</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link font-regular">Supprimer</a>
-            </li>
+            </li> -->
         </ul>
 @endsection
 
@@ -27,6 +27,7 @@
 
         <form action="{{ route('update_centre', ['id_centre' => $centre->id_centre]) }}" method="POST">
             @csrf
+            @method('PUT')
 
             <label for="nom_centre">Nom</label>
             <input type="text" name="nom_centre" value="{{ $centre->nom_centre }}" required>

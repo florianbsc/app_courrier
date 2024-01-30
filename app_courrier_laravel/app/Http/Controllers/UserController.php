@@ -12,43 +12,94 @@ class UserController extends Controller
 {
     public function showUser()
     {
-      $users =  User::all();
+        $users =  User::all();
 
-      return view('users.listeUsers',[
-          'users' => $users,
-      ]);
+        return view('users.listeUsers',[
+            'users' => $users,
+        ]);
     }
 
     public function showCreateUser()
     {
-      $users =  User::all();
+        $users =  User::all();
 
-      return view('users.createUser',[
-          'users' => $users,
-      ]);
+        return view('users.createUser',[
+            'users' => $users,
+        ]);
     }
 
     public function createUser(Request $request)
     {
+       
         // Validation des données
         $request->validate([
             'nom_user' => 'required|string|max:255',
             'prenom_user' => 'required|string|max:255',
             'mail_user' => 'required|email|unique:users|max:255',
-            'mdp_user' => 'required|string|min:8',
+            'password' => 'required|string|min:8',
         ]);
-
+if (   $request->validate    ){
         // Création de l'utilisateur
         User::create([
             'nom_user' => $request->nom_user,
             'prenom_user' => $request->prenom_user,
             'mail_user' => $request->mail_user,
-            'password' => bcrypt($request->mdp_user),
+            'password' => $request->password,
         ]);
 
         // Redirection vers la liste des utilisateurs
         return redirect()->route('liste_users');
+
+    } else {
+        
     }
+    }
+
+    public function showEditUser ($id_user)
+    {
+        $user = User::find($id_user);
+
+        return view('users.editUser',[
+            'user' => $user,
+        ]);
+    }
+
+    public function updateUser (Request $request, $id_user)
+    {
+        $user = User::find($id_user);
+
+        $user->nom_user = $request-> nom_user;
+        $user->prenom_user = $request-> prenom_user;
+        $user->mail_user = $request-> mail_user;
+   
+        $user->update($request->all());
+
+        return redirect()->route('liste_users');
+   
+    }
+
+    public function deleteUser($id_user)
+    {
+        $user = User::find($id_user);
+
+        if($user) {
+
+            $user->delete();
+
+            return redirect()->route('liste_users');
+
+        } else {
+
+            return redirect()->route('liste_users');
+
+        }
+
+    }
+
+
+
+
+
 
      /*
      * PARTIE DE/CONNEXION
@@ -57,7 +108,6 @@ class UserController extends Controller
     {
         try {
             $users = User::all();
-
 
             return view('log.login', [
                 'user' => $users,
@@ -81,7 +131,7 @@ class UserController extends Controller
     {
         // $credentials = [
         //     'mail_user' => $request->mail_user,
-        //     'password' => $request->mdp_user,
+        //     'password' => $request->password,
         // ];
         $credentials = request()->only('mail_user', 'password');
 

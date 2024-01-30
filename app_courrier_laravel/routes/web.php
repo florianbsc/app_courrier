@@ -28,6 +28,9 @@ Route::prefix('users')->group(function()
     Route::get('/liste',[UserController::class,'showUser'])->name('liste_users');
     Route::get('/create',[UserController::class,'showCreateUser']);
     Route::post('/create',[UserController::class,'createUser'])->name('creation_user');
+    Route::get('/edit/{id_user}', [UserController::class, 'showEditUser'])->name('edit_user');
+    Route::put('/update/{id_user}', [UserController::class, 'updateUser'])->name('update_user');
+    Route::get('/delete/{id_user}', [UserController::class, 'deleteUser'])->name('delete_user');
 });
 
 Route::prefix('courriers')->group(function()
@@ -51,7 +54,6 @@ Route::prefix('centres')->group(function()
     Route::post('/create',[CentreController::class, 'createCentre'])->name('creation_centre');
     Route::get('/edit/{id_centre}', [CentreController::class, 'showEditCentre'])->name('edit_centre');
     Route::put('/update/{id_centre}', [CentreController::class, 'updateCentre'])->name('update_centre');
-    Route::get('/confirm-delete/{id_centre}', [CentreController::class, 'confirmDelete'])->name('confirm_delete_centre');
     Route::get('/delete/{id_centre}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
 
     

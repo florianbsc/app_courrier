@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_user',
         'nom_user',
         'prenom_user',
         'mail_user',
@@ -49,10 +50,11 @@ class User extends Authenticatable
 //         return $this->hasMany(Courrier::class);    
 //     }
     public $timestamps = false;
-    
+    protected $primaryKey = 'id_user';
+
     public function getAuthPassword()
     {
-        return $this->attributes['mdp_user'];
+        return $this->attributes['password'];
     }
 
 }
