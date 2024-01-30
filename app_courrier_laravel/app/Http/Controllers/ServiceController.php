@@ -41,7 +41,34 @@ class ServiceController extends Controller
 
         // Redirection vers la liste des services
         return redirect()->route('liste_services');
-}
+    }
 
+    public function showEditService ($id_service)
+    {
+        $service = Service::find($id_service);
 
+        return view('services.editService',[
+            'service' => $service,
+        ]);
+    }
+
+    public function deleteService ($id_service)
+    {
+// il semlerait que l'id ne soit pas pris
+        $service = Service::find($id_service);
+
+        $service->delete();
+
+        return redirect()->route('liste_services');
+
+        // if($service) {
+
+           
+
+        // } else {
+
+        //     return redirect()->route('liste_services');
+        // }
+        
+    }
 }

@@ -37,7 +37,10 @@ Route::prefix('courriers')->group(function()
 {
     Route::get('/liste',[CourrierController::class, 'showCourrier'])->name('liste_courriers');
     Route::get('/create',[CourrierController::class,'showCreateCourrier']);
-    Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_courrier');
+    Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_courrier');  
+    // Route::get('/edit/{id_courrier}', [CourrierController::class, 'showEditCourrier'])->name('edit_courrier');
+    // Route::put('/update/{id_courrier}', [CourrierController::class, 'updateCourrier'])->name('update_courrier');
+    // Route::get('/delete/{id_courrier}', [CourrierController::class, 'deleteCourrier'])->name('delete_courrier');
 });
 
 Route::prefix('services')->group(function()
@@ -45,6 +48,9 @@ Route::prefix('services')->group(function()
     Route::get('/liste',[ServiceController::class, 'showService'])->name('liste_services');
     Route::get('/create',[ServiceController::class, 'showCreateService']);
     Route::post('/create',[ServiceController::class, 'createService'])->name('creation_service');
+    Route::get('/edit/{id_service}',[ServiceController::class, 'showEditService'])->name('edit_service');
+    Route::get('/delete/{id_service}', [ServiceController::class, 'deleteService'])->name('delete_service');
+    
 });
 
 Route::prefix('centres')->group(function()

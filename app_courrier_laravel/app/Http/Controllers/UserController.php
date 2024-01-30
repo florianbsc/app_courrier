@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -27,32 +28,46 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
-
+   
     public function createUser(Request $request)
-    {
-       
-        // Validation des données
-        $request->validate([
-            'nom_user' => 'required|string|max:255',
-            'prenom_user' => 'required|string|max:255',
-            'mail_user' => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:8',
-        ]);
-if (   $request->validate    ){
-        // Création de l'utilisateur
-        User::create([
-            'nom_user' => $request->nom_user,
-            'prenom_user' => $request->prenom_user,
-            'mail_user' => $request->mail_user,
-            'password' => $request->password,
-        ]);
+{
+    // Définir les règles de validation
+    $rules = [
+        'nom_user' => 'required|string',
+        'prenom_user' => 'required|string',
+        'mail_user' => 'required|email|unique:users',
+        'password' => 'required|string|min:8',
+    ];
 
-        // Redirection vers la liste des utilisateurs
-        return redirect()->route('liste_users');
+    // Personnaliser les messages d'erreur
+    $messages = [
+        'required' => 'Le champ :attribute est requis.',
+        'email' => 'Le champ :attribute doit être une adresse email valide.',
+        'unique' => 'Cette adresse email est déjà utilisée.',
+        'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
+    ];
 
-    } else {
-        
+    // Valider les données
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    // Vérifier si la validation a échoué
+    if ($validator->fails()) {
+
+        return redirect()->route('creation_user')
+            ->withErrors($validator)
+            ->withInput();
     }
+
+    // Création de l'utilisateur
+    User::create([
+        'nom_user' => $request->nom_user,
+        'prenom_user' => $request->prenom_user,
+        'mail_user' => $request->mail_user,
+        'password' => bcrypt($request->password), // Assurez-vous de hasher le mot de passe
+    ]);
+
+    // Redirection vers la liste des utilisateurs
+    return redirect()->route('liste_users');
     }
 
     public function showEditUser ($id_user)
@@ -68,9 +83,15 @@ if (   $request->validate    ){
     {
         $user = User::find($id_user);
 
-        $user->nom_user = $request-> nom_user;
-        $user->prenom_user = $request-> prenom_user;
-        $user->mail_user = $request-> mail_user;
+        $request->validate([
+            'nom_user' => 'required|string|max:255',
+            'prenom_user' => 'required|string|max:255',
+            'mail_user' => 'required|email|unique:users|max:255',
+        ]);
+
+        // $user->nom_user = $request-> nom_user;
+        // $user->prenom_user = $request-> prenom_user;
+        // $user->mail_user = $request-> mail_user;
    
         $user->update($request->all());
 

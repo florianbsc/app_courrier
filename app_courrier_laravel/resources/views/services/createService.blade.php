@@ -18,7 +18,19 @@
             </li>
         </ul>
 @endsection
+
+<!-- Contenu de la page -->
 @section('contenu')
+    <!-- Affiche les messages d'erreur de validation -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
