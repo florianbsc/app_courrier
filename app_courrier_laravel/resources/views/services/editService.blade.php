@@ -20,7 +20,7 @@
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
-        <form action="{{route('edit_w', ['id_service' => $service->id_service]) }}" method="POST">
+        <form action="{{route('edit_service', ['id_service' => $service->id_service]) }}" method="POST">
             @csrf
             @method('PUT')
 
