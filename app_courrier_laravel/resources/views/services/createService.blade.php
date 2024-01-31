@@ -13,9 +13,6 @@
             <li class="nav-item">
                 <a href="#" class="nav-link font-regular">Modifier</a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link font-regular">Supprimer</a>
-            </li>
         </ul>
 @endsection
 

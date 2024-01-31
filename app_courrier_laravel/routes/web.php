@@ -49,6 +49,7 @@ Route::prefix('services')->group(function()
     Route::get('/create',[ServiceController::class, 'showCreateService']);
     Route::post('/create',[ServiceController::class, 'createService'])->name('creation_service');
     Route::get('/edit/{id_service}',[ServiceController::class, 'showEditService'])->name('edit_service');
+    Route::put('/update/{id_service}', [ServiceController::class, 'updateService'])->name('update_service');
     Route::get('/delete/{id_service}', [ServiceController::class, 'deleteService'])->name('delete_service');
     
 });
