@@ -10,15 +10,6 @@
             <li class="nav-item">
                 <a href="{{route('creation_centre')}}" class="nav-link active">Ajouter</a>
             </li>
-<!--
-    <li class="nav-item">
-        <a href="#" class="nav-link font-regular">Modifier</a>
-    </li>
-    <li class="nav-item">
-        <a href="#" class="nav-link font-regular">Supprimer</a>
-    </li>
--->
-
         </ul>
 @endsection
 
@@ -29,16 +20,16 @@
         <form method='POST' action = "{{route('creation_centre')}}">
             @csrf
             <label for="nom_centre" >Centre</label>
-            <input type="text" name="nom_centre" placeholder="Nom" >
+            <input type="text" name="nom_centre" value="{{ old('nom_centre')" placeholder="Nom" >
 
             <label for="adresse_centre" ></label>
-            <input type="text" name="adresse_centre" placeholder="Adresse" >
+            <input type="text" name="adresse_centre" value="{{ old('adresse_centre')" placeholder="Adresse" >
 
             <label for="CP_centre" ></label>
-            <input type="number" name="CP_centre" placeholder="Code postal" >
+            <input type="number" name="CP_centre" value="{{ old('CP_centre')" placeholder="Code postal" >
 
             <label for="telephone_centre" ></label>
-            <input type="text" name="telephone_centre" placeholder="Téléphone" >
+            <input type="text" name="telephone_centre" value="{{ old('telephone_centre')" placeholder="Téléphone" >
 
             <button type="submit">Envoyer</button>
         </form>

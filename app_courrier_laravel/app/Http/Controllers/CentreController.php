@@ -85,7 +85,7 @@ class CentreController extends Controller
         $centre = Centre::find($id_centre);
     
         // Vérification si le centre existe
-        if ($centre) {
+        if (isset($centre)) {
             // Suppression du centre
             $centre->delete();
     

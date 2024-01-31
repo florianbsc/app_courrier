@@ -36,16 +36,16 @@
             <form method='post' action = "{{route('creation_user')}}">
                 @csrf
                 <label for="nom_user" name="nom_user">Utilisateur</label>
-                <input type="text" name="nom_user" placeholder="Nom" required>
+                <input type="text" name="nom_user" placeholder="Nom" value="{{ old('nom_user') }}" required>
 
                 <label for="prenom_user" name="prenom_user"></label>
-                <input type="text" name="prenom_user" placeholder="Prénom" required>
+                <input type="text" name="prenom_user" placeholder="Prénom" value="{{ old('prenom_user') }}" required>
 
                 <label for="mail_user" name="mail_user"></label>
-                <input type="mail" name="mail_user" placeholder="Mail unique" required>
+                <input type="mail" name="mail_user" placeholder="Mail unique" value="{{ old('mail_user') }}" required>
 
                 <label for="password" name="password"></label>
-                <input type="text" name="password" placeholder="Mot de passe de 8 caratères" required>
+                <input type="text" name="password" placeholder="Mot de passe de 8 caratères" value="{{ old('password') }}" required>
 
                 <!-- <label for="privilege_user" name="privilege_user"></label>
                 <input type="number" name="privilege_user" placeholder="privilege_user"> -->

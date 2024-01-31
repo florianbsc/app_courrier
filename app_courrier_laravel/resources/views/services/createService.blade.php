@@ -34,10 +34,10 @@
         <form method="post" action="{{route('creation_service')}}">
             @csrf
             <label for="nom_service">Service</label>
-            <input type="text" name="nom_service" placeholder="Nom" required>
+            <input type="text" name="nom_service" placeholder="Nom" value="{{ old('nom_service') }}" required>
 
             <label for="telephone_service"></label>
-            <input type="text" name="telephone_service" placeholder="Téléphone" required>
+            <input type="text" name="telephone_service" placeholder="Téléphone" value="{{ old('telephone_service') }}" required>
 
             <button type="submit">Envoyer</button>
         </form>

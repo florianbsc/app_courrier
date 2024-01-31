@@ -71,6 +71,26 @@ class CourrierController extends Controller
     {    
         $date_maintenant = now()->toDateString();
 
+        $rules =[
+            'objet_courrier' => 'required|string|max:50',
+            'destinataire_courrier' => 'required|string|max:50',
+            'description_courrier' => 'string|max:255',
+        ];
+
+        $messages = [
+            'required' => 'Le champ :attribute est requis.',
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+
+            return redirect()->route('creation_courrier')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         Courrier::create([
             'date_courrier' => $date_maintenant,
             'objet_courrier' => $request->objet_courrier,
@@ -78,11 +98,79 @@ class CourrierController extends Controller
             'description_courrier' => $request->description_courrier,
             'id_centre' => $request->id_centre,
             // 'id_user' => $request->id_user,
-            'id_user' => 2,
+            'id_user' => 2, // tant que la fonction d'identification ne sera pas fonctionnel
             'id_service' => $request->id_service,
         ]);    
 
         // Redirigez vers la vue de création de courrier avec un message de succès
         return redirect()->route('liste_courriers');
     }
+
+    public function showEditCourrier($id_courrier)
+    {
+
+        $courrier = Courrier::find($id_courrier);
+
+        $centres = Centre::all();
+        $users = User::all();
+        $services = Service::all();
+
+        return view('courriers.editCourrier',[
+            'courrier' => $courrier,
+            'centres' => $centres,
+            'users' => $users,
+            'services' => $services,
+        ]);
+    }
+
+    public function updateCourrier(Request $request, $id_courrier)
+    {
+
+        $courrier = Courrier::find($id_courrier);
+
+        $rules = [
+            'objet_courrier' => 'required|string|max:50',
+            'destinataire_courrier' => 'required|string|max:50',
+            'description_courrier' => 'string|max:255',
+        ];
+
+        $messages = [
+            'required' => 'Le champ :attribute est requis.',
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+
+            return redirect()->route('creation_courrier')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $courrier->update($request->all());   
+
+        // Redirigez vers la vue de création de courrier avec un message de succès
+        return redirect()->route('liste_courriers');
+    } 
+
+
+    public function deleteCourrier($id_courrier)
+    {
+        // Recherche du courrier à supprimer
+        $courrier = Courrier::find($id_courrier);
+
+        // Vérification si le courrier existe
+        if ($courrier) {
+            // Suppression du courrier
+            $courrier->delete();
+
+            // Redirection vers la liste des courriers avec un message de succès
+            return redirect()->route('liste_courriers')->with('success', 'Le courrier a été supprimé avec succès.');
+        }
+
+        // Redirection vers la liste des courriers avec un message d'erreur
+        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+    }
+
 }

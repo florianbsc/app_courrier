@@ -1,14 +1,17 @@
 @extends('layout.app')
-@section('title', 'Ajouter Courrier')
+@section('title', 'Modifier Courrier')
 @section('nav')
-<h1 class="h2 mb-0 ls-tight"> Ajouter Courrier</h1>
+<h1 class="h2 mb-0 ls-tight"> Modifier Courrier</h1>
 
         <ul class="nav nav-tabs mt-4 overflow-x border-0">
             <li class="nav-item">
                 <a href="{{route('liste_courriers')}}" class="nav-link font-regular">Liste</a>
             </li>
             <li class="nav-item">
-                <a href="{{route('creation_courrier')}}" class="nav-link active">Ajouter</a>
+                <a href="{{route('creation_courrier')}}" class="nav-link font-regular">Ajouter</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active ">Modifier</a>
             </li>
         </ul>
 @endsection
@@ -27,24 +30,25 @@
             </ul>
         </div>
     @endif
-
+    
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
-        <form action="{{ route('creation_courrier')}}" method="POST">
+        <form action="{{ route('update_courrier', ['id_courrier' => $courrier->id_courrier]) }}" method="POST">
             @csrf
+            @method('PUT')
 
-            <label for="objet_courrier">Courrier</label>
-            <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}"  required>
+            <label for="objet_courrier">Objet</label>
+            <input type="text" name="objet_courrier" value="{{$courrier->objet_courrier}}"  required>
 
-            <label for="destinataire_courrier"></label>
-            <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
+            <label for="destinataire_courrier">Destinataire</label>
+            <input type="text" name="destinataire_courrier" value="{{$courrier->destinataire_courrier}}"  required>
 
-            <label for="description_courrier"></label>
-            <input type="text" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
+            <label for="description_courrier">Description</label>
+            <input type="text" name="description_courrier" value="{{$courrier->description_courrier}}" >
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>
-                <option value="">-- Choisir un centre --</option>
+                <option value="{{$centre->nom_centre}}"></option>
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
                 @empty
@@ -54,7 +58,7 @@
 
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" required>
-                <option value="">-- Choisir un service --</option>
+                <option value="{{$service->nom_service}}"></option>
                 @forelse($services as $service)
                     <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
                 @empty
@@ -62,7 +66,7 @@
                 @endforelse
             </select>
 
-            <button type="submit">Envoyer</button>
+            <button type="submit">Mise à jour</button>
         </form>
     </div>
 </div>
