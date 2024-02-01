@@ -12,8 +12,19 @@ class Courrier extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function centre(): BelongsTo
+    {
+        return $this->belongsTo(Centre::class, 'id_centre');
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class, 'id_service');
+    }
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -26,7 +37,5 @@ class Courrier extends Model
         'id_service',
     ];
     
-    
     protected $primaryKey = 'id_courrier';
-
 }

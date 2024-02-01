@@ -16,8 +16,6 @@
         </ul>
 @endsection
 
-@section('contenu')
-
 <!-- Contenu de la page -->
 @section('contenu')
     <!-- Affiche les messages d'erreur de validation -->
@@ -48,21 +46,21 @@
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>
-                <option value="{{$centre->nom_centre}}"></option>
+                <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
                 @empty
-                    <!-- Aucun centre disponible -->
+                    <option value="" disabled>Aucun centre disponible</option>
                 @endforelse
             </select>
 
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" required>
-                <option value="{{$service->nom_service}}"></option>
+                <option value="{{$courrier->id_service}}" selected>{{$courrier->service->nom_service}}</option>
                 @forelse($services as $service)
                     <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
                 @empty
-                    <!-- Aucun service disponible -->
+                    <option value="" disabled>Aucun service disponible</option>
                 @endforelse
             </select>
 

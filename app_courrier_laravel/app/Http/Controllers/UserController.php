@@ -88,10 +88,6 @@ class UserController extends Controller
             'prenom_user' => 'required|string|max:255',
             'mail_user' => 'required|email|unique:users|max:255',
         ]);
-
-        // $user->nom_user = $request-> nom_user;
-        // $user->prenom_user = $request-> prenom_user;
-        // $user->mail_user = $request-> mail_user;
    
         $user->update($request->all());
 

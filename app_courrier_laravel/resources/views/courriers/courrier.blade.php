@@ -39,7 +39,7 @@
                         <td>{{ $courrier->objet_courrier }}</td>
                         <td>{{ $courrier->destinataire_courrier }}</td>
                         <td>{{ $courrier->description_courrier }}</td>
-                        <td>{{$courrier->nom_user}}</td>
+                        <td>{{$courrier->prenom_user.' '.$courrier->nom_user}}</td>
                         <td>{{ $courrier->nom_centre }}</td>
                         <td>{{ $courrier->nom_service }}</td>
                         <td>

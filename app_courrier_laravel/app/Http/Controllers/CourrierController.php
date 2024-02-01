@@ -46,6 +46,7 @@ class CourrierController extends Controller
         ]);
         
     }
+
     public function showCreateCourrier ()
     {
         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
@@ -106,16 +107,27 @@ class CourrierController extends Controller
         return redirect()->route('liste_courriers');
     }
 
+
+
     public function showEditCourrier($id_courrier)
     {
+        // Recherche du courrier avec les relations
+        $courrier = Courrier::with(['centre', 'user', 'service'])
+            ->find($id_courrier);
 
-        $courrier = Courrier::find($id_courrier);
+        // Vérifiez si le courrier existe
+        if (!$courrier) {
+            // Redirigez ou affichez une erreur selon vos besoins
+            return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+        }
 
+        // Récupérez également les listes de centres, utilisateurs et services
         $centres = Centre::all();
         $users = User::all();
         $services = Service::all();
 
-        return view('courriers.editCourrier',[
+        // Passez le courrier et les listes aux vues
+        return view('courriers.editCourrier', [
             'courrier' => $courrier,
             'centres' => $centres,
             'users' => $users,
