@@ -13,8 +13,6 @@
         </ul>
 @endsection
 
-@section('contenu')
-
 <!-- Contenu de la page -->
 @section('contenu')
     <!-- Affiche les messages d'erreur de validation -->
@@ -27,6 +25,11 @@
             </ul>
         </div>
     @endif
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
@@ -66,4 +69,4 @@
         </form>
     </div>
 </div>
-@stop
+@endsection

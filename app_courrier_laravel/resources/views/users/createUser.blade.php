@@ -29,6 +29,11 @@
             </ul>
         </div>
     @endif
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
     <!-- Formulaire d'ajout d'utilisateur -->
     <div class="card shadow border-0 mb-7">
@@ -54,4 +59,4 @@
             </form>
         </div>
     </div>
-@stop
+@endsection

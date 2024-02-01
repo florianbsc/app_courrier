@@ -45,6 +45,7 @@ class UserController extends Controller
         'email' => 'Le champ :attribute doit être une adresse email valide.',
         'unique' => 'Cette adresse email est déjà utilisée.',
         'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
+        'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
     ];
 
     // Valider les données
@@ -83,17 +84,34 @@ class UserController extends Controller
     {
         $user = User::find($id_user);
 
-        $request->validate([
+
+        $rules = [
             'nom_user' => 'required|string|max:255',
             'prenom_user' => 'required|string|max:255',
-            'mail_user' => 'required|email|unique:users|max:255',
-        ]);
-   
-        $user->update($request->all());
+            'mail_user' => 'required|email|unique:users|max:255'
+        ];
 
-        return redirect()->route('liste_users');
-   
-    }
+        $messages = [
+            'required' => 'Le champ :attribute est requis.',
+            'email' => 'Le champ :attribute doit être une adresse email valide.',
+            'unique' => 'Cette adresse email est déjà utilisée.',
+            'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
+            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
+        ];
+       
+        $validator = Validator::make($request->all(), $rules ,$messages);
+
+        if ($validator->fails()) {
+
+            return redirect()->route('edit_user', ['id_user' => $user->id_user])
+                ->withErrors($validator)
+                ->withInput();
+        }
+            $user->update($request->all());
+    
+            return redirect()->route('liste_user');
+        }
+      
 
     public function deleteUser($id_user)
     {

@@ -10,9 +10,6 @@
             <li class="nav-item">
                 <a href="{{route('creation_service')}}" class="nav-link active">Ajouter</a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link font-regular">Modifier</a>
-            </li>
         </ul>
 @endsection
 

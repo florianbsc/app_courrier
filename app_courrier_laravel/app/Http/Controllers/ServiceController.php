@@ -36,7 +36,7 @@ class ServiceController extends Controller
         $messages = [
             'required' => 'Le champ :attribute est requis.',
             'min' => 'Le champ :attribute doit avoir au moins :min caratères.',
-            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caratères.'
         ];
 
 
@@ -84,7 +84,7 @@ class ServiceController extends Controller
         $messages = [
             'required' => 'Le champ :attribute est requis.',
             'min' => 'Le champ :attribute doit avoir au moins :min caratères.',
-            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caratères.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -92,32 +92,15 @@ class ServiceController extends Controller
     // Vérifier si la validation a échoué
     if ($validator->fails()) {
 
-        return redirect()->route('creation_service')
+        return redirect()->route('edit_service', ['id_service' => $service->id_service])
             ->withErrors($validator)
             ->withInput();
     }
-
-
         $service->update($request->all());
 
         return redirect()->route('liste_services');
     }
-    // public function updateService (Request $request, $id_service)
-    // {
-    //     $service = Service::find($id_service);
-
-    //     $request->validate([
-    //         'nom_service' => 'required|string|max:50',
-    //         'telephone_service' => 'required|string|max:15',
-    //     ]);
-
-    //     $service->update($request->all());
-
-    //     return redirect()->route('liste_services');
-    // }
-
-
-
+  
 
     public function deleteService ($id_service)
     {

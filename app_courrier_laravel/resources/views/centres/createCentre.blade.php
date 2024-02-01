@@ -14,26 +14,45 @@
 @endsection
 
 @section('contenu')
-
-<div class="card shadow border-0 mb-7">
-    <div class="table-responsive">
-        <form method='POST' action = "{{route('creation_centre')}}">
-            @csrf
-            <label for="nom_centre" >Centre</label>
-            <input type="text" name="nom_centre" value="{{ old('nom_centre')" placeholder="Nom" >
-
-            <label for="adresse_centre" ></label>
-            <input type="text" name="adresse_centre" value="{{ old('adresse_centre')" placeholder="Adresse" >
-
-            <label for="CP_centre" ></label>
-            <input type="number" name="CP_centre" value="{{ old('CP_centre')" placeholder="Code postal" >
-
-            <label for="telephone_centre" ></label>
-            <input type="text" name="telephone_centre" value="{{ old('telephone_centre')" placeholder="Téléphone" >
-
-            <button type="submit">Envoyer</button>
-        </form>
+    <!-- Affiche les messages d'erreur de validation -->
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
-</div>
+@endif
 
-@stop
+<!-- @section('message')
+@show 
+
+-->
+
+    <div class="card shadow border-0 mb-7">
+        <div class="table-responsive">
+            <form method='POST' action = "{{route('creation_centre')}}">
+                @csrf
+                <label for="nom_centre" name="nom_centre" >Centre</label>
+                <input type="text" name="nom_centre" placeholder="Nom" value="{{ old('nom_centre') }}" required>
+
+                <label for="adresse_centre" name="adresse_centre" ></label>
+                <input type="text" name="adresse_centre" placeholder="Adresse" value="{{ old('adresse_centre') }}" required>
+
+                <label for="CP_centre" name="CP_centre" ></label>
+                <input type="number" name="CP_centre" placeholder="Code postal" value="{{ old('CP_centre') }}" required>
+
+                <label for="telephone_centre" name="telephone_centre" ></label>
+                <input type="text" name="telephone_centre" placeholder="Téléphone" value="{{ old('telephone_centre') }}" required>
+
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+@endsection

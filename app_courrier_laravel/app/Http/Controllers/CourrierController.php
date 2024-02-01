@@ -76,6 +76,9 @@ class CourrierController extends Controller
             'objet_courrier' => 'required|string|max:50',
             'destinataire_courrier' => 'required|string|max:50',
             'description_courrier' => 'string|max:255',
+            'id_centre' => 'required',
+            'id_user' => 'required',
+            'id_service' => 'required',
         ];
 
         $messages = [
@@ -144,6 +147,9 @@ class CourrierController extends Controller
             'objet_courrier' => 'required|string|max:50',
             'destinataire_courrier' => 'required|string|max:50',
             'description_courrier' => 'string|max:255',
+            'id_centre' => 'required',
+            'id_user' => 'required',
+            'id_service' => 'required',
         ];
 
         $messages = [
@@ -155,7 +161,7 @@ class CourrierController extends Controller
 
         if ($validator->fails()) {
 
-            return redirect()->route('creation_courrier')
+            return redirect()->route('edit_courrier',['id_courrier' => $courrier->id_courrier])
                 ->withErrors($validator)
                 ->withInput();
         }
