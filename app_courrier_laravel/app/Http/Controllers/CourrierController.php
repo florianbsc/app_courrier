@@ -76,14 +76,16 @@ class CourrierController extends Controller
             'objet_courrier' => 'required|string|max:50',
             'destinataire_courrier' => 'required|string|max:50',
             'description_courrier' => 'string|max:255',
-            'id_centre' => 'required',
-            'id_user' => 'required',
-            'id_service' => 'required',
+            'id_centre' => 'required|numeric',
+            // 'id_user' => 'required|numeric',
+            'id_service' => 'required|numeric',
         ];
 
         $messages = [
             'required' => 'Le champ :attribute est requis.',
+            'string' => 'Le champ :attribute doit etre une chaine de caratères.',
             'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+            'numeric' => 'Le champ :attribute doit entre un nombre.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -101,8 +103,11 @@ class CourrierController extends Controller
             'destinataire_courrier' => $request->destinataire_courrier,
             'description_courrier' => $request->description_courrier,
             'id_centre' => $request->id_centre,
-            // 'id_user' => $request->id_user,
-            'id_user' => 2, // tant que la fonction d'identification ne sera pas fonctionnel
+            // 'id_user' => auth()->user()->id,
+
+            'id_user' => 1, 
+            
+            // tant que la fonction d'identification ne sera pas fonctionnel
             'id_service' => $request->id_service,
         ]);    
 
@@ -191,4 +196,33 @@ class CourrierController extends Controller
         return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
     }
 
+    public function showSearchCourrier ()
+    {
+           // Recherche des courrier en fonction du terme de recherche
+           $courriers = Courrier::with(['centre', 'user', 'service'])
+
+        ->where(function ($query) {
+            $recherche = request()->recherche;
+            $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.id_centre', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.id_user', 'LIKE', "%$recherche%")
+                ->orWhere('courriers.id_service', 'LIKE', "%$recherche%");
+        })
+        ->get();
+        
+        $centres = Centre::all();
+        $users = User::all();
+        $services = Service::all();
+
+    return view('courriers.courrier', [
+        'courriers' => $courriers,
+        'centres' => $centres,
+        'users' => $users,
+        'services' => $services,
+        'valeur_recherche' => request()->recherche
+    ]);
+    }
 }

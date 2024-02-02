@@ -36,18 +36,21 @@
         <form action="{{ route('creation_courrier')}}" method="POST">
             @csrf
 
+            <label for="id_courrier"></label>
+            <input type="hidden" name="id_courrier" >
+
             <label for="objet_courrier">Courrier</label>
             <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}"  required>
 
             <label for="destinataire_courrier"></label>
             <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
 
-            <label for="description_courrier"></label>
-            <input type="text" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
+            <!-- <label for="description_courrier"></label>
+            <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}"> -->
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>
-                <option value="">-- Choisir un centre --</option>
+                <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option>
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
                 @empty

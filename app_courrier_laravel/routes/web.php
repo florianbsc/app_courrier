@@ -41,6 +41,8 @@ Route::prefix('courriers')->group(function()
     Route::get('/edit/{id_courrier}', [CourrierController::class, 'showEditCourrier'])->name('edit_courrier');
     Route::put('/update/{id_courrier}', [CourrierController::class, 'updateCourrier'])->name('update_courrier');
     Route::get('/delete/{id_courrier}', [CourrierController::class, 'deleteCourrier'])->name('delete_courrier');
+    Route::post('/search', [CourrierController::class, 'showSearchCourrier'])->name('liste_courrier_recherche');
+
 });
 
 Route::prefix('services')->group(function()
