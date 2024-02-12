@@ -35,7 +35,8 @@
     </div>
 @endif
 
-    <!-- Formulaire d'ajout d'utilisateur -->
+<div class="container-fluid">
+ <!-- Formulaire d'ajout d'utilisateur -->
     <div class="card shadow border-0 mb-7">
         <div class="table-responsive">
             <form method='post' action = "{{route('creation_user')}}">
@@ -59,4 +60,5 @@
             </form>
         </div>
     </div>
+</div>
 @endsection

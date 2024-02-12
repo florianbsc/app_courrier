@@ -29,6 +29,7 @@ class CourrierController extends Controller
         // MODELE ELOQUENT
     
         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
+        ->orderByDesc('date_courrier')
             ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
             ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
             ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
@@ -196,33 +197,39 @@ class CourrierController extends Controller
         return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
     }
 
-    public function showSearchCourrier ()
+    public function showSearchCourrier()
     {
-           // Recherche des courrier en fonction du terme de recherche
-           $courriers = Courrier::with(['centre', 'user', 'service'])
-
-        ->where(function ($query) {
-            $recherche = request()->recherche;
-            $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.id_centre', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.id_user', 'LIKE', "%$recherche%")
-                ->orWhere('courriers.id_service', 'LIKE', "%$recherche%");
-        })
-        ->get();
-        
-        $centres = Centre::all();
-        $users = User::all();
-        $services = Service::all();
-
-    return view('courriers.courrier', [
-        'courriers' => $courriers,
-        'centres' => $centres,
-        'users' => $users,
-        'services' => $services,
-        'valeur_recherche' => request()->recherche
-    ]);
+        $recherche = request()->recherche;
+    
+        // Recherche des courriers en fonction du terme de recherche
+        $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
+            ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
+            ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
+            ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
+            ->where(function ($query) use ($recherche) {
+                $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
+                    ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
+                    ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
+                    ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
+                    ->orWhere('centres.nom_centre', 'LIKE', "%$recherche%")
+                    ->orWhere('users.nom_user', 'LIKE', "%$recherche%")
+                    ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
+            })
+            ->get();
+    
+        // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()
+        $centres = Centre::pluck('nom_centre', 'id_centre');
+        $users = User::pluck('nom_user', 'id_user');
+        $services = Service::pluck('nom_service', 'id_service');
+    
+        return view('courriers.courrier', [
+            'courriers' => $courriers,
+            'centres' => $centres,
+            'users' => $users,
+            'services' => $services,
+            'valeur_recherche' => $recherche
+        ]);
     }
+    
 }
+

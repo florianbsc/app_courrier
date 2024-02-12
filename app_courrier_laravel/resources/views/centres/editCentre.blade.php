@@ -36,6 +36,8 @@
     </div>
 @endif
     
+<div class="container-fluid">
+
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
 
@@ -59,5 +61,5 @@
         </form>
     </div>
 </div>
-
+</div>
 @endsection

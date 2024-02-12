@@ -33,7 +33,8 @@
         {{ session('success') }}
     </div>
 @endif
-    
+
+<div class="container-fluid">
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
         <form action="{{ route('update_courrier', ['id_courrier' => $courrier->id_courrier]) }}" method="POST">
@@ -72,5 +73,6 @@
             <button type="submit">Mise à jour</button>
         </form>
     </div>
+</div>
 </div>
 @endsection

@@ -35,6 +35,7 @@
     </div>
 @endif
     
+<div class="container-fluid">
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
 
@@ -54,6 +55,7 @@
             <button type="submit">Mettre à jour</button>
         </form>
     </div>
+</div>
 </div>
 
 @endsection

@@ -33,6 +33,7 @@
     </div>
 @endif
 
+<div class="container-fluid">
     <div class="card shadow border-0 mb-7">
         <div class="table-responsive">
             <table class="table table-hover table-nowrap">
@@ -68,7 +69,6 @@
                                     </li>
                                     
                                 </ul>
-
                             </td>
                         </tr>
                     @endforeach
@@ -76,4 +76,5 @@
             </table>
         </div>
     </div>
+</div>
 @endsection

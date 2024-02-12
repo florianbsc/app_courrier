@@ -31,6 +31,8 @@
     </div>
 @endif
 
+<div class="container-fluid">
+
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
         <form action="{{ route('creation_courrier')}}" method="POST">
@@ -71,5 +73,6 @@
             <button type="submit">Envoyer</button>
         </form>
     </div>
+</div>
 </div>
 @endsection

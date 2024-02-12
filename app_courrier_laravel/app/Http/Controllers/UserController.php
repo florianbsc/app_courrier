@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function showUser()
     {
-        $users =  User::all();
+        $users =  User::orderBy('nom_user')->get();
 
         return view('users.listeUsers',[
             'users' => $users,
@@ -118,23 +118,33 @@ class UserController extends Controller
         $user = User::find($id_user);
 
         if($user) {
-
             $user->delete();
-
             return redirect()->route('liste_users');
-
         } else {
-
             return redirect()->route('liste_users');
-
         }
-
     }
 
-
-
-
-
+    public function showSearchUser()
+    {
+        // Récupération de la valeur de recherche
+        $recherche = request()->recherche;
+    
+        // Recherche des utilisateurs en fonction du terme de recherche
+        $users = User::where(function ($query) use ($recherche) {
+                $query->where('nom_user', 'LIKE', "%$recherche%")
+                    ->orWhere('prenom_user', 'LIKE', "%$recherche%")
+                    ->orWhere('mail_user', 'LIKE', "%$recherche%");
+            })
+            ->get();
+    
+        // Passer les données à la vue
+        return view('users.listeUsers', [
+            'users' => $users,
+            'valeur_recherche' => $recherche
+        ]);
+    }
+    
 
      /*
      * PARTIE DE/CONNEXION
@@ -154,7 +164,6 @@ class UserController extends Controller
             ]);
         }
     }
-
 
     public function username()
     {

@@ -26,6 +26,7 @@
         </div>
     @endif
 
+<div class="container-fluid">
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
         <form method="post" action="{{route('creation_service')}}">
@@ -40,6 +41,7 @@
         </form>
     </div>
 </div>
+</div>
 
 
-@stop
+@endsection

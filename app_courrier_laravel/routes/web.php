@@ -31,6 +31,7 @@ Route::prefix('users')->group(function()
     Route::get('/edit/{id_user}', [UserController::class, 'showEditUser'])->name('edit_user');
     Route::put('/update/{id_user}', [UserController::class, 'updateUser'])->name('update_user');
     Route::get('/delete/{id_user}', [UserController::class, 'deleteUser'])->name('delete_user');
+    Route::post('/search', [UserController::class, 'showSearchUser'])->name('liste_user_recherche');
 });
 
 Route::prefix('courriers')->group(function()
