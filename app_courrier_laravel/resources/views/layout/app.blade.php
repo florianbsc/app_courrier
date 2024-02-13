@@ -75,14 +75,14 @@
             <div class="navbar-user d-lg-none">
                 <!-- Dropdown -->
                 <div class="dropdown">
-                 
+
                     <!-- Menu -->
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
                         <a href="#" class="dropdown-item">Compte</a>
                         <a href="#" class="dropdown-item">Paramètre</a>
                         <a href="#" class="dropdown-item">Facturation</a>
                         <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">Déconnexion</a>
+                        <a href="{{ route('logout') }}" class="dropdown-item">Déconnexion</a>
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('liste_services')}}">
-                            
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-arms-up" viewBox="0 0 16 16">
                             <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                             <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.5 1.5 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.7.7 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.7.7 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z"/>
@@ -136,7 +136,7 @@
                 </ul>
                 <!-- Divider -->
                 <hr class="navbar-divider my-5 opacity-20">
-                
+
                 <!-- Push content down -->
                 <div class="mt-auto"></div>
                 <!-- User (md) -->
@@ -151,7 +151,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('logout') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
                             <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
@@ -176,7 +176,7 @@
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
                             <div class="mx-n1">
-                                
+
                                 <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1">
                                     <span class=" pe-2">
                                     </span>
@@ -189,7 +189,7 @@
                     @section('nav')
 
                     @show
-                   
+
                 </div>
             </div>
         </header>

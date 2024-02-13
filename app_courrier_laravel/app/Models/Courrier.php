@@ -10,6 +10,10 @@ class Courrier extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'date_courrier' => 'date'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_user');
@@ -36,6 +40,6 @@ class Courrier extends Model
         'id_user',
         'id_service',
     ];
-    
+
     protected $primaryKey = 'id_courrier';
 }

@@ -13,21 +13,21 @@ use App\Models\User;
 use Carbon\Carbon;
 
 use function Laravel\Prompts\select;
-use Illuminate\Support\Facades\Validator; 
+use Illuminate\Support\Facades\Validator;
 
 // back end de l'app
 
 
 class CourrierController extends Controller
 {
-    
+
     public function showCourrier()
     {
 
         // requete pour recuperer le courrier avec le nom du centre, le nom du service et le full_name de l'users
         // assigne les valeurs de la table `courrier` a la variable $courriers
         // MODELE ELOQUENT
-    
+
         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
         ->orderByDesc('date_courrier')
             ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
@@ -45,23 +45,16 @@ class CourrierController extends Controller
             'users' => $users,
             'services' => $services,
         ]);
-        
+
     }
 
     public function showCreateCourrier ()
     {
-        $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
-            ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
-            ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
-            ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
-            ->get();
-
         $centres = Centre::all();
         $users = User::all();
         $services = Service::all();
 
         return view('courriers.createCourrier', [
-            'courriers' => $courriers,
             'centres' => $centres,
             'users' => $users,
             'services' => $services,
@@ -70,7 +63,7 @@ class CourrierController extends Controller
 
 
     public function createCourrier(Request $request)
-    {    
+    {
         $date_maintenant = now()->toDateString();
 
         $rules =[
@@ -106,11 +99,11 @@ class CourrierController extends Controller
             'id_centre' => $request->id_centre,
             // 'id_user' => auth()->user()->id,
 
-            'id_user' => 1, 
-            
+            'id_user' => 1,
+
             // tant que la fonction d'identification ne sera pas fonctionnel
             'id_service' => $request->id_service,
-        ]);    
+        ]);
 
         // Redirigez vers la vue de création de courrier avec un message de succès
         return redirect()->route('liste_courriers');
@@ -172,11 +165,11 @@ class CourrierController extends Controller
                 ->withInput();
         }
 
-        $courrier->update($request->all());   
+        $courrier->update($request->all());
 
         // Redirigez vers la vue de création de courrier avec un message de succès
         return redirect()->route('liste_courriers');
-    } 
+    }
 
 
     public function deleteCourrier($id_courrier)
@@ -200,7 +193,7 @@ class CourrierController extends Controller
     public function showSearchCourrier()
     {
         $recherche = request()->recherche;
-    
+
         // Recherche des courriers en fonction du terme de recherche
         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
             ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
@@ -216,12 +209,12 @@ class CourrierController extends Controller
                     ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
             })
             ->get();
-    
+
         // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()
         $centres = Centre::pluck('nom_centre', 'id_centre');
         $users = User::pluck('nom_user', 'id_user');
         $services = Service::pluck('nom_service', 'id_service');
-    
+
         return view('courriers.courrier', [
             'courriers' => $courriers,
             'centres' => $centres,
@@ -230,6 +223,6 @@ class CourrierController extends Controller
             'valeur_recherche' => $recherche
         ]);
     }
-    
+
 }
 

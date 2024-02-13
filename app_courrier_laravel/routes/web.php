@@ -9,22 +9,25 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 
 //    renvoi vers la page app apres la connxion
-})->name('accueil');
-// })->middleware('auth')->name('accueil');
+//})->name('accueil');
+ })->middleware('auth')->name('accueil');
 
 
 //// ---------------------------- CONNEXION
 
-Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [UserController::class, 'login']);
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::middleware('guest')->group(function(){
+    Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [UserController::class, 'login']);
+});
 
-Route::prefix('users')->group(function()
+
+Route::prefix('users')->middleware('auth')->group(function()
 {
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/liste',[UserController::class,'showUser'])->name('liste_users');
     Route::get('/create',[UserController::class,'showCreateUser']);
     Route::post('/create',[UserController::class,'createUser'])->name('creation_user');
@@ -34,11 +37,11 @@ Route::prefix('users')->group(function()
     Route::post('/search', [UserController::class, 'showSearchUser'])->name('liste_user_recherche');
 });
 
-Route::prefix('courriers')->group(function()
+Route::prefix('courriers')->middleware('auth')->group(function()
 {
     Route::get('/liste',[CourrierController::class, 'showCourrier'])->name('liste_courriers');
     Route::get('/create',[CourrierController::class,'showCreateCourrier']);
-    Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_courrier');  
+    Route::post('/create',[CourrierController::class, 'createCourrier'])->name('creation_courrier');
     Route::get('/edit/{id_courrier}', [CourrierController::class, 'showEditCourrier'])->name('edit_courrier');
     Route::put('/update/{id_courrier}', [CourrierController::class, 'updateCourrier'])->name('update_courrier');
     Route::get('/delete/{id_courrier}', [CourrierController::class, 'deleteCourrier'])->name('delete_courrier');
@@ -46,7 +49,7 @@ Route::prefix('courriers')->group(function()
 
 });
 
-Route::prefix('services')->group(function()
+Route::prefix('services')->middleware('auth')->group(function()
 {
     Route::get('/liste',[ServiceController::class, 'showService'])->name('liste_services');
     Route::get('/create',[ServiceController::class, 'showCreateService']);
@@ -54,10 +57,9 @@ Route::prefix('services')->group(function()
     Route::get('/edit/{id_service}',[ServiceController::class, 'showEditService'])->name('edit_service');
     Route::put('/update/{id_service}', [ServiceController::class, 'updateService'])->name('update_service');
     Route::get('/delete/{id_service}', [ServiceController::class, 'deleteService'])->name('delete_service');
-    
 });
 
-Route::prefix('centres')->group(function()
+Route::prefix('centres')->middleware('auth')->group(function()
 {
     Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centres');
     Route::get('/create',[CentreController::class, 'showCreateCentre']);
@@ -66,5 +68,4 @@ Route::prefix('centres')->group(function()
     Route::put('/update/{id_centre}', [CentreController::class, 'updateCentre'])->name('update_centre');
     Route::get('/delete/{id_centre}', [CentreController::class, 'deleteCentre'])->name('delete_centre');
 
-    
 });
