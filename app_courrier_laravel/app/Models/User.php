@@ -47,7 +47,7 @@ class User extends Authenticatable
     ];
 //     public function courriers() : HasMany
 //     {
-//         return $this->hasMany(Courrier::class);    
+//         return $this->hasMany(Courrier::class);
 //     }
     public $timestamps = false;
     protected $primaryKey = 'id_user';

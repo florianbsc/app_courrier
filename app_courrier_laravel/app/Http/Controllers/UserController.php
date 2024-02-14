@@ -28,7 +28,7 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
-   
+
     public function createUser(Request $request)
     {
         // Définir les règles de validation
@@ -98,7 +98,7 @@ class UserController extends Controller
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
             'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
         ];
-       
+
         $validator = Validator::make($request->all(), $rules ,$messages);
 
         if ($validator->fails()) {
@@ -108,7 +108,7 @@ class UserController extends Controller
                 ->withInput();
         }
             $user->update($request->all());
-    
+
             return redirect()->route('liste_user');
     }
       
@@ -129,7 +129,7 @@ class UserController extends Controller
     {
         // Récupération de la valeur de recherche
         $recherche = request()->recherche;
-    
+
         // Recherche des utilisateurs en fonction du terme de recherche
         $users = User::where(function ($query) use ($recherche) {
                 $query->where('nom_user', 'LIKE', "%$recherche%")
@@ -137,14 +137,14 @@ class UserController extends Controller
                     ->orWhere('mail_user', 'LIKE', "%$recherche%");
             })
             ->get();
-    
+
         // Passer les données à la vue
         return view('users.listeUsers', [
             'users' => $users,
             'valeur_recherche' => $recherche
         ]);
     }
-    
+
 
      /*
      * PARTIE DE/CONNEXION
@@ -165,6 +165,8 @@ class UserController extends Controller
         }
     }
 
+
+
     public function login(Request $request)
     {
         $credentials = request()->only('mail_user', 'password');
@@ -178,7 +180,7 @@ class UserController extends Controller
             }
             else{
                 return redirect()->route('accueil');
-            }         
+            }
         }
         else{
             return redirect()->route('login');

@@ -40,6 +40,6 @@ class Courrier extends Model
         'id_user',
         'id_service',
     ];
-    
+
     protected $primaryKey = 'id_courrier';
 }
