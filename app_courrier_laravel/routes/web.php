@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/home', function () {
-Route::get('/home', function () {
     return view('welcome');
 
 //    renvoi vers la page app apres la connxion
@@ -25,7 +24,6 @@ Route::middleware('guest')->group(function(){
 });
 
 Route::prefix('users')->middleware('auth')->group(function()
-Route::prefix('users')->middleware('auth')->group(function()
 {
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/liste',[UserController::class,'showUser'])->name('liste_users');
@@ -37,7 +35,6 @@ Route::prefix('users')->middleware('auth')->group(function()
     Route::post('/search', [UserController::class, 'showSearchUser'])->name('liste_user_recherche');
 });
 
-Route::prefix('courriers')->middleware('auth')->group(function()
 Route::prefix('courriers')->middleware('auth')->group(function()
 {
     Route::get('/liste',[CourrierController::class, 'showCourrier'])->name('liste_courriers');
@@ -51,7 +48,6 @@ Route::prefix('courriers')->middleware('auth')->group(function()
 });
 
 Route::prefix('services')->middleware('auth')->group(function()
-Route::prefix('services')->middleware('auth')->group(function()
 {
     Route::get('/liste',[ServiceController::class, 'showService'])->name('liste_services');
     Route::get('/create',[ServiceController::class, 'showCreateService']);
@@ -61,7 +57,6 @@ Route::prefix('services')->middleware('auth')->group(function()
     Route::get('/delete/{id_service}', [ServiceController::class, 'deleteService'])->name('delete_service');
 });
 
-Route::prefix('centres')->middleware('auth')->group(function()
 Route::prefix('centres')->middleware('auth')->group(function()
 {
     Route::get('/liste',[CentreController::class, 'showCentre'])->name('liste_centres');
