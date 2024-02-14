@@ -69,7 +69,7 @@
                     <tbody>
                         @foreach ($courriers as $courrier)
                             <tr>
-                                <td>{{ $courrier->date_courrier }}</td>
+                            <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('F j, Y') }}</td>
                                 <td>{{ $courrier->objet_courrier }}</td>
                                 <td>{{ $courrier->destinataire_courrier }}</td>
                                 <!-- <td>{{ $courrier->description_courrier }}</td> -->

@@ -1,10 +1,10 @@
 <!-- Ajoute le titre de la page -->
 @extends('layout.app')
-@section('title', 'Ajouter Utilisateur')
+@section('title', 'Nouveau Utilisateur')
 
 <!-- Section de la barre de navigation -->
 @section('nav')
-    <h1 class="h2 mb-0 ls-tight"> Ajouter Utilisateur</h1>
+    <h1 class="h2 mb-0 ls-tight"> Nouveau Utilisateur</h1>
 
     <!-- Onglets de navigation -->
     <ul class="nav nav-tabs mt-4 overflow-x border-0">
@@ -42,16 +42,20 @@
             <form method='post' action = "{{route('creation_user')}}">
                 @csrf
                 <label for="nom_user" name="nom_user">Utilisateur</label>
-                <input type="text" name="nom_user" placeholder="Nom" value="{{ old('nom_user') }}" required>
+                <input type="text" name="nom_user" placeholder="Nom" value="{{ old('nom_user') }}" autofocus required>
 
                 <label for="prenom_user" name="prenom_user"></label>
                 <input type="text" name="prenom_user" placeholder="Prénom" value="{{ old('prenom_user') }}" required>
 
                 <label for="mail_user" name="mail_user"></label>
-                <input type="mail" name="mail_user" placeholder="Mail unique" value="{{ old('mail_user') }}" required>
+                <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
 
                 <label for="password" name="password"></label>
                 <input type="text" name="password" placeholder="Mot de passe de 8 caratères" value="{{ old('password') }}" required>
+
+                <label for="password_confirmation"></label>
+                <input type="password_confirmation" name="password_confirmation" placeholder="Confirmer mot de passe" required >
+
 
                 <!-- <label for="privilege_user" name="privilege_user"></label>
                 <input type="number" name="privilege_user" placeholder="privilege_user"> -->

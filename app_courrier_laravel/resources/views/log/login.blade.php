@@ -149,7 +149,7 @@
         <input type="submit" value="Connexion">
 
         <div class="signup_link">
-{{--            Créé un Demarcheur <a href="{{ route('creation_user') }}">Créé</a><br>--}}
+{{--            Créé un utilisateur <a href="{{ route('creation_user') }}">Créé</a><br>--}}
         </div>
     </form>
 </div>

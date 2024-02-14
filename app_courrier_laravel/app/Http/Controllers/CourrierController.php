@@ -50,18 +50,11 @@ class CourrierController extends Controller
 
     public function showCreateCourrier ()
     {
-        $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
-            ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
-            ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
-            ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
-            ->get();
-
         $centres = Centre::all();
         $users = User::all();
         $services = Service::all();
 
         return view('courriers.createCourrier', [
-            'courriers' => $courriers,
             'centres' => $centres,
             'users' => $users,
             'services' => $services,
@@ -104,9 +97,9 @@ class CourrierController extends Controller
             'destinataire_courrier' => $request->destinataire_courrier,
             'description_courrier' => $request->description_courrier,
             'id_centre' => $request->id_centre,
-            // 'id_user' => auth()->user()->id,
+            'id_user' => auth()->user()->id,
 
-            'id_user' => 1, 
+            // 'id_user' => 1, 
             
             // tant que la fonction d'identification ne sera pas fonctionnel
             'id_service' => $request->id_service,
