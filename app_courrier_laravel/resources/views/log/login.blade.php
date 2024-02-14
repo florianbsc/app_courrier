@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - youtube.com/codingnepal -->
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -126,33 +125,32 @@
     </style>
 </head>
 <body>
+    <div class="center">
+        <h1>Connexion</h1>
 
-<div class="center">
-    <h1>Connexion</h1>
+        <!-- Affichage du message d'erreur -->
+            @if($errors->has('login'))
+                <p>{{ $errors->first('login') }}</p>
+            @endif
 
-    <!-- Affichage du message d'erreur -->
-    @if($errors->has('login'))
-        <p>{{ $errors->first('login') }}</p>
-    @endif
+        <!-- Formulaire de connecxion -->
+            <form action="{{ route('login') }}" method="post">
+                @csrf
+                <div class="txt_field">
+                    <label for="mail_user"></label>
+                    <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required>
+                </div>
+                <div class="txt_field">
+                    <label for="mdp_user"></label>
+                    <input name="password" type="password" placeholder="Mot de passe" required>
+                </div>
 
-    <form action="{{ route('login') }}" method="post">
-        @csrf
-        <div class="txt_field">
-            <label for="mail_user"></label>
-            <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required>
-        </div>
-        <div class="txt_field">
-            <label for="mdp_user"></label>
-            <input name="password" type="password" placeholder="Mot de passe" required>
-        </div>
+                <input type="submit" value="Connexion">
 
-        <input type="submit" value="Connexion">
-
-        <div class="signup_link">
-{{--            Créé un utilisateur <a href="{{ route('creation_user') }}">Créé</a><br>--}}
-        </div>
-    </form>
-</div>
-
+                <div class="signup_link">
+                {{--Créé un utilisateur <a href="{{ route('creation_user') }}">Créé</a><br>--}}
+                </div>
+            </form>
+    </div>
 </body>
 </html>

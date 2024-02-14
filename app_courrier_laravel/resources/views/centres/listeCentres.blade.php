@@ -1,5 +1,12 @@
 @extends('layout.app')
 @section('title', 'Liste Centres')
+
+@php
+        $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
+        $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
+        $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
+@endphp
+
 @section('nav')
 <h1 class="h2 mb-0 ls-tight">Liste Centres</h1>
 
@@ -7,9 +14,11 @@
             <li class="nav-item">
                 <a href="{{route('liste_centres')}}" class="nav-link active">Liste</a>
             </li>
-            <li class="nav-item">
-                <a href="{{route('creation_centre')}}" class="nav-link font-regular">Ajouter</a>
-            </li>
+            @if($hasAccess3)
+                <li class="nav-item">
+                    <a href="{{route('creation_centre')}}" class="nav-link font-regular">Ajouter</a>
+                </li>
+            @endif
         </ul>
 @endsection
 

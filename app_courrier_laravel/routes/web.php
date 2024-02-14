@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/home', function () {
+Route::get('/accueil', function () {
     return view('welcome');
 
 //    renvoi vers la page app apres la connxion

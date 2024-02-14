@@ -112,7 +112,6 @@ class UserController extends Controller
             return redirect()->route('liste_user');
     }
       
-
     public function deleteUser($id_user)
     {
         $user = User::find($id_user);
@@ -145,6 +144,15 @@ class UserController extends Controller
         ]);
     }
 
+     public static function hasAccess($requiredPrivilege)
+    {
+        // Récupérer l'utilisateur actuellement connecté
+        $currentUser = auth()->user();
+
+        // Vérifier si l'utilisateur existe et si son niveau de privilège est supérieur ou égal au niveau requis
+        return $currentUser && $currentUser->privilege_user >= $requiredPrivilege;
+    }
+
 
      /*
      * PARTIE DE/CONNEXION
@@ -165,27 +173,52 @@ class UserController extends Controller
         }
     }
 
-
-
     public function login(Request $request)
     {
         $credentials = request()->only('mail_user', 'password');
 
         $auth = Auth::attempt($credentials, false);
-        if ($auth) { 
+        if ($auth) 
+        { 
             Session::regenerate();
-        $auth = Auth::user();
-        if ($auth->privilege_user == 1 || $auth->privilege_user == 2 || $auth->privilege_user == 3) {
-                return redirect()->route('accueil');
+            $auth = Auth::user();
+
+            $privilege_user = null;
+            $is_admin = User::where('id_user',auth()->user()->privilege_user)
+            ->exists();
+
+            if($is_admin){
+                $privilege_user = '3';
+            }else{
+                $is_user = User::where('id_user',auth()->user()->privilege_user)
+                ->exists();
+                if($is_user){
+                    $privilege_user = '2';
+                }else{
+                    $privilege_user = '1';
+                }
             }
-            else{
-                return redirect()->route('accueil');
-            }
-        }
-        else{
-            return redirect()->route('login');
+            Session::put('privilege_user', $privilege_user);
+            return redirect('accueil');
+
+            return back()->withErrors(['login' => 'Identifiants ou mot de passe incorrects.'])->withInput();
         }
     }
+
+
+
+
+        //  if ($auth->privilege_user == 1 || $auth->privilege_user == 2 || $auth->privilege_user == 3) {
+        //         return redirect()->route('accueil');
+        //     }
+        //     else{
+        //         return redirect()->route('accueil');
+        //     }
+        // }
+        // else{
+        //     return redirect()->route('login');
+        // }
+    // }
 
     public function logout(Request $request)
     {
