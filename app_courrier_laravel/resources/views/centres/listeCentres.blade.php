@@ -55,7 +55,7 @@
                     <th scope="col"><b>Mail</b></th>
                     <th scope="col"><b>Code postal</b></th>
                     <th scope="col"><b>Telephone</b></th>
-                    <th scope="col"><b>Action</b></th>
+                    @if($hasAccess3 )<th scope="col"><b>Action</b></th> @endif
                 </tr>
             </thead>
             <tbody>
@@ -65,6 +65,7 @@
                         <td>{{$centre->adresse_centre}}</td>
                         <td>{{$centre->CP_centre}}</td>
                         <td>{{$centre->telephone_centre}}</td>
+                        @if($hasAccess3 )
                         <td>
                             <ul class="nav">
                                 <li class="nav-item">
@@ -83,9 +84,9 @@
                                     </svg>
                                     </a>    
                                 </li>
-                                
-                            </ul>
-                        </td>
+                            </td>
+                        </ul>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

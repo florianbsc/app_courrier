@@ -50,7 +50,7 @@
                     <tr>
                         <th scope="col"><b>Nom</b></th>
                         <th scope="col"><b>Téléphone</b></th>
-                        <th scope="col"><b>Action</b></th>
+                        @if( $hasAccess3 )<th scope="col"><b>Action</b></th>@endif
                     </tr>
                 </thead>
                 <tbody>
@@ -58,6 +58,8 @@
                         <tr>
                             <td>{{$service->nom_service}}</td>
                             <td>{{$service->telephone_service}}</td>
+                            @if( $hasAccess3 )
+
                             <td>
                                 <ul class="nav">
                                     <li class="nav-item">
@@ -79,6 +81,7 @@
                                     
                                 </ul>
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

@@ -1,3 +1,4 @@
+
 @extends('layout.app')
 @section('title', 'Liste courriers')
 
@@ -8,14 +9,12 @@
         $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
 @endphp
 
-
-
     <h1 class="h2 mb-0 ls-tight">Liste Courrier</h1>
         <ul class="nav nav-tabs mt-4 overflow-x border-0">
             <li class="nav-item">
                 <a href="{{ route('liste_courriers') }}" class="nav-link active">Liste</a>
             </li>
-             @if( $hasAccess3)
+             @if( $hasAccess2)
 
                 <li class="nav-item">
                     <a href="{{ route('creation_courrier') }}" class="nav-link font-regular">Ajouter</a>
@@ -75,9 +74,10 @@
                                         <th scope="col"><b>objet</b></th>
                                         <th scope="col"><b>destinataire</b></th>
                                         <!-- <th scope="col"><b>Description</b></th> -->
-                                        <th scope="col"><b>Utilisateur</b></th>
+                                        <th scope="col"><b>Enregistré par</b></th>
                                         <th scope="col"><b>Centre</b></th>
                                         <th scope="col"><b>Service</b></th>
+                                        <th scope="col"><b>Scan</b></th>
                                         <th scope="col"><b>Action</b></th>
                                     </tr>
                                 </thead>
@@ -89,11 +89,14 @@
                                             <td>{{ $courrier->objet_courrier }}</td>
                                             <td>{{ $courrier->destinataire_courrier }}</td>
                                             <!-- <td>{{ $courrier->description_courrier }}</td> -->
-                                            <td>{{$courrier->prenom_user.' '.$courrier->nom_user}}</td>
+                                            <td>{{$courrier->prenom_user.' '.$courrier->nom_user.' '. $courrier->id_user}}</td>
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
+                                            <td>{{ $courrier->scan_courrier }}</td>
                                             <td>
+
                                                 <!-- Bouton  action -->
+                                                    @if($courrier->id_user === auth()->user()->id_user || $hasAccess3 )
                                                         <ul class="nav">
                                                             <!-- Btn sup -->
                                                                 <li class="nav-item">
@@ -113,6 +116,7 @@
                                                                     </a>
                                                                 </li>
                                                         </ul>
+                                                    @endif
                                             </td>
                                         </tr>
                                     @endforeach

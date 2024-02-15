@@ -35,7 +35,7 @@
 
 <div class="card shadow border-0 mb-7">
     <div class="table-responsive">
-        <form action="{{ route('creation_courrier')}}" method="POST">
+        <form action="{{ route('creation_courrier')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <label for="id_courrier"></label>
@@ -46,6 +46,8 @@
 
             <label for="destinataire_courrier"></label>
             <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
+
+            <input type="file" name="scan_courrier" >
 
             <!-- <label for="description_courrier"></label>
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}"> -->
@@ -59,6 +61,10 @@
                     <!-- Aucun centre disponible -->
                 @endforelse
             </select>
+
+            <label for="id_user"></label>
+            <input type="hidden" name="id_user"  value="{{ auth()->user()->id_user }}">
+
 
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" required>

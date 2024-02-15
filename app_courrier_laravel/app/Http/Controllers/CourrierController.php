@@ -11,6 +11,7 @@ use App\Models\Centre;
 use App\Models\Service;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\select;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +36,7 @@ class CourrierController extends Controller
             ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
             ->get();
 
+        $user_connected = auth()->user();
         $centres = Centre::all();
         $users = User::all();
         $services = Service::all();
@@ -44,6 +46,7 @@ class CourrierController extends Controller
             'centres' => $centres,
             'users' => $users,
             'services' => $services,
+            'connecter' => $user_connected,
         ]);
 
     }
@@ -64,6 +67,7 @@ class CourrierController extends Controller
 
     public function createCourrier(Request $request)
     {
+        // dd(auth()->user()->id_user);
         $date_maintenant = now()->toDateString();
 
         $rules =[
@@ -71,7 +75,7 @@ class CourrierController extends Controller
             'destinataire_courrier' => 'required|string|max:50',
             'description_courrier' => 'string|max:255',
             'id_centre' => 'required|numeric',
-            // 'id_user' => 'required|numeric',
+            'id_user' => 'required|numeric',
             'id_service' => 'required|numeric',
         ];
 
@@ -96,17 +100,14 @@ class CourrierController extends Controller
             'objet_courrier' => $request->objet_courrier,
             'destinataire_courrier' => $request->destinataire_courrier,
             'description_courrier' => $request->description_courrier,
+            'scan_courrier' => $request->scan_courrier,
             'id_centre' => $request->id_centre,
-            'id_user' => auth()->user()->id,
-
-            // 'id_user' => 1, 
-            
-            // tant que la fonction d'identification ne sera pas fonctionnel
+            'id_user' => auth()->user()->id_user,
             'id_service' => $request->id_service,
         ]);
 
         // Redirigez vers la vue de création de courrier avec un message de succès
-        return redirect()->route('liste_courriers');
+        return redirect()->route('liste_courriers')->with('success', 'Le courrier à été ajouté avec succès.');
     }
 
 
@@ -222,6 +223,30 @@ class CourrierController extends Controller
             'services' => $services,
             'valeur_recherche' => $recherche
         ]);
+    }
+
+    public function depotScanCourrier ()
+    {
+        $file = request()->scan;
+        $path = $file->store();
+
+        // Trouver la visite et mettre à jour
+        $visite = Courrier::where('id_courrier', request()->id_courrier)
+           
+            ->update([
+                'rapport' => $path,
+            ]);
+
+        return redirect()->route('courriers.courrier');
+
+    }
+
+    public function download ($chemin, $id_courrier) 
+    {
+        $courrier = Courrier::where($id_courrier)
+            ->get();
+
+        return Storage::download($chemin, 'COURRIER - '.$courrier->objet_courrier.'-'.Carbon::now()->format('d-m-Y'));
     }
 
 }
