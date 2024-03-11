@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'scans' => [
+            'driver' => 'local',
+            'root' => storage_path('storage/scans'),
+            'url' => env('APP_URL').'storage/scans',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

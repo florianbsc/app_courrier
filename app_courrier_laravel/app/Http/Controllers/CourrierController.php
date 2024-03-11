@@ -67,13 +67,30 @@ class CourrierController extends Controller
 
     public function createCourrier(Request $request)
     {
-        // dd(auth()->user()->id_user);
         $date_maintenant = now()->toDateString();
+
+
+        // $file = $request->file('scan_courrier');
+        // $fileName = $file->getClientOriginalName();
+        // $file->storeAs('scans', $fileName);
+dd(  $request->file('scan_courrier'),  $request->file('scan_courrier')->storeAs('courrier', $request->file('scan_courrier')->getClientOriginalName() ));
+
+        // Vérifier si un fichier est téléchargé
+        if ($request->hasFile('scan_courrier')) {
+            // Générer un nom unique pour le fichier téléchargé
+            $fileName = $request->file('scan_courrier')->getClientOriginalName();
+            // Enregistrer le fichier dans le stockage avec le nom généré
+            $path = $request->file('scan_courrier')->storeAs('public/storage/scans', $fileName);
+        } else {
+            // Gérer le cas où aucun fichier n'est téléchargé
+            $path = null;
+        }
 
         $rules =[
             'objet_courrier' => 'required|string|max:50',
             'destinataire_courrier' => 'required|string|max:50',
-            'description_courrier' => 'string|max:255',
+            'description_courrier' => 'nullable|string|max:255',
+            // 'scan_courrier' => 'required|string|max:250',
             'id_centre' => 'required|numeric',
             'id_user' => 'required|numeric',
             'id_service' => 'required|numeric',
@@ -81,9 +98,9 @@ class CourrierController extends Controller
 
         $messages = [
             'required' => 'Le champ :attribute est requis.',
-            'string' => 'Le champ :attribute doit etre une chaine de caratères.',
-            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
-            'numeric' => 'Le champ :attribute doit entre un nombre.'
+            'string' => 'Le champ :attribute doit être une chaîne de caractères.',
+            'max' => 'Le champ :attribute ne doit pas dépasser :max caractères.',
+            'numeric' => 'Le champ :attribute doit être un nombre.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -100,7 +117,7 @@ class CourrierController extends Controller
             'objet_courrier' => $request->objet_courrier,
             'destinataire_courrier' => $request->destinataire_courrier,
             'description_courrier' => $request->description_courrier,
-            'scan_courrier' => $request->scan_courrier,
+            'scan_courrier' => $path,
             'id_centre' => $request->id_centre,
             'id_user' => auth()->user()->id_user,
             'id_service' => $request->id_service,
@@ -108,134 +125,127 @@ class CourrierController extends Controller
 
         // Redirigez vers la vue de création de courrier avec un message de succès
         return redirect()->route('liste_courriers')->with('success', 'Le courrier à été ajouté avec succès.');
+
     }
 
 
 
-    public function showEditCourrier($id_courrier)
-    {
-        // Recherche du courrier avec les relations
-        $courrier = Courrier::with(['centre', 'user', 'service'])
-            ->find($id_courrier);
+        public function showEditCourrier($id_courrier)
+        {
+            // Recherche du courrier avec les relations
+            $courrier = Courrier::with(['centre', 'user', 'service'])
+                ->find($id_courrier);
 
-        // Vérifiez si le courrier existe
-        if (!$courrier) {
-            // Redirigez ou affichez une erreur selon vos besoins
+            // Vérifiez si le courrier existe
+            if (!$courrier) {
+                // Redirigez ou affichez une erreur selon vos besoins
+                return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+            }
+
+            // Récupérez également les listes de centres, utilisateurs et services
+            $centres = Centre::all();
+            $users = User::all();
+            $services = Service::all();
+
+            // Passez le courrier et les listes aux vues
+            return view('courriers.editCourrier', [
+                'courrier' => $courrier,
+                'centres' => $centres,
+                'users' => $users,
+                'services' => $services,
+            ]);
+        }
+
+        public function updateCourrier(Request $request, $id_courrier)
+        {
+
+            $courrier = Courrier::find($id_courrier);
+
+            $rules = [
+                'objet_courrier' => 'required|string|max:50',
+                'destinataire_courrier' => 'required|string|max:50',
+                'description_courrier' => 'string|max:255',
+                'id_centre' => 'required',
+                'id_user' => 'required',
+                'id_service' => 'required',
+            ];
+
+            $messages = [
+                'required' => 'Le champ :attribute est requis.',
+                'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()) {
+
+                return redirect()->route('edit_courrier',['id_courrier' => $courrier->id_courrier])
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $courrier->update($request->all());
+
+            // Redirigez vers la vue de création de courrier avec un message de succès
+            return redirect()->route('liste_courriers');
+        }
+
+
+        public function deleteCourrier($id_courrier)
+        {
+            // Recherche du courrier à supprimer
+            $courrier = Courrier::find($id_courrier);
+
+            // Vérification si le courrier existe
+            if ($courrier) {
+                // Suppression du courrier
+                $courrier->delete();
+
+                // Redirection vers la liste des courriers avec un message de succès
+                return redirect()->route('liste_courriers')->with('success', 'Le courrier a été supprimé avec succès.');
+            }
+
+            // Redirection vers la liste des courriers avec un message d'erreur
             return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
         }
 
-        // Récupérez également les listes de centres, utilisateurs et services
-        $centres = Centre::all();
-        $users = User::all();
-        $services = Service::all();
+        public function showSearchCourrier()
+        {
+            $recherche = request()->recherche;
 
-        // Passez le courrier et les listes aux vues
-        return view('courriers.editCourrier', [
-            'courrier' => $courrier,
-            'centres' => $centres,
-            'users' => $users,
-            'services' => $services,
-        ]);
-    }
+            // Recherche des courriers en fonction du terme de recherche
+            $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
+                ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
+                ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
+                ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
+                ->where(function ($query) use ($recherche) {
+                    $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
+                        ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
+                        ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
+                        ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
+                        ->orWhere('centres.nom_centre', 'LIKE', "%$recherche%")
+                        ->orWhere('users.nom_user', 'LIKE', "%$recherche%")
+                        ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
+                })
+                ->get();
 
-    public function updateCourrier(Request $request, $id_courrier)
-    {
+            // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()
+            $centres = Centre::pluck('nom_centre', 'id_centre');
+            $users = User::pluck('nom_user', 'id_user');
+            $services = Service::pluck('nom_service', 'id_service');
 
-        $courrier = Courrier::find($id_courrier);
-
-        $rules = [
-            'objet_courrier' => 'required|string|max:50',
-            'destinataire_courrier' => 'required|string|max:50',
-            'description_courrier' => 'string|max:255',
-            'id_centre' => 'required',
-            'id_user' => 'required',
-            'id_service' => 'required',
-        ];
-
-        $messages = [
-            'required' => 'Le champ :attribute est requis.',
-            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-
-            return redirect()->route('edit_courrier',['id_courrier' => $courrier->id_courrier])
-                ->withErrors($validator)
-                ->withInput();
+            return view('courriers.courrier', [
+                'courriers' => $courriers,
+                'centres' => $centres,
+                'users' => $users,
+                'services' => $services,
+                'valeur_recherche' => $recherche
+            ]);
         }
-
-        $courrier->update($request->all());
-
-        // Redirigez vers la vue de création de courrier avec un message de succès
-        return redirect()->route('liste_courriers');
-    }
-
-
-    public function deleteCourrier($id_courrier)
-    {
-        // Recherche du courrier à supprimer
-        $courrier = Courrier::find($id_courrier);
-
-        // Vérification si le courrier existe
-        if ($courrier) {
-            // Suppression du courrier
-            $courrier->delete();
-
-            // Redirection vers la liste des courriers avec un message de succès
-            return redirect()->route('liste_courriers')->with('success', 'Le courrier a été supprimé avec succès.');
-        }
-
-        // Redirection vers la liste des courriers avec un message d'erreur
-        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
-    }
-
-    public function showSearchCourrier()
-    {
-        $recherche = request()->recherche;
-
-        // Recherche des courriers en fonction du terme de recherche
-        $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
-            ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
-            ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
-            ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
-            ->where(function ($query) use ($recherche) {
-                $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
-                    ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
-                    ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
-                    ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
-                    ->orWhere('centres.nom_centre', 'LIKE', "%$recherche%")
-                    ->orWhere('users.nom_user', 'LIKE', "%$recherche%")
-                    ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
-            })
-            ->get();
-
-        // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()
-        $centres = Centre::pluck('nom_centre', 'id_centre');
-        $users = User::pluck('nom_user', 'id_user');
-        $services = Service::pluck('nom_service', 'id_service');
-
-        return view('courriers.courrier', [
-            'courriers' => $courriers,
-            'centres' => $centres,
-            'users' => $users,
-            'services' => $services,
-            'valeur_recherche' => $recherche
-        ]);
-    }
 
     public function depotScanCourrier ()
     {
-        $file = request()->scan;
-        $path = $file->store();
-
-        // Trouver la visite et mettre à jour
-        $visite = Courrier::where('id_courrier', request()->id_courrier)
-           
-            ->update([
-                'rapport' => $path,
-            ]);
+        
 
         return redirect()->route('courriers.courrier');
 

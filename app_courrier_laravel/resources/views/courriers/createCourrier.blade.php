@@ -38,19 +38,17 @@
         <form action="{{ route('creation_courrier')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <label for="id_courrier"></label>
-            <input type="hidden" name="id_courrier" >
-
             <label for="objet_courrier">Courrier</label>
-            <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}"  required>
+            <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}" autofocus required>
 
             <label for="destinataire_courrier"></label>
             <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
 
-            <input type="file" name="scan_courrier" >
-
-            <!-- <label for="description_courrier"></label>
-            <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}"> -->
+            <label for="description_courrier"></label>
+            <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
+ 
+            <label for="scan_courrier">Scan du Courrier</label>
+            <input type="file" name="scan_courrier" id="scan_courrier">
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>
@@ -64,7 +62,6 @@
 
             <label for="id_user"></label>
             <input type="hidden" name="id_user"  value="{{ auth()->user()->id_user }}">
-
 
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" required>
