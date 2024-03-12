@@ -48,7 +48,7 @@
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
             <label for="scan_courrier">Scan du Courrier</label>
-            <input type="file" name="scan_courrier" id="scan_courrier">
+            <input type="file" name="scan_courrier">
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>
