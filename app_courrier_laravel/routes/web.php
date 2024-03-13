@@ -53,7 +53,7 @@ Route::prefix('courriers')->middleware('auth')->group(function()
         Route::put('/update/{id_courrier}', [CourrierController::class, 'updateCourrier'])->name('update_courrier');
         Route::get('/delete/{id_courrier}', [CourrierController::class, 'deleteCourrier'])->name('delete_courrier');
         Route::post('/search', [CourrierController::class, 'showSearchCourrier'])->name('liste_courrier_recherche');
-        Route::post('/depot', [CourrierController::class, 'depotScanCourrier'])->name('depot_scan_courrier');
+        Route::post('/depot/{id_courrier}', [CourrierController::class, 'depotScanCourrier'])->name('depot_scan_courrier');
         Route::get('/download/{chemin}', [CourrierController::class, 'download'])->name('download_scan_courrier');
     });
 });

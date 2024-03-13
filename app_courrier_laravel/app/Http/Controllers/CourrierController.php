@@ -108,7 +108,7 @@ class CourrierController extends Controller
             'date_courrier' => $date_maintenant,
             'objet_courrier' => $request->objet_courrier,
             'destinataire_courrier' => $request->destinataire_courrier,
-            'description_courrier' => $chemin,
+            // 'description_courrier' =>  $request->description_courrier,
             'scan_courrier' => $chemin,
             'id_centre' => $request->id_centre,
             'id_user' => auth()->user()->id_user,
@@ -126,6 +126,11 @@ class CourrierController extends Controller
         $courrier = Courrier::with(['centre', 'user', 'service'])
             ->find($id_courrier);
 
+        if($courrier->id_user !== auth()->user()->id_user && auth()->user()->id_user !== 4 )
+        {
+            return view('gestion.erreur');
+
+        }
         // Vérifiez si le courrier existe
         if (!$courrier) {
             // Redirigez ou affichez une erreur selon vos besoins
@@ -148,7 +153,6 @@ class CourrierController extends Controller
 
     public function updateCourrier(Request $request, $id_courrier)
     {
-
         $courrier = Courrier::find($id_courrier);
 
         $rules = [
@@ -233,26 +237,36 @@ class CourrierController extends Controller
         ]);
     }
     
-    public function depotcourrier (Request $request, $id_courrier)
+    public function depotScanCourrier(Request $request, $id_courrier)
+{
+    
+
+        // Vérifier si un fichier est téléchargé
+        if ($request->hasFile('scan_courrier')) {
+          
+            // Enregistrer le fichier dans le stockage
+            $chemin = $request->file('scan_courrier')->store('scans_courriers');
+        } else {
+            // Gérer le cas où aucun fichier n'est téléchargé
+            $chemin = null;
+        }
+
+        // Trouver le courrier et mettre à jour le chemin du fichier
+        $courrier = Courrier::findOrFail($id_courrier);
+        $courrier->scan_courrier = $chemin;
+        $courrier->save();
+
+        // Nettoyer les anciens fichiers si nécessaire (à ajouter selon vos besoins)
+
+        // Rediriger l'utilisateur avec un message de succès
+        return redirect()->route('liste_courriers')->with('success', 'Le fichier a été téléchargé et enregistré avec succès.');
+    
+}
+
+
+    public function download ($chemin) 
     {
-        // Charger le fichier courrier
-        $file = request()->courrier;
-        $path = $file->store();
-
-        // Trouver la visite et mettre à jour
-        // $Courrier = Courrier::find($id_courrier)
-        // ->update('scan_courrier' => $chemin,);
-         
-
-        return redirect()->route('courriers.courrier');
-    }
-
-    public function download ($chemin, $id_courrier) 
-    {
-        $courrier = Courrier::where($id_courrier)
-            ->get();
-
-        return Storage::download($chemin, 'COURRIER - '.$courrier->objet_courrier.'-'.Carbon::now('Europe/Paris')->format('d-m-Y'));
+        return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y'));
     }
 
 

@@ -38,19 +38,19 @@
         <form action="{{ route('creation_courrier')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <label for="objet_courrier">Courrier</label>
+            <label for="courriers">Courrier</label>
             <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}" autofocus required>
 
-            <label for="destinataire_courrier"></label>
+            <label for="courriers"></label>
             <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
 
-            <label for="description_courrier"></label>
+            <label for="courriers"></label>
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
-            <label for="scan_courrier">Scan du Courrier</label>
+            <label for="courriers">Scan du Courrier</label>
             <input type="file" name="scan_courrier">
 
-            <label for="id_centre">Centre</label>
+            <label for="centres">Centre</label>
             <select name="id_centre" id="id_centre" required>
                 <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option>
                 @forelse($centres as $centre)
@@ -60,10 +60,10 @@
                 @endforelse
             </select>
 
-            <label for="id_user"></label>
+            <label for="users"></label>
             <input type="hidden" name="id_user"  value="{{ auth()->user()->id_user }}">
 
-            <label for="id_service">Service</label>
+            <label for="services">Service</label>
             <select name="id_service" id="id_service" required>
                 <option value="">-- Choisir un service --</option>
                 @forelse($services as $service)

@@ -41,6 +41,7 @@
             </div>
         @endif
 
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- gestion des acces des privilèges -->
 
     <!-- Contenue de la page -->
@@ -93,11 +94,12 @@
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
-                                                @if($courrier->scan_courrier == '')
-                                                    <form method="POST" action="{{ route('depot_scan_courrier') }}" enctype='multipart/form-data'>
+                                            @if(empty($courrier->scan_courrier))
+                                                    <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
                                                         @csrf
-                                                        <label for="courrier" class="btn btn-sm btn-neutral">
-                                                            <input name="scan_courrier" type="file" style="display:none">
+                                                        <label for="courriers" class="btn btn-sm btn-neutral">
+                                                            <input type="hidden" name="id_courrier" value="{{ $courrier->id_courrier }}">
+                                                            <input name="scan_courrier" class="courrier_file" type="file" >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                                 fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
                                                                 <path
@@ -116,6 +118,7 @@
                                                             </svg>
                                                         </button>
                                                     </a> 
+                                                @endif
                                             </td>
                                             <td>
                                                 <!-- Bouton  action -->
@@ -148,4 +151,16 @@
                     </div>
                 </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $('.courrier_file').change(function () {
+                    validateForm($(this));
+                })
+
+                function validateForm(courrier_input) {
+                    let form = courrier_input.closest("form").get()[0];
+                    form.submit();
+                }
+            })
+        </script>
 @endsection
