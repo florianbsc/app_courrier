@@ -153,11 +153,11 @@ class UserController extends Controller
         return $currentUser && $currentUser->privilege_user >= $requiredPrivilege;
     }
 
-
      /*
      * PARTIE DE/CONNEXION
      */
-    public function showLoginForm()
+
+     public function showLoginForm()
     {
         try {
             $users = User::all();
@@ -199,26 +199,11 @@ class UserController extends Controller
                 }
             }
             Session::put('privilege_user', $privilege_user);
-            return redirect('accueil');
+            return redirect()->route('accueil');
 
             return back()->withErrors(['login' => 'Identifiants ou mot de passe incorrects.'])->withInput();
         }
     }
-
-
-
-
-        //  if ($auth->privilege_user == 1 || $auth->privilege_user == 2 || $auth->privilege_user == 3) {
-        //         return redirect()->route('accueil');
-        //     }
-        //     else{
-        //         return redirect()->route('accueil');
-        //     }
-        // }
-        // else{
-        //     return redirect()->route('login');
-        // }
-    // }
 
     public function logout(Request $request)
     {

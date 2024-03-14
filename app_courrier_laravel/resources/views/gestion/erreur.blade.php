@@ -10,7 +10,6 @@
 
         <img style="padding: 5% 10%" src="{{asset('images/nop.gif')}}" alt="Your Image" class="welcome-image"><br>
 
-        <button ><a href="{{ route('accueil') }}">home</a></button>
-
+        <button ><a href="{{ route('accueil') }}">home</a></button><br>
     </body>
 </html>

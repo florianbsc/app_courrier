@@ -55,6 +55,7 @@ Route::prefix('courriers')->middleware('auth')->group(function()
         Route::post('/search', [CourrierController::class, 'showSearchCourrier'])->name('liste_courrier_recherche');
         Route::post('/depot/{id_courrier}', [CourrierController::class, 'depotScanCourrier'])->name('depot_scan_courrier');
         Route::get('/download/{chemin}', [CourrierController::class, 'download'])->name('download_scan_courrier');
+        Route::get('/delete/scan/{id_courrier}', [CourrierController::class, 'deleteScan'])->name('delete_scan_courrier');
     });
 });
 
@@ -93,4 +94,9 @@ Route::get('/erreur', function ()
 {
     return view('gestion.erreur');
 
-})->middleware('auth')->name('acces-refuse');
+})->middleware('auth')->name('acces_refuse');
+
+Route::get('/test', function ()
+{
+    return view('gestion.test');
+});

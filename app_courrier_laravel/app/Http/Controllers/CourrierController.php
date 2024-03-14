@@ -30,7 +30,7 @@ class CourrierController extends Controller
         // MODELE ELOQUENT
 
         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
-        ->orderByDesc('date_courrier')
+        ->orderByDesc('id_courrier')
             ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
             ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
             ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
@@ -196,11 +196,11 @@ class CourrierController extends Controller
             $courrier->delete();
 
             // Redirection vers la liste des courriers avec un message de succès
-            return redirect()->route('liste_courriers')->with('success', 'Le courrier a été supprimé avec succès.');
+            return redirect()->route('liste_courriers')->with('success', 'Le courrier à été supprimé avec succès.');
         }
 
         // Redirection vers la liste des courriers avec un message d'erreur
-        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
     }
 
     public function showSearchCourrier()
@@ -238,12 +238,12 @@ class CourrierController extends Controller
     }
     
     public function depotScanCourrier(Request $request, $id_courrier)
-{
-    
+    {
+        
 
         // Vérifier si un fichier est téléchargé
         if ($request->hasFile('scan_courrier')) {
-          
+        
             // Enregistrer le fichier dans le stockage
             $chemin = $request->file('scan_courrier')->store('scans_courriers');
         } else {
@@ -259,14 +259,38 @@ class CourrierController extends Controller
         // Nettoyer les anciens fichiers si nécessaire (à ajouter selon vos besoins)
 
         // Rediriger l'utilisateur avec un message de succès
-        return redirect()->route('liste_courriers')->with('success', 'Le fichier a été téléchargé et enregistré avec succès.');
+        return redirect()->route('liste_courriers')->with('success', 'Le fichier à été téléchargé et enregistré avec succès.');
     
-}
+    }
 
 
     public function download ($chemin) 
     {
         return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y'));
+    }
+
+    public function deleteScan ($id_courrier)
+    {
+       // Recupere les info du courrier
+       $courrier = Courrier::find($id_courrier);
+
+       // Vérification si le courrier existe
+       if ($courrier) {
+           
+        // Suppression du scan courrier en local
+           Storage::delete($courrier->scan_courrier );
+
+        // Suppression du scan courrier dans la db
+
+           $courrier->scan_courrier = null;
+           $courrier->save();
+
+           // Redirection vers la liste des courriers avec un message de succès
+           return redirect()->route('liste_courriers')->with('success', 'Le scan à été supprimé avec succès.');
+       }
+
+       // Redirection vers la liste des courriers avec un message d'erreur
+       return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
     }
 
 

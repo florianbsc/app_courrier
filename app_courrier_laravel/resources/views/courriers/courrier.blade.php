@@ -3,25 +3,25 @@
 @section('title', 'Liste courriers')
 
 @section('nav')
-@php
-        $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
-        $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
-        $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
-@endphp
+    @php
+            $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
+            $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
+            $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
+    @endphp
 
-    <h1 class="h2 mb-0 ls-tight">Liste Courrier</h1>
-        <ul class="nav nav-tabs mt-4 overflow-x border-0">
-            <li class="nav-item">
-                <a href="{{ route('liste_courriers') }}" class="nav-link active">Liste</a>
-            </li>
-             @if( $hasAccess2)
-
+        <h1 class="h2 mb-0 ls-tight">Liste Courrier</h1>
+            <ul class="nav nav-tabs mt-4 overflow-x border-0">
                 <li class="nav-item">
-                    <a href="{{ route('creation_courrier') }}" class="nav-link font-regular">Ajouter</a>
+                    <a href="{{ route('liste_courriers') }}" class="nav-link active">Liste</a>
                 </li>
-            @endif
+                @if( $hasAccess2)
 
-        </ul>
+                    <li class="nav-item">
+                        <a href="{{ route('creation_courrier') }}" class="nav-link font-regular">Ajouter</a>
+                    </li>
+                @endif
+
+            </ul>
 @endsection
 @section('contenu')
 
@@ -42,7 +42,6 @@
         @endif
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- gestion des acces des privilèges -->
 
     <!-- Contenue de la page -->
         <div class="container-fluid">
@@ -94,20 +93,21 @@
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
-                                            @if(empty($courrier->scan_courrier))
+                                                @if(empty($courrier->scan_courrier))
                                                     <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
                                                         @csrf
-                                                        <label for="courriers" class="btn btn-sm btn-neutral">
+                                                        <label for="courriers" >
                                                             <input type="hidden" name="id_courrier" value="{{ $courrier->id_courrier }}">
                                                             <input name="scan_courrier" class="courrier_file" type="file" >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                                fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                                                <path
-                                                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
-                                                            </svg>
-                                                        </label>
+                                                                    
+                                                                    fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                                                    <path
+                                                                        d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                                                                    </svg>
+                                                        </label>     
                                                     </form>
                                                 @else
                                                     <a href="{{ route('download_scan_courrier', ['chemin' => $courrier->scan_courrier]) }}">
@@ -117,7 +117,12 @@
                                                                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
                                                             </svg>
                                                         </button>
-                                                    </a> 
+                                                    </a>
+                                                    <a href="{{ route('delete_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"></path>
+                                                        </svg>
+                                                    </a>
                                                 @endif
                                             </td>
                                             <td>
