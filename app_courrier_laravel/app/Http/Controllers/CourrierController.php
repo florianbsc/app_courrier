@@ -67,17 +67,20 @@ class CourrierController extends Controller
     public function createCourrier(Request $request)
     {
         $date_maintenant = now()->toDateString();
+        
+        $request->validate(['scan_courrier' => 'required|file|mimes:pdf',]);
 
         // Vérifier si un fichier est téléchargé
         if ($request->hasFile('scan_courrier')) {
           
             // Enregistrer le fichier dans le stockage
-            $chemin = $request->file('scan_courrier')->store('scans_courriers');
+            $chemin = $request->file('scan_courrier')->store();
+            // $chemin = $request->file('scan_courrier');
+            
         } else {
             // Gérer le cas où aucun fichier n'est téléchargé
             $chemin = null;
         }
-
         $rules =[
             'objet_courrier' => 'required|string|max:50',
             'destinataire_courrier' => 'required|string|max:50',
@@ -96,6 +99,7 @@ class CourrierController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
+       
 
         if ($validator->fails()) {
 
@@ -239,7 +243,8 @@ class CourrierController extends Controller
     
     public function depotScanCourrier(Request $request, $id_courrier)
     {
-        
+
+        $request->validate(['scan_courrier' => 'required|file|mimes:pdf',]);
 
         // Vérifier si un fichier est téléchargé
         if ($request->hasFile('scan_courrier')) {
@@ -260,15 +265,17 @@ class CourrierController extends Controller
 
         // Rediriger l'utilisateur avec un message de succès
         return redirect()->route('liste_courriers')->with('success', 'Le fichier à été téléchargé et enregistré avec succès.');
-    
     }
 
 
     public function download ($chemin) 
     {
-        return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y'));
+      
+        return Storage::download($chemin);
+        // return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y').'.pdf');
     }
 
+    
     public function deleteScan ($id_courrier)
     {
        // Recupere les info du courrier
@@ -292,6 +299,8 @@ class CourrierController extends Controller
        // Redirection vers la liste des courriers avec un message d'erreur
        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
     }
+
+    
 
 
 }

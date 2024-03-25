@@ -93,6 +93,7 @@
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
+                                                <!-- icone d'upload -->
                                                 @if(empty($courrier->scan_courrier))
                                                     <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
                                                         @csrf
@@ -109,6 +110,7 @@
                                                                     </svg>
                                                         </label>     
                                                     </form>
+                                                <!-- icone de download -->
                                                 @else
                                                     <a href="{{ route('download_scan_courrier', ['chemin' => $courrier->scan_courrier]) }}">
                                                         <button style="padding:4px;width:40px">
