@@ -52,9 +52,6 @@
                 <label for="telephone_centre" name="telephone_centre" ></label>
                 <input type="text" name="telephone_centre" placeholder="Téléphone" value="{{ old('telephone_centre') }}" required>
 
-                <label>Date de visite</label>
-                <input type="datetime-local" name="date_courrier">
-
                 <button type="submit">Envoyer</button>
             </form>
         </div>

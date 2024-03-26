@@ -201,8 +201,9 @@ class UserController extends Controller
             Session::put('privilege_user', $privilege_user);
             return redirect()->route('accueil');
 
-            return back()->withErrors(['login' => 'Identifiants ou mot de passe incorrects.'])->withInput();
         }
+
+        return back()->withErrors(['login' => 'Identifiants ou mot de passe incorrects'])->withInput();
     }
 
     public function logout(Request $request)

@@ -22,6 +22,6 @@ class CheckPrivilege
             }
         }
         // Redirigez l'utilisateur vers une page d'erreur ou une page d'accès refusé
-        return redirect()->route('acces-refuse');
+        return redirect()->route('acces_refuse');
     }
 }

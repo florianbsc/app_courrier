@@ -196,9 +196,14 @@ class CourrierController extends Controller
 
         // Vérification si le courrier existe
         if ($courrier) {
+            if(!empty($courrier->scan_courrier)){
+                // Suppression du scan courrier en local
+                Storage::delete($courrier->scan_courrier );
+            } 
+
             // Suppression du courrier
             $courrier->delete();
-
+            
             // Redirection vers la liste des courriers avec un message de succès
             return redirect()->route('liste_courriers')->with('success', 'Le courrier à été supprimé avec succès.');
         }

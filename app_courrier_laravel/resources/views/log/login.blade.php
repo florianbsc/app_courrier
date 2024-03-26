@@ -130,7 +130,7 @@
 
         <!-- Affichage du message d'erreur -->
             @if($errors->has('login'))
-                <p>{{ $errors->first('login') }}</p>
+                <span style="color: red;">{{ $errors->first('login') }}</span>
             @endif
 
         <!-- Formulaire de connecxion -->

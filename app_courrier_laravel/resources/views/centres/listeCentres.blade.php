@@ -52,7 +52,7 @@
             <thead>
                 <tr>
                     <th scope="col"><b>Nom</b></th>
-                    <th scope="col"><b>Mail</b></th>
+                    <th scope="col"><b>Adresse</b></th>
                     <th scope="col"><b>Code postal</b></th>
                     <th scope="col"><b>Telephone</b></th>
                     @if($hasAccess3 )<th scope="col"><b>Action</b></th> @endif

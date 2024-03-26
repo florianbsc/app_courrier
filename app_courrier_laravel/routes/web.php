@@ -99,4 +99,4 @@ Route::get('/erreur', function ()
 Route::get('/test', function ()
 {
     return view('gestion.test');
-});
+})->name('test');
