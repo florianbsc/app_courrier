@@ -50,6 +50,23 @@
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
 
+              <!-- <label for="privilege_user">Niveau de privilège</label>
+                <select name="privilege_user" id="privilege_user" required>
+                    <option selected>-- rivilège --</option>
+                    <option value="1">Lecture</option>
+                    <option value="2">Ecriture</option>
+                    <option value="3">Admin</option>
+                </select> -->
+
+                <label for="privilege_user">Niveau de privilège</label>
+                <select name="privilege_user" id="privilege_user" required>
+                    <option selected disabled>-- Privilège --</option>
+                    @foreach(['1' => 'Lecture', '2' => 'Ecriture', '3' => 'Admin'] as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
+                </select>
+
+
                 <label for="password" name="password"></label>
                 <input type="text" name="password" placeholder="Mot de passe de 8 caratères" value="{{ old('password') }}" required>
 

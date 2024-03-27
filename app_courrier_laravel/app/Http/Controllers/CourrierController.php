@@ -68,7 +68,7 @@ class CourrierController extends Controller
     {
         $date_maintenant = now()->toDateString();
         
-        $request->validate(['scan_courrier' => 'required|file|mimes:pdf',]);
+        $request->validate(['scan_courrier' => 'file|mimes:pdf',]);
 
         // Vérifier si un fichier est téléchargé
         if ($request->hasFile('scan_courrier')) {
@@ -83,7 +83,7 @@ class CourrierController extends Controller
         }
         $rules =[
             'objet_courrier' => 'required|string|max:50',
-            'destinataire_courrier' => 'required|string|max:50',
+            'destinataire_courrier' => 'nullable|string|max:255',
             'description_courrier' => 'nullable|string|max:255',
             'scan_courrier' => 'nullable|file|max:250',
             'id_centre' => 'required|numeric',
@@ -111,7 +111,7 @@ class CourrierController extends Controller
         Courrier::create([
             'date_courrier' => $date_maintenant,
             'objet_courrier' => $request->objet_courrier,
-            'destinataire_courrier' => $request->destinataire_courrier,
+            // 'destinataire_courrier' => $request->destinataire_courrier,
             // 'description_courrier' =>  $request->description_courrier,
             'scan_courrier' => $chemin,
             'id_centre' => $request->id_centre,
@@ -255,7 +255,7 @@ class CourrierController extends Controller
         if ($request->hasFile('scan_courrier')) {
         
             // Enregistrer le fichier dans le stockage
-            $chemin = $request->file('scan_courrier')->store('scans_courriers');
+            $chemin = $request->file('scan_courrier')->store();
         } else {
             // Gérer le cas où aucun fichier n'est téléchargé
             $chemin = null;
@@ -276,8 +276,8 @@ class CourrierController extends Controller
     public function download ($chemin) 
     {
       
-        return Storage::download($chemin);
-        // return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y').'.pdf');
+        // return Storage::download($chemin);
+        return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y').'.pdf');
     }
 
     

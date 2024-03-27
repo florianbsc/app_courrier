@@ -38,18 +38,21 @@
         <form action="{{ route('creation_courrier')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
+            <label for="courriers"></label>
+            <input type="hidden" name="id_user"  value="{{ auth()->user()->id_user }}">
+
             <label for="courriers">Courrier</label>
             <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}" autofocus required>
 
+            <label for="courriers">Scan du Courrier</label>
+            <input type="file" name="scan_courrier">
+
             <label for="courriers"></label>
-            <input type="text" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" required>
+            <input type="hidden" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" >
 
             <label for="courriers"></label>
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
-            <label for="courriers">Scan du Courrier</label>
-            <input type="file" name="scan_courrier">
-
             <label for="centres">Centre</label>
             <select name="id_centre" id="id_centre" required>
                 <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option>
@@ -60,18 +63,17 @@
                 @endforelse
             </select>
 
-            <label for="users"></label>
-            <input type="hidden" name="id_user"  value="{{ auth()->user()->id_user }}">
-
             <label for="services">Service</label>
             <select name="id_service" id="id_service" required>
-                <option value="">-- Choisir un service --</option>
+                <option value="{{ old('id_service') }}">-- Choisir un service --</option>
                 @forelse($services as $service)
                     <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
                 @empty
                     <!-- Aucun service disponible -->
                 @endforelse
             </select>
+
+
 
             <button type="submit">Envoyer</button>
         </form>

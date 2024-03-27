@@ -37,6 +37,7 @@ class UserController extends Controller
             'prenom_user' => 'required|string',
             'mail_user' => 'required|email|unique:users',
             'password' => 'required|string|min:8',
+            'privilege_user' => 'nullable|int',
         ];
 
         // Personnaliser les messages d'erreur
@@ -45,7 +46,8 @@ class UserController extends Controller
             'email' => 'Le champ :attribute doit être une adresse email valide.',
             'unique' => 'Cette adresse email est déjà utilisée.',
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
-            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
+            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
+            'int' => 'Le champ :attribue doit etre un chiffre.',
         ];
 
         // Valider les données
@@ -65,6 +67,7 @@ class UserController extends Controller
             'prenom_user' => $request->prenom_user,
             'mail_user' => $request->mail_user,
             'password' => bcrypt($request->password), // Assurez-vous de hasher le mot de passe
+            'privilege_user' => $request->privilege_user,
         ]);
 
         // Redirection vers la liste des utilisateurs
@@ -86,9 +89,10 @@ class UserController extends Controller
 
 
         $rules = [
-            'nom_user' => 'required|string|max:255',
-            'prenom_user' => 'required|string|max:255',
-            'mail_user' => 'required|email|unique:users|max:255'
+            'nom_user' => 'required|string',
+            'prenom_user' => 'required|string',
+            'mail_user' => 'required|email|unique:users',
+            
         ];
 
         $messages = [
@@ -96,7 +100,8 @@ class UserController extends Controller
             'email' => 'Le champ :attribute doit être une adresse email valide.',
             'unique' => 'Cette adresse email est déjà utilisée.',
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
-            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.'
+            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
+            'int' => 'Le champ :attribue doit etre un chiffre.',
         ];
 
         $validator = Validator::make($request->all(), $rules ,$messages);
@@ -109,7 +114,7 @@ class UserController extends Controller
         }
             $user->update($request->all());
 
-            return redirect()->route('liste_user');
+            return redirect()->route('liste_users');
     }
       
     public function deleteUser($id_user)
