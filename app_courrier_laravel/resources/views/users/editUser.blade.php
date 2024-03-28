@@ -44,13 +44,13 @@
                     @method('PUT')
 
                     <label for="nom_user">Nom</label>
-                    <input type="text" name="nom_user" value="{{ old($user->nom_user) }}" required>
+                    <input type="text" name="nom_user" value="{{$user->nom_user}}" required>
 
                     <label for="prenom_user">Prenom</label>
-                    <input type="text" name="prenom_user" value="{{ old($user->prenom_user) }}" required>
+                    <input type="text" name="prenom_user" value="{{ $user->prenom_user }}" required>
 
                     <label for="mail_user">mail</label>
-                    <input type="text" name="mail_user" value="{{ old($user->mail_user) }}" required>
+                    <input type="text" name="mail_user" value="{{ $user->mail_user }}" required>
 
                     <button type="submit">Mettre à jour</button>
                 </form>

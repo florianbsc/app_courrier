@@ -161,10 +161,10 @@ class CourrierController extends Controller
 
         $rules = [
             'objet_courrier' => 'required|string|max:50',
-            'destinataire_courrier' => 'required|string|max:50',
-            'description_courrier' => 'string|max:255',
+            // 'destinataire_courrier' => 'required|string|max:50',
+            // 'description_courrier' => 'string|max:255',
             'id_centre' => 'required',
-            'id_user' => 'required',
+            // 'id_user' => 'required',
             'id_service' => 'required',
         ];
 

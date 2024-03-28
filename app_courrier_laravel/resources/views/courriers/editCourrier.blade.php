@@ -44,11 +44,11 @@
             <label for="objet_courrier">Objet</label>
             <input type="text" name="objet_courrier" value="{{$courrier->objet_courrier}}"  required>
 
-            <label for="destinataire_courrier">Destinataire</label>
+            <!-- <label for="destinataire_courrier">Destinataire</label>
             <input type="text" name="destinataire_courrier" value="{{$courrier->destinataire_courrier}}"  required>
 
             <label for="description_courrier">Description</label>
-            <input type="text" name="description_courrier" value="{{$courrier->description_courrier}}" >
+            <input type="text" name="description_courrier" value="{{$courrier->description_courrier}}" > -->
 
             <label for="id_centre">Centre</label>
             <select name="id_centre" id="id_centre" required>

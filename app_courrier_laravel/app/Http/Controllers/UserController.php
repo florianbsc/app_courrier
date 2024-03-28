@@ -44,7 +44,7 @@ class UserController extends Controller
         $messages = [
             'required' => 'Le champ :attribute est requis.',
             'email' => 'Le champ :attribute doit être une adresse email valide.',
-            'unique' => 'Cette adresse email est déjà utilisée.',
+            'unique' => 'Le champ :attribute est déjà utilisée.',
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
             'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
             'int' => 'Le champ :attribue doit etre un chiffre.',
@@ -91,14 +91,14 @@ class UserController extends Controller
         $rules = [
             'nom_user' => 'required|string',
             'prenom_user' => 'required|string',
-            'mail_user' => 'required|email|unique:users',
+            'mail_user' => 'required|email',
             
         ];
 
         $messages = [
             'required' => 'Le champ :attribute est requis.',
             'email' => 'Le champ :attribute doit être une adresse email valide.',
-            'unique' => 'Cette adresse email est déjà utilisée.',
+            'unique' => 'Le champ :attribute est déjà utilisée.',
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
             'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
             'int' => 'Le champ :attribue doit etre un chiffre.',
