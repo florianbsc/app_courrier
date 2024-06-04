@@ -49,14 +49,13 @@
 
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
-
-              <!-- <label for="privilege_user">Niveau de privilège</label>
-                <select name="privilege_user" id="privilege_user" required>
-                    <option selected>-- rivilège --</option>
-                    <option value="1">Lecture</option>
-                    <option value="2">Ecriture</option>
-                    <option value="3">Admin</option>
-                </select> -->
+                
+                <label for="nom_service">affecters :</label><br>
+                <select id="nom_service" name="nom_service[]" multiple>
+                    @foreach($affecters as $service)
+                        <option value="{{ $service->nom_service }}">{{ $service->nom_service }}</option>
+                    @endforeach
+                </select>
 
                 <label for="privilege_user">Niveau de privilège</label>
                 <select name="privilege_user" id="privilege_user" required>

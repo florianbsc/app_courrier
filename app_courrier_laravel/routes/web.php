@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AffecterUserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\UserController;
@@ -89,6 +90,14 @@ Route::prefix('centres')->middleware('auth')->group(function ()
     });
 });
 
+Route::prefix('AffecterUser')->middleware('auth', 'privilege:3')->group(function () 
+{
+    Route::get('/liste', [CentreController::class, 'showAffecterUser'])
+        ->name('liste_affecter');
+
+
+  
+});
 
 Route::get('/erreur', function () 
 {

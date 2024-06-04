@@ -2,7 +2,7 @@
 @section('title', 'liste Employers')
 
 @section('nav')
-<h1 class="h2 mb-0 ls-tight">Utilisateurs</h1>
+    <h1 class="h2 mb-0 ls-tight">Utilisateurs</h1>
 
     <ul class="nav nav-tabs mt-4 overflow-x border-0">
         <li class="nav-item">
@@ -25,9 +25,9 @@
         </div>
     @endif
     @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
     <div class="container-fluid">
@@ -57,6 +57,7 @@
                         <tr>
                             <th scope="col"><b>Nom Prenom</b></th>
                             <th scope="col"><b>Mail</b></th>
+                            <th scope="col"><b>Service</b></th>
                             <th scope="col"><b>Privilège</b></th>
                             <th scope="col"><b>Action</b></th>
                         </tr>
@@ -66,6 +67,7 @@
                             <tr>
                                 <td>{{$user->nom_user .' '. $user->prenom_user}}</td>
                                 <td>{{$user->mail_user}}</td>
+                                <td>service</td>
                                 <td>{{$user->privilege_user}}</td>
                                 <td>
                                     <ul class="nav">
