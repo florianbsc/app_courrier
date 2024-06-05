@@ -50,10 +50,10 @@
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
                 
-                <label for="nom_service">Affecter au service</label>
-                <select id="nom_service" name="nom_service" multiple>
+                <label for="id_service">Affecter au service</label>
+                <select id="id_service" name="id_service" multiple>
                     @foreach($services as $service)
-                        <option value="{{ $service->nom_service }}">{{ $service->nom_service }}</option>
+                        <option value="{{ $service->id_services }}">{{ $service->nom_service }}</option>
                     @endforeach
                 </select>
 
@@ -65,13 +65,11 @@
                     @endforeach
                 </select>
 
-
                 <label for="password" name="password">Mot de passe</label>
                 <input type="text" name="password" placeholder="8 caratères minimum" value="{{ old('password') }}" required>
 
                 <label for="password_confirmation"></label>
                 <input type="password_confirmation" name="password_confirmation" placeholder="Confirmer mot de passe" required >
-
 
                 <!-- <label for="privilege_user" name="privilege_user"></label>
                 <input type="number" name="privilege_user" placeholder="privilege_user"> -->

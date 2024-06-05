@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Affecter;
 use App\Models\Service;
+use App\Models\Affecter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -49,30 +49,33 @@ class UserController extends Controller
 
     public function createUser(Request $request)
         {
-            // Définir les règles de validation
+
+            $services = Service::all();
+
+            // Règles de validation
             $rules = [
                 'nom_user' => 'required|string',
                 'prenom_user' => 'required|string',
                 'mail_user' => 'required|email|unique:users',
                 'password' => 'required|string|min:8',
                 'privilege_user' => 'nullable|int',
-                'service' => 'required|int',
-                ];
+                'id_services' => 'required|int|exists:services,id_service',
+            ];
 
-            // Personnaliser les messages d'erreur
+            // Messages d'erreur
             $messages = [
                 'required' => 'Le champ :attribute est requis.',
                 'email' => 'Le champ :attribute doit être une adresse email valide.',
                 'unique' => 'Le champ :attribute est déjà utilisée.',
                 'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
                 'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
-                'int' => 'Le champ :attribue doit etre un chiffre.',
-                ];
+                'int' => 'Le champ :attribue doit être un chiffre.',
+            ];
 
             // Valider les données
             $validator = Validator::make($request->all(), $rules, $messages);
 
-            // Vérifier si la validation a échoué
+            // Validation à échoué ?
             if ($validator->fails()) {
 
                 return redirect()->route('creation_user')
@@ -81,16 +84,54 @@ class UserController extends Controller
             }
 
             // Création de l'utilisateur
-            User::create([
-                'nom_user' => $request->nom_user,
-                'prenom_user' => $request->prenom_user,
-                'mail_user' => $request->mail_user,
-                'password' => bcrypt($request->password), // Assurez-vous de hasher le mot de passe
-                'privilege_user' => $request->privilege_user,
-            ]);
+            // $user = User::create([
+            //     'nom_user' => $request->nom_user,
+            //     'prenom_user' => $request->prenom_user,
+            //     'mail_user' => $request->mail_user,
+            //     'password' => bcrypt($request->password),
+            //     'privilege_user' => $request->privilege_user,
+            // ]);
 
+            // Affecter::create([
+            //     'id_service' => $request->id_service,
+            //     'id_user' => $user->id_user,
+            // ]);
+
+            DB::transaction(function () use ($request) {
+                // Création de l'utilisateur
+                $user = User::create([
+                    'nom_user' => $request->nom_user,
+                    'prenom_user' => $request->prenom_user,
+                    'mail_user' => $request->mail_user,
+                    'password' => bcrypt($request->password),
+                    'privilege_user' => $request->privilege_user,
+                ]);
+                // dd($request, $user);
+
+                // Assurez-vous que l'ID de l'utilisateur est correct
+                if (!is_int($user->id_user)) {
+                    throw new \Exception('L\'ID de l\'utilisateur n\'est pas recupéré');
+                }
+        
+                // Création de l'affectation
+                foreach ($request->id_services as $id_service) {
+                    DB::insert('INSERT INTO affecters (id_service, id_user) VALUES (?, ?)', [
+                        $id_service,
+                        $user->id_user,
+                    ]);
+                }
+            });
+
+
+            
             // Redirection vers la liste des utilisateurs
-            return redirect()->route('liste_users');
+            return redirect()->route('liste_users')
+            ->with('success', 'Utilisateur et affectation créés avec succès');
+            
+            // return view('users.createUser',[
+            //     'services' => $services,
+            // ]);
+
         }
 
     public function showEditUser ($id_user, $id_service)
@@ -161,10 +202,15 @@ class UserController extends Controller
             $recherche = request()->recherche;
 
             // Recherche des utilisateurs en fonction du terme de recherche
-            $users = User::where(function ($query) use ($recherche) {
+            $users = User::select('users.*', 'services.nom_service')
+            ->leftJoin('affecters','users.id_user' , '=', 'affecters.id_user')
+            ->leftJoin('services', 'services.id_service', '=','affecters.id_service', )
+            ->where(function ($query) use ($recherche) {
                     $query->where('nom_user', 'LIKE', "%$recherche%")
                         ->orWhere('prenom_user', 'LIKE', "%$recherche%")
-                        ->orWhere('mail_user', 'LIKE', "%$recherche%");
+                        ->orWhere('mail_user', 'LIKE', "%$recherche%")
+                        ->orWhere('nom_service', 'LIKE', "%$recherche%")
+                        ->orWhere('privilege_user', 'LIKE', "%$recherche%");
                 })
                 ->get();
 
