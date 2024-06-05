@@ -60,6 +60,14 @@
                         @endforeach
                     </select>
 
+                    {{-- <label for="nom_service">Service</label><br>
+                    <select id="nom_service" name="nom_service" multiple required>
+                        <option selected disabled>-- Service --</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->nom_service }}">{{ $service->nom_service }}</option>
+                        @endforeach
+                    </select> --}}
+
 
                     <label for="privilege_user">privilege</label>
                     <input type="text" name="privilege_user" value="{{ $user->privilege_user }}" required>

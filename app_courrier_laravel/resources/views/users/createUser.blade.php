@@ -34,7 +34,7 @@
         {{ session('success') }}
     </div>
 @endif
-
+{{-- {{dd($services)}} --}}
 <div class="container-fluid">
  <!-- Formulaire d'ajout d'utilisateur -->
     <div class="card shadow border-0 mb-7">
@@ -50,9 +50,9 @@
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
                 
-                <label for="nom_service">affecters :</label><br>
-                <select id="nom_service" name="nom_service[]" multiple>
-                    @foreach($affecters as $service)
+                <label for="nom_service">Affecter au service</label>
+                <select id="nom_service" name="nom_service" multiple>
+                    @foreach($services as $service)
                         <option value="{{ $service->nom_service }}">{{ $service->nom_service }}</option>
                     @endforeach
                 </select>
@@ -66,8 +66,8 @@
                 </select>
 
 
-                <label for="password" name="password"></label>
-                <input type="text" name="password" placeholder="Mot de passe de 8 caratères" value="{{ old('password') }}" required>
+                <label for="password" name="password">Mot de passe</label>
+                <input type="text" name="password" placeholder="8 caratères minimum" value="{{ old('password') }}" required>
 
                 <label for="password_confirmation"></label>
                 <input type="password_confirmation" name="password_confirmation" placeholder="Confirmer mot de passe" required >

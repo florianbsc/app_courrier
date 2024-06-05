@@ -1,3 +1,4 @@
+{{-- {{dd($users)}}; --}}
 @extends('layout.app')
 @section('title', 'liste Employers')
 
@@ -67,7 +68,8 @@
                             <tr>
                                 <td>{{$user->nom_user .' '. $user->prenom_user}}</td>
                                 <td>{{$user->mail_user}}</td>
-                                <td>service</td>
+                                <td>{{$user->mail_user}}</td>
+                                <td>{{$user->nom_service}}</td>
                                 <td>{{$user->privilege_user}}</td>
                                 <td>
                                     <ul class="nav">
