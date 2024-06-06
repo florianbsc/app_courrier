@@ -3,7 +3,7 @@
 @section('title', 'Modifier Centre')
 
 @section('nav')
-    <h1 class="h2 mb-0 ls-tight">Liste users</h1>
+    <h1 class="h2 mb-0 ls-tight">Modifier Utilisateur</h1>
 
         <ul class="nav nav-tabs mt-4 overflow-x border-0">
             <li class="nav-item">
@@ -38,40 +38,35 @@
     <div class="container-fluid">
         <div class="card shadow border-0 mb-7">
             <div class="table-responsive">
+                {{-- {{dd($user)}} --}}
 
-                <form action="{{ route('update_user', ['id_user' => $user->id_user]) }}" method="POST">
+                <form action="{{ route('update_user', ['id_user' => $user[0]->id_user]) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <label for="nom_user">Nom</label>
-                    <input type="text" name="nom_user" value="{{$user->nom_user}}" required>
+                    <input type="text" name="nom_user" value="{{$user[0]->nom_user}}" required>
 
                     <label for="prenom_user">Prénom</label>
-                    <input type="text" name="prenom_user" value="{{ $user->prenom_user }}" required>
+                    <input type="text" name="prenom_user" value="{{ $user[0]->prenom_user }}" required>
 
                     <label for="mail_user">Mail</label>
-                    <input type="text" name="mail_user" value="{{ $user->mail_user }}" required>
-
-                    <label for="nom_service">Service</label>
-                    <select name="nom_service" id="id_service" required>
-                        <option selected disabled>-- Service --</option>
-                        @foreach(['1' => 'Secretariat lycée', '2' => 'Secretariat CFA', '3' => 'Comptabilité'] as $value => $label)
+                    <input type="text" name="mail_user" value="{{ $user[0]->mail_user }}" required>
+                    
+                    <label for="privilege_user">Privilège</label>
+                    <select name="privilege_user" id="privilege_user" value="{{ $user[0]->privilege_user }}" required>
+                        @foreach(['1' => 'Lecture', '2' => 'Ecriture', '3' => 'Admin'] as $value => $label)
                             <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
                     </select>
 
-                    {{-- <label for="nom_service">Service</label><br>
-                    <select id="nom_service" name="nom_service" multiple required>
-                        <option selected disabled>-- Service --</option>
+                    <label for="id_services">Affecter au service</label>
+                    <select name="id_services[]" id="id_service" value="{{ $services[0]->id_service }}" multiple>
                         @foreach($services as $service)
-                            <option value="{{ $service->nom_service }}">{{ $service->nom_service }}</option>
+                            <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
                         @endforeach
-                    </select> --}}
+                    </select>
 
-
-                    <label for="privilege_user">privilege</label>
-                    <input type="text" name="privilege_user" value="{{ $user->privilege_user }}" required>
-                    
                     <button type="submit">Mettre à jour</button>
                 </form>
             </div>

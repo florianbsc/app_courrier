@@ -50,8 +50,6 @@ class UserController extends Controller
     public function createUser(Request $request)
         {
 
-            $services = Service::all();
-
             // Règles de validation
             $rules = [
                 'nom_user' => 'required|string',
@@ -59,7 +57,7 @@ class UserController extends Controller
                 'mail_user' => 'required|email|unique:users',
                 'password' => 'required|string|min:8',
                 'privilege_user' => 'nullable|int',
-                'id_services' => 'required|int|exists:services,id_service',
+                // 'id_services' => 'required|int|exists:services,id_service',
             ];
 
             // Messages d'erreur
@@ -83,20 +81,7 @@ class UserController extends Controller
                     ->withInput();
             }
 
-            // Création de l'utilisateur
-            // $user = User::create([
-            //     'nom_user' => $request->nom_user,
-            //     'prenom_user' => $request->prenom_user,
-            //     'mail_user' => $request->mail_user,
-            //     'password' => bcrypt($request->password),
-            //     'privilege_user' => $request->privilege_user,
-            // ]);
-
-            // Affecter::create([
-            //     'id_service' => $request->id_service,
-            //     'id_user' => $user->id_user,
-            // ]);
-
+            
             DB::transaction(function () use ($request) {
                 // Création de l'utilisateur
                 $user = User::create([
@@ -106,18 +91,19 @@ class UserController extends Controller
                     'password' => bcrypt($request->password),
                     'privilege_user' => $request->privilege_user,
                 ]);
-                // dd($request, $user);
 
-                // Assurez-vous que l'ID de l'utilisateur est correct
+                // Vérification de l'existance de l'id du new user
                 if (!is_int($user->id_user)) {
-                    throw new \Exception('L\'ID de l\'utilisateur n\'est pas recupéré');
+                    throw new \Exception('L\'ID de l\'utilisateur n\'à pas été recupéré');
                 }
-        
-                // Création de l'affectation
+                
+                
+                // Insere chaque service sélectionné pour l'utilisateur créé
                 foreach ($request->id_services as $id_service) {
-                    DB::insert('INSERT INTO affecters (id_service, id_user) VALUES (?, ?)', [
-                        $id_service,
-                        $user->id_user,
+                    DB::table('affecters')->insert([
+                        'id_service' => $id_service,
+                        'id_user' => $user->id_user,
+                        // dd($id_service, $user)
                     ]);
                 }
             });
@@ -128,19 +114,36 @@ class UserController extends Controller
             return redirect()->route('liste_users')
             ->with('success', 'Utilisateur et affectation créés avec succès');
             
-            // return view('users.createUser',[
-            //     'services' => $services,
-            // ]);
-
         }
 
-    public function showEditUser ($id_user, $id_service)
+    public function showEditUser ($id_user)
         {
-            $user = User::find($id_user);
-            $sercices = Service::find($id_service);
+
+            // $user = User::find($id_user)
+            // ->leftJoin('affecters','users.id_user' , '=', 'affecters.id_user')
+            // ->leftJoin('services', 'services.id_service', '=','affecters.id_service', )
+            // ->orderBy('users.nom_user', 'asc')
+            // ->get();
+
+            
+            // Récupérer l'utilisateur avec les services associés
+            // $user = User::with('services')->find($id_user);
+            $user = User::select('users.id_user', 'users.nom_user', 'users.prenom_user', 'users.mail_user', 'services.id_service', 'services.nom_service')
+            ->from('users')
+            ->leftJoin('affecters', 'users.id_user', '=', 'affecters.id_user')
+            ->leftJoin('services', 'affecters.id_service', '=', 'services.id_service')
+            ->where('users.id_user', '=', '5')
+            ->orderBy('users.nom_user', 'ASC')
+            ->get();
+        
+            // Récupérer tous les services disponibles
+            $services = Service::all();
+
+            // dd($user, $services);
 
                return view('users.editUser',[
                 'user' => $user,
+                'services' => $services,
             ]);
         }
 

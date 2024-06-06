@@ -63,4 +63,11 @@ class User extends Authenticatable
         return 'mail_user';
     }
 
+
+    // Définir la relation avec les services via la table 'affecters'
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
+    }
+
 }

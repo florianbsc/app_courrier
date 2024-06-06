@@ -12,4 +12,10 @@ class Service extends Model
     public $timestamps = false;
     protected $primaryKey = 'id_service';
 
+    // Définir la relation avec les utilisateurs via la table 'affecters'
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'affecters', 'id_service', 'id_user');
+    }
+
 }
