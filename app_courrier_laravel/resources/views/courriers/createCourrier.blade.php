@@ -64,10 +64,20 @@
             </select>
 
             <label for="services">Service</label>
-            <select name="id_service" id="id_service" required>
+            <select name="id_service" id="id_service" >
                 <option value="{{ old('id_service') }}">-- Choisir un service --</option>
                 @forelse($services as $service)
                     <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
+                @empty
+                    <!-- Aucun service disponible -->
+                @endforelse
+            </select>
+            
+            <label for="users">Utilisateur</label>
+            <select name="id_user" id="id_user" >
+                <option value="{{ old('id_user') }}">-- Choisir un utilisateur --</option>
+                @forelse($users as $user)
+                    <option value="{{ $user->id_user }}">{{ $user->nom_user }}</option>
                 @empty
                     <!-- Aucun service disponible -->
                 @endforelse

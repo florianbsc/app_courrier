@@ -118,24 +118,23 @@ class UserController extends Controller
 
     public function showEditUser ($id_user)
         {
-
-            // $user = User::find($id_user)
-            // ->leftJoin('affecters','users.id_user' , '=', 'affecters.id_user')
-            // ->leftJoin('services', 'services.id_service', '=','affecters.id_service', )
-            // ->orderBy('users.nom_user', 'asc')
-            // ->get();
-
             
             // Récupérer l'utilisateur avec les services associés
-            // $user = User::with('services')->find($id_user);
-            $user = User::select('users.id_user', 'users.nom_user', 'users.prenom_user', 'users.mail_user', 'services.id_service', 'services.nom_service')
-            ->from('users')
-            ->leftJoin('affecters', 'users.id_user', '=', 'affecters.id_user')
-            ->leftJoin('services', 'affecters.id_service', '=', 'services.id_service')
-            ->where('users.id_user', '=', '5')
-            ->orderBy('users.nom_user', 'ASC')
-            ->get();
+            $user = User::with('services')->find($id_user);
+            // $user = User::select('users.id_user', 'users.nom_user', 'users.prenom_user', 'users.mail_user', 'services.id_service', 'services.nom_service')
+            // ->from('users')
+            // ->leftJoin('affecters', 'users.id_user', '=', 'affecters.id_user')
+            // ->leftJoin('services', 'affecters.id_service', '=', 'services.id_service')
+            // ->where('users.id_user', '=', '5')
+            // ->orderBy('users.nom_user', 'ASC')
+            // ->get();
         
+
+             // Vérifier si l'utilisateur existe
+            if (!$user) {
+                return redirect()->route('users.index')->with('error', 'Utilisateur non trouvé.');
+            }
+
             // Récupérer tous les services disponibles
             $services = Service::all();
 
@@ -150,20 +149,18 @@ class UserController extends Controller
     public function updateUser (Request $request, $id_user)
         {
             $user = User::find($id_user);
-            // $users = User::select('users.*', 'services.nom_service')
-            // ->leftJoin('affecters','users.id_user' , '=', 'affecters.id_user')
-            // ->leftJoin('services', 'services.id_service', '=','affecters.id_service', )
-            // ->orderBy('users.nom_user', 'asc')
-            // ->get();
-
-
+           
+            // Règles de validation
             $rules = [
                 'nom_user' => 'required|string',
                 'prenom_user' => 'required|string',
                 'mail_user' => 'required|email',
-                
-                ];
-
+                'privilege_user' => 'nullable|int',
+                'id_services' => 'array',
+                'id_services.*' => 'int|exists:services,id_service',
+            ];
+            
+            // Messages d'erreur
             $messages = [
                 'required' => 'Le champ :attribute est requis.',
                 'email' => 'Le champ :attribute doit être une adresse email valide.',
@@ -171,20 +168,40 @@ class UserController extends Controller
                 'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
                 'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
                 'int' => 'Le champ :attribue doit etre un chiffre.',
-                ];
+            ];
 
+            // Valider les données
             $validator = Validator::make($request->all(), $rules ,$messages);
 
             if ($validator->fails()) {
-
                 return redirect()->route('edit_user', ['id_user' => $user->id_user])
                     ->withErrors($validator)
                     ->withInput();
-                }
+            }
 
-            $user->update($request->all());
+            DB::transaction(function () use ($request, $id_user) {
+                // Mettre à jour l'utilisateur
+                $user = User::find($id_user);
+                $user->update([
+                    'nom_user' => $request->nom_user,
+                    'prenom_user' => $request->prenom_user,
+                    'mail_user' => $request->mail_user,
+                    'privilege_user' => $request->privilege_user,
+                ]);
 
-            return redirect()->route('liste_users');
+                // Mettre à jour les services associés
+                $user->services()->sync($request->id_services);
+            });
+
+
+            // $user->update($request->all());
+
+            // return redirect()->route('liste_users');
+
+            // Redirection vers la liste des utilisateurs
+            return redirect()->route('liste_users')
+            ->with('success', 'Utilisateur et affectation mis à jour avec succès');
+
         }
       
     public function deleteUser($id_user)
@@ -294,164 +311,3 @@ class UserController extends Controller
             return redirect()->route('login');
         }
 }
-
-// {
-//     public function index()
-//     {
-//         $users = User::orderBy('nom_user')->get();
-//         return view('users.listeUsers', [
-//             'users' => $users,
-//         ]);
-//     }
-
-//     public function create()
-//     {
-//         return view('users.createUser');
-//     }
-
-//     public function store(Request $request)
-//     {
-//         $rules = [
-//             'nom_user' => 'required|string',
-//             'prenom_user' => 'required|string',
-//             'mail_user' => 'required|email|unique:users',
-//             'password' => 'required|string|min:8',
-//             'privilege_user' => 'nullable|integer',
-//         ];
-
-//         $messages = [
-//             'required' => 'Le champ :attribute est requis.',
-//             'email' => 'Le champ :attribute doit être une adresse email valide.',
-//             'unique' => 'Le champ :attribute est déjà utilisée.',
-//             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
-//         ];
-
-//         $validator = Validator::make($request->all(), $rules, $messages);
-
-//         if ($validator->fails()) {
-//             return redirect()->route('users.create')
-//                 ->withErrors($validator)
-//                 ->withInput();
-//         }
-
-//         User::create([
-//             'nom_user' => $request->nom_user,
-//             'prenom_user' => $request->prenom_user,
-//             'mail_user' => $request->mail_user,
-//             'password' => bcrypt($request->password),
-//             'privilege_user' => $request->privilege_user,
-//         ]);
-
-//         return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
-//     }
-
-//     public function edit($id)
-//     {
-//         $user = User::findOrFail($id);
-//         return view('users.editUser', [
-//             'user' => $user,
-//         ]);
-//     }
-
-//     public function update(Request $request, $id)
-//     {
-//         $user = User::findOrFail($id);
-
-//         $rules = [
-//             'nom_user' => 'required|string',
-//             'prenom_user' => 'required|string',
-//             'mail_user' => 'required|email|unique:users,mail_user,' . $user->id,
-//         ];
-
-//         $messages = [
-//             'required' => 'Le champ :attribute est requis.',
-//             'email' => 'Le champ :attribute doit être une adresse email valide.',
-//             'unique' => 'Le champ :attribute est déjà utilisée.',
-//         ];
-
-//         $validator = Validator::make($request->all(), $rules, $messages);
-
-//         if ($validator->fails()) {
-//             return redirect()->route('users.edit', $user->id)
-//                 ->withErrors($validator)
-//                 ->withInput();
-//         }
-
-//         $user->update($request->only(['nom_user', 'prenom_user', 'mail_user', 'privilege_user']));
-
-//         return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
-//     }
-
-//     public function destroy($id)
-//     {
-//         $user = User::findOrFail($id);
-//         $user->delete();
-//         return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
-//     }
-
-//     public function search(Request $request)
-//     {
-//         $recherche = $request->input('recherche');
-
-//         $users = User::where('nom_user', 'LIKE', "%$recherche%")
-//             ->orWhere('prenom_user', 'LIKE', "%$recherche%")
-//             ->orWhere('mail_user', 'LIKE', "%$recherche%")
-//             ->get();
-
-//         return view('users.listeUsers', [
-//             'users' => $users,
-//             'valeur_recherche' => $recherche,
-//         ]);
-//     }
-
-//     public static function hasAccess($requiredPrivilege)
-//     {
-//         $currentUser = auth()->user();
-//         return $currentUser && $currentUser->privilege_user >= $requiredPrivilege;
-//     }
-
-//     /*
-//      * PARTIE DE/CONNEXION
-//      */
-
-//     public function showLoginForm()
-//     {
-//         try {
-//             $users = User::all();
-//             return view('log.login', [
-//                 'users' => $users,
-//             ]);
-//         } catch (\Exception $e) {
-//             return view('errors.custom_error', [
-//                 'error_message' => "Une erreur s'est produite lors du chargement des utilisateurs.",
-//             ]);
-//         }
-//     }
-
-//     public function login(Request $request)
-//     {
-//         $credentials = $request->only('mail_user', 'password');
-
-//         if (Auth::attempt($credentials)) {
-//             Session::regenerate();
-//             $user = Auth::user();
-
-//             $privilege_user = $user->privilege_user;
-
-//             Session::put('privilege_user', $privilege_user);
-
-//             return redirect()->route('accueil');
-//         }
-
-//         return back()->withErrors(['login' => 'Identifiants ou mot de passe incorrects'])->withInput();
-//     }
-
-//     public function logout(Request $request)
-//     {
-//         Auth::guard('web')->logout();
-//         $request->session()->invalidate();
-//         $request->session()->regenerateToken();
-
-//         return redirect()->route('login');
-//     }
-// }
