@@ -63,32 +63,31 @@ class CourrierController extends Controller
             ]);
         }
 
-
     public function createCourrier(Request $request)
         {
             $date_maintenant = now()->toDateString();
             
             $request->validate(['scan_courrier' => 'file|mimes:pdf',]);
-
+           
             // Vérifier si un fichier est téléchargé
             if ($request->hasFile('scan_courrier')) {
             
                 // Enregistrer le fichier dans le stockage
                 $chemin = $request->file('scan_courrier')->store();
-                // $chemin = $request->file('scan_courrier');
                 
             } else {
-                // Gérer le cas où aucun fichier n'est téléchargé
+                // Gérer le cas où aucun fichier n'est pas téléchargé
                 $chemin = null;
             }
+
             $rules =[
                 'objet_courrier' => 'required|string|max:50',
-                'destinataire_courrier' => 'nullable|string|max:255',
+                'destinataire_courrier' => 'nullable|numeric',
                 'description_courrier' => 'nullable|string|max:255',
                 'scan_courrier' => 'nullable|file|max:250',
-                'id_centre' => 'required|numeric',
+                'id_centre' => 'nullable|numeric',
                 'id_user' => 'required|numeric',
-                'id_service' => 'required|numeric',
+                'id_service' => 'nullable|numeric',
             ];
 
             $messages = [
@@ -108,16 +107,19 @@ class CourrierController extends Controller
                     ->withInput();
             }
 
-            Courrier::create([
-                'date_courrier' => $date_maintenant,
-                'objet_courrier' => $request->objet_courrier,
-                // 'destinataire_courrier' => $request->destinataire_courrier,
-                // 'description_courrier' =>  $request->description_courrier,
-                'scan_courrier' => $chemin,
-                'id_centre' => $request->id_centre,
-                'id_user' => auth()->user()->id_user,
-                'id_service' => $request->id_service,
-            ]);
+            DB::transaction(function () use ($request, $chemin ,$date_maintenant) {
+                // Création de l'utilisateur
+                Courrier::create([
+                    'date_courrier' => $date_maintenant,
+                    'objet_courrier' => $request->objet_courrier,
+                    'destinataire_courrier' => $request->destinataire_courrier,
+                    // 'description_courrier' =>  $request->description_courrier,
+                    'scan_courrier' => $chemin,
+                    'id_centre' => $request->id_centre,
+                    'id_user' => auth()->user()->id_user,
+                    'id_service' => $request->id_service,
+                ]);
+            });
 
             // Redirigez vers la vue de création de courrier avec un message de succès
             return redirect()->route('liste_courriers')->with('success', 'Le courrier à été ajouté avec succès.');
@@ -133,7 +135,6 @@ class CourrierController extends Controller
             if($courrier->id_user !== auth()->user()->id_user && auth()->user()->id_user !== 4 )
             {
                 return view('gestion.erreur');
-
             }
             // Vérifiez si le courrier existe
             if (!$courrier) {
@@ -161,7 +162,7 @@ class CourrierController extends Controller
 
             $rules = [
                 'objet_courrier' => 'required|string|max:50',
-                // 'destinataire_courrier' => 'required|string|max:50',
+                'destinataire_courrier' => 'nullable|numeric',
                 // 'description_courrier' => 'string|max:255',
                 'id_centre' => 'required',
                 // 'id_user' => 'required',

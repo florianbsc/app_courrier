@@ -87,13 +87,10 @@
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
-                                            <!-- <td>{{ $courrier->destinataire_courrier }}</td> -->
-                                            <!-- <td>{{ $courrier->description_courrier }}</td> -->
-                                            <!-- <td>{{$courrier->prenom_user.' '.$courrier->nom_user}}</td> -->
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
-                                                @if($courrier->id_user === auth()->user()->id_user || $hasAccess3 )
+                                                @if($courrier->id_user === auth()->user()->id_user || $courrier->destinataire_courrier === auth()->user()->id_user || $hasAccess3 )
                                                     <!-- icone d'upload -->
                                                     @if(empty($courrier->scan_courrier))
                                                         <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>

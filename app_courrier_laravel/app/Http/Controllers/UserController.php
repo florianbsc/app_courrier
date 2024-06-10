@@ -96,8 +96,7 @@ class UserController extends Controller
                 if (!is_int($user->id_user)) {
                     throw new \Exception('L\'ID de l\'utilisateur n\'à pas été recupéré');
                 }
-                
-                
+                                
                 // Insere chaque service sélectionné pour l'utilisateur créé
                 foreach ($request->id_services as $id_service) {
                     DB::table('affecters')->insert([
@@ -107,7 +106,6 @@ class UserController extends Controller
                     ]);
                 }
             });
-
 
             
             // Redirection vers la liste des utilisateurs
@@ -121,15 +119,7 @@ class UserController extends Controller
             
             // Récupérer l'utilisateur avec les services associés
             $user = User::with('services')->find($id_user);
-            // $user = User::select('users.id_user', 'users.nom_user', 'users.prenom_user', 'users.mail_user', 'services.id_service', 'services.nom_service')
-            // ->from('users')
-            // ->leftJoin('affecters', 'users.id_user', '=', 'affecters.id_user')
-            // ->leftJoin('services', 'affecters.id_service', '=', 'services.id_service')
-            // ->where('users.id_user', '=', '5')
-            // ->orderBy('users.nom_user', 'ASC')
-            // ->get();
         
-
              // Vérifier si l'utilisateur existe
             if (!$user) {
                 return redirect()->route('users.index')->with('error', 'Utilisateur non trouvé.');
@@ -180,16 +170,16 @@ class UserController extends Controller
             }
 
             DB::transaction(function () use ($request, $id_user) {
-                // Mettre à jour l'utilisateur
-                $user = User::find($id_user);
-                $user->update([
+                // Maj user
+                $user = User::find($id_user); // recheche dans la db 
+                $user->update([ //maj
                     'nom_user' => $request->nom_user,
                     'prenom_user' => $request->prenom_user,
                     'mail_user' => $request->mail_user,
                     'privilege_user' => $request->privilege_user,
                 ]);
 
-                // Mettre à jour les services associés
+                // Maj les services associés
                 $user->services()->sync($request->id_services);
             });
 

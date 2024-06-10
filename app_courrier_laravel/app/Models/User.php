@@ -54,20 +54,20 @@ class User extends Authenticatable
     protected $primaryKey = 'id_user';
 
     public function getAuthPassword()
-    {
-        return $this->attributes['password'];
-    }
+        {
+            return $this->attributes['password'];
+        }
 
     public function username()
-    {
-        return 'mail_user';
-    }
+        {
+            return 'mail_user';
+        }
 
 
     // Définir la relation avec les services via la table 'affecters'
     public function services()
-    {
-        return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
-    }
+        {
+            return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
+        }
 
 }

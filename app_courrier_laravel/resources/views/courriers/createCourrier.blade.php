@@ -54,7 +54,7 @@
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
             <label for="centres">Centre</label>
-            <select name="id_centre" id="id_centre" required>
+            <select name="id_centre" id="id_centre" >
                 <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option>
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
@@ -73,11 +73,11 @@
                 @endforelse
             </select>
             
-            <label for="users">Utilisateur</label>
-            <select name="id_user" id="id_user" >
-                <option value="{{ old('id_user') }}">-- Choisir un utilisateur --</option>
+            <label for="courrier">Déstinataire</label>
+            <select name="destinataire_courrier" id="destinataire_courrier" >
+                <option value="{{ old('destinataire_courrier') }}">-- Choisir un déstinataire --</option>
                 @forelse($users as $user)
-                    <option value="{{ $user->id_user }}">{{ $user->nom_user }}</option>
+                    <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
                 @empty
                     <!-- Aucun service disponible -->
                 @endforelse

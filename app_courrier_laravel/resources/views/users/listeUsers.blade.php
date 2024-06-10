@@ -68,7 +68,6 @@
                             <tr>
                                 <td>{{$user->nom_user .' '. $user->prenom_user}}</td>
                                 <td>{{$user->mail_user}}</td>
-                                <td>{{$user->mail_user}}</td>
                                 <td>{{$user->nom_service}}</td>
                                 <td>{{$user->privilege_user}}</td>
                                 <td>
