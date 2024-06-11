@@ -7,6 +7,7 @@
             $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
             $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
             $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
+            $userConnected = auth()->user()->id_user;
     @endphp
 
         <h1 class="h2 mb-0 ls-tight">Liste Courrier</h1>
@@ -24,7 +25,6 @@
             </ul>
 @endsection
 @section('contenu')
-
     <!-- Affiche les messages d'erreur de validation -->
         @if($errors->any())
             <div class="alert alert-danger">
@@ -90,7 +90,10 @@
                                             <td>{{ $courrier->nom_centre }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
-                                                @if($courrier->id_user === auth()->user()->id_user || $courrier->destinataire_courrier === auth()->user()->id_user || $hasAccess3 )
+                                                @if($courrier->id_user === $userConnected ||
+                                                    $courrier->destinataire_courrier === $userConnected || 
+                                                    auth()->user()->inService($courrier->id_service)  || 
+                                                    $hasAccess3 )
                                                     <!-- icone d'upload -->
                                                     @if(empty($courrier->scan_courrier))
                                                         <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
@@ -127,7 +130,7 @@
                                             </td>
                                             <td>
                                                 <!-- Bouton  action -->
-                                                    @if($courrier->id_user === auth()->user()->id_user || $hasAccess3 )
+                                                    @if($courrier->id_user === $userConnected || $hasAccess3 )
                                                         <ul class="nav">
                                                             <!-- Btn sup -->
                                                                 <li class="nav-item">

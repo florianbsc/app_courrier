@@ -1,8 +1,7 @@
 
-
 <a href="{{route('accueil')}} ">home</a>
 
-<form action="/votre-route" method="POST">
+<form action="#" method="POST">
     @csrf
     <label for="utilisateurs">Sélectionnez les utilisateurs :</label><br>
     <select name="utilisateurs[]" id="utilisateurs" multiple>

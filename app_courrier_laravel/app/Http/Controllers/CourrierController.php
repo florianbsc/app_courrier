@@ -267,8 +267,6 @@ class CourrierController extends Controller
             $courrier->scan_courrier = $chemin;
             $courrier->save();
 
-            // Nettoyer les anciens fichiers si nécessaire (à ajouter selon vos besoins)
-
             // Rediriger l'utilisateur avec un message de succès
             return redirect()->route('liste_courriers')->with('success', 'Le fichier à été téléchargé et enregistré avec succès.');
         }
@@ -294,7 +292,6 @@ class CourrierController extends Controller
             Storage::delete($courrier->scan_courrier );
 
             // Suppression du scan courrier dans la db
-
             $courrier->scan_courrier = null;
             $courrier->save();
 
@@ -305,9 +302,5 @@ class CourrierController extends Controller
         // Redirection vers la liste des courriers avec un message d'erreur
         return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
         }
-
-    
-
-
 }
 

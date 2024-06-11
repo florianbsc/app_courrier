@@ -70,4 +70,20 @@ class User extends Authenticatable
             return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
         }
 
+    // public function affecter()
+    //     {
+    //         return $this->hasOne(Affecter::class, 'id_user', 'id_service');
+    //     }
+
+    public static function inService($serviceAChecker) 
+    {
+        $user = auth()->user()->id_user;
+        $affecterUsers = Affecter::select('*')
+        ->where('id_user', '=', $user)
+        ->whereAnd('id_service', '=', $serviceAChecker)
+        ->groupBy('id_user')
+        ->count();
+        return $affecterUsers;
+
+    }
 }
