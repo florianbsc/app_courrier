@@ -1,24 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Affecter;
-
-
-use Illuminate\Http\Request;
 
 class AffecterController extends Controller
 {
-
+    // Affiche la liste des affectations d'utilisateurs à des services
     public function showAffecterUser()
-        {
-            $affecterUsers = Affecter::select('affecters.*', 'users.nom_user', 'users.prenom_user', 'services.nom_service')
-            ->join('users', 'affecters.id_user', '=','users.id_user')
+    {
+        // Récupère les affectations avec les noms des utilisateurs et des services associés
+        $affecterUsers = Affecter::select('affecters.*', 'users.nom_user', 'users.prenom_user', 'services.nom_service')
+            ->join('users', 'affecters.id_user', '=', 'users.id_user')
             ->join('services', 'affecters.id_service', '=', 'services.id_service')
-            ->orderBy('users.nom_user', 'asc')->get();
+            ->orderBy('users.nom_user', 'asc') // Trie les utilisateurs par nom
+            ->get();
 
-             // Retourner la vue avec les données
-            return view('users.listeAffecter', [
-                'affecterUsers' => $affecterUsers,
-            ]);
-        }
+        // Retourne la vue avec la liste des affectations
+        return view('users.listeAffecter', [
+            'affecterUsers' => $affecterUsers,
+        ]);
+    }
 }

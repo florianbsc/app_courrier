@@ -6,127 +6,139 @@ use App\Models\Centre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class CentreController extends Controller
 {
-    public function showCentre ()
-        {
-            $centres = Centre::orderBy('nom_centre')->get(); // Tri par ordre alphabétique du nom
-                    
-            return view('centres.listeCentres', compact('centres'));
-        }
+    // Affiche la liste des centres
+    public function showCentre()
+    {
+        // Récupère tous les centres triés par nom
+        $centres = Centre::orderBy('nom_centre')->get();
 
-    public function showCreateCentre ()
-        {
-            // Récupere toutes les donneés
-            $centres = Centre::all();
+        // Retourne la vue avec la liste des centres
+        return view('centres.listeCentres', compact('centres'));
+    }
 
-            // Envoi les données a la view createCentre
-            return view('centres.createCentre', compact('centres'));
-        }
+    // Affiche le formulaire de création d'un centre
+    public function showCreateCentre()
+    {
+        // Récupère tous les centres
+        $centres = Centre::all();
 
+        // Retourne la vue pour créer un nouveau centre
+        return view('centres.createCentre', compact('centres'));
+    }
 
+    // Crée un nouveau centre
     public function createCentre(Request $request)
-        {
+    {
+        // Définir les règles de validation
+        $rules = [
+            'nom_centre' => 'required|string|max:255',
+            'adresse_centre' => 'required|string|max:255',
+            'CP_centre' => 'required|string|max:5',
+            'telephone_centre' => 'required|string|min:10|max:14',
+        ];
 
-            $rules = [
-                'nom_centre' => 'required|string|max:255',
-                'adresse_centre' => 'required|string|max:255',
-                'CP_centre' => 'required|string|max:5',
-                'telephone_centre' => 'required|string|min:10|max:14',
-            ];
+        // Définir les messages d'erreur
+        $messages = [
+            'required' => 'Le champ :attribute est requis.',
+            'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
+            'max' => 'Le champ :attribute ne doit pas avoir plus de :max caractères.',
+        ];
 
-            $messages = [
-                'required' => 'Le champ :attribute est requis.',
-                'min' => 'Le champ :attribute doit avoir au moins :min caratères.',
-                'max' => 'Le champ :attribute ne doit pas avoir plus de :max caratères.',
-            ];
+        // Valider les données
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-            // Validation des données
-            $validator = Validator::make($request->all(), $rules, $messages);
-
-            if ($validator->fails()) {
-
-                return redirect()->route('creation_centre')
+        // Si la validation échoue, rediriger avec les erreurs
+        if ($validator->fails()) {
+            return redirect()->route('creation_centre')
                 ->withErrors($validator)
                 ->withInput();
-            }
-
-            // Création du centre
-            Centre::create([
-                'nom_centre' => $request->nom_centre,
-                'adresse_centre' => $request->adresse_centre,
-                'CP_centre' => $request->CP_centre,
-                'telephone_centre' => $request->telephone_centre,
-            ]);
-
-            // Redirection vers la liste des services
-            return redirect()->route('liste_centres');
         }
 
-          
+        // Créer un nouveau centre
+        Centre::create([
+            'nom_centre' => $request->nom_centre,
+            'adresse_centre' => $request->adresse_centre,
+            'CP_centre' => $request->CP_centre,
+            'telephone_centre' => $request->telephone_centre,
+        ]);
+
+        // Rediriger vers la liste des centres
+        return redirect()->route('liste_centres');
+    }
+
+    // Affiche le formulaire d'édition d'un centre
     public function showEditCentre($id_centre)
-        {
-            // Récupérez le centre à éditer en fonction de l'id
-            $centre = Centre::find($id_centre);
-            
-            // Vérifiez si le centre a été trouvé
-            if (!$centre) {
-                return redirect()->route('liste_centres')->with('error', 'Centre non trouvé.');
-            }
-        
-            return view('centres.editCentre', [
-                'centre' => $centre,
-            ]);
+    {
+        // Récupérer le centre à éditer en fonction de l'id
+        $centre = Centre::find($id_centre);
+
+        // Vérifier si le centre a été trouvé
+        if (!$centre) {
+            return redirect()->route('liste_centres')->with('error', 'Centre non trouvé.');
         }
-     
 
+        // Retourne la vue pour éditer le centre
+        return view('centres.editCentre', [
+            'centre' => $centre,
+        ]);
+    }
+
+    // Met à jour un centre existant
     public function updateCentre(Request $request, $id_centre)
-        {
-            $centre = Centre::find($id_centre);
+    {
+        // Récupérer le centre à mettre à jour
+        $centre = Centre::find($id_centre);
 
-            $rules = [
-                'nom_centre' => 'required|string|max:255',
-                'adresse_centre' => 'required|string|max:255',
-                'CP_centre' => 'required|string|max:5',
-                'telephone_centre' => 'required|string|min:10|max:14',
-            ];
+        // Définir les règles de validation
+        $rules = [
+            'nom_centre' => 'required|string|max:255',
+            'adresse_centre' => 'required|string|max:255',
+            'CP_centre' => 'required|string|max:5',
+            'telephone_centre' => 'required|string|min:10|max:14',
+        ];
 
-            $messages = [
-                'required' => 'Le champ :attribute est requis.',
-                'min' => 'Le champ :attribute doit avoir au moins :min caratères.',
-                'max' => 'Le champ :attribute ne doit pas dépasser les :max caratères.'
-            ];
+        // Définir les messages d'erreur
+        $messages = [
+            'required' => 'Le champ :attribute est requis.',
+            'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+        ];
 
-            // Validation des données
-            $validator = Validator::make($request->all(), $rules, $messages);
+        // Valider les données
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-            if ($validator->fails()) {
-
-                return redirect()->route('edit_centre', ['id_centre' => $centre->id_centre])
+        // Si la validation échoue, rediriger avec les erreurs
+        if ($validator->fails()) {
+            return redirect()->route('edit_centre', ['id_centre' => $centre->id_centre])
                 ->withErrors($validator)
                 ->withInput();
-            }
-                $centre->update($request->all());
-                return redirect()->route('liste_centres')      
-                ->with('success', 'Centre à ete mis a jour.');
         }
 
+        // Mettre à jour le centre avec les nouvelles données
+        $centre->update($request->all());
+
+        // Rediriger vers la liste des centres avec un message de succès
+        return redirect()->route('liste_centres')
+            ->with('success', 'Le centre a été mis à jour avec succès.');
+    }
+
+    // Supprime un centre existant
     public function deleteCentre($id_centre)
-        {
-            try {
-                // Recherche du centre à supprimer
-                $centre = Centre::findOrFail($id_centre);
+    {
+        try {
+            // Recherche du centre à supprimer
+            $centre = Centre::findOrFail($id_centre);
 
-                // Suppression du centre
-                $centre->delete();
+            // Suppression du centre
+            $centre->delete();
 
-                // Redirection vers la liste des centres avec un message de succès constant
-                return redirect()->route('liste_centres')->with('success', __('Le centre a été supprimé avec succès.'));
-            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $exception) {
-                // Redirection vers la liste des centres avec un message d'erreur constant
-                return redirect()->route('liste_centres')->with('error', __('Le centre n\'a pas été trouvé.'));
-            }
+            // Redirection vers la liste des centres avec un message de succès
+            return redirect()->route('liste_centres')->with('success', ('Le centre a été supprimé avec succès.'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $exception) {
+            // Redirection vers la liste des centres avec un message d'erreur
+            return redirect()->route('liste_centres')->with('error', ('Le centre n\'a pas été trouvé.'));
         }
-        
+    }
 }

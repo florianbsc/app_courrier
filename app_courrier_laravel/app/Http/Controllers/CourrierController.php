@@ -133,14 +133,15 @@ class CourrierController extends Controller
                 ->find($id_courrier);
 
             if($courrier->id_user !== auth()->user()->id_user && auth()->user()->id_user !== 4 )
-            {
-                return view('gestion.erreur');
-            }
+                {
+                    return view('gestion.erreur');
+                }
             // Vérifiez si le courrier existe
-            if (!$courrier) {
-                // Redirigez ou affichez une erreur selon vos besoins
-                return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
-            }
+            if (!$courrier) 
+                {
+                    // Redirigez ou affichez une erreur selon vos besoins
+                    return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+                }
 
             // Récupérez également les listes de centres, utilisateurs et services
             $centres = Centre::all();

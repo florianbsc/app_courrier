@@ -72,7 +72,8 @@
             
             <label for="destinataire_courrier">Destinataire</label>
             <select name="destinataire_courrier" id="destinataire_courrier" >
-                <option value="{{$courrier->destinataire_courrier}}" selected>{{$courrier->user->nom_user.' '.$courrier->user->prenom_user}}</option>
+                {{-- <option value="{{$courrier->destinataire_courrier}}" selected>{{$courrier->user->nom_user.' '.$courrier->user->prenom_user}}</option> --}}
+                <option value="{{$courrier->destinataire_courrier}}" selected>{{'faire une liaison pour recupe le nom/prenom du destinataire'}}</option>
                 @forelse($users as $user)
                     <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
                 @empty

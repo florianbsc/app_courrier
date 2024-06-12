@@ -35,7 +35,7 @@
             <input type="text" name="nom_service" placeholder="Nom" value="{{ old('nom_service') }}" required>
 
             <label for="telephone_service"></label>
-            <input type="text" name="telephone_service" placeholder="Téléphone" value="{{ old('telephone_service') }}" required>
+            <input type="text" name="telephone_service" placeholder="Téléphone" value="{{ old('telephone_service') }}" >
 
             <button type="submit">Envoyer</button>
         </form>
