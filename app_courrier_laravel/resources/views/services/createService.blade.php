@@ -15,16 +15,10 @@
 
 <!-- Contenu de la page -->
 @section('contenu')
-    <!-- Affiche les messages d'erreur de validation -->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+  <!-- Affiche les messages de succes/erreur de validation -->
+  <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
 
 <div class="container-fluid">
 <div class="card shadow border-0 mb-7">

@@ -18,21 +18,10 @@
 
 <!-- Contenu de la page -->
 @section('contenu')
-    <!-- Affiche les messages d'erreur de validation -->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+  <!-- Affiche les messages de succes/erreur de validation -->
+  <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
 
 <div class="container-fluid">
 <div class="card shadow border-0 mb-7">
@@ -50,15 +39,6 @@
             <!-- <label for="description_courrier">Description</label>
             <input type="text" name="description_courrier" value="{{$courrier->description_courrier}}" > -->
 
-            <label for="id_centre">Centre</label>
-            <select name="id_centre" id="id_centre" >
-                <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
-                @forelse($centres as $centre)
-                    <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
-                @empty
-                    <option value="" disabled>Aucun centre disponible</option>
-                @endforelse
-            </select>
 
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" >
@@ -78,6 +58,16 @@
                     <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
                 @empty
                     <option value="" disabled>Aucun service disponible</option>
+                @endforelse
+            </select>
+
+            <label for="id_centre">Centre</label>
+            <select name="id_centre" id="id_centre" >
+                <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
+                @forelse($centres as $centre)
+                    <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
+                @empty
+                    <option value="" disabled>Aucun centre disponible</option>
                 @endforelse
             </select>
 

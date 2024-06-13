@@ -25,21 +25,11 @@
             </ul>
 @endsection
 @section('contenu')
-    <!-- Affiche les messages d'erreur de validation -->
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+    <!-- Affiche les messages de succes/erreur de validation -->
+    <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
+        
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 

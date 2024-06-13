@@ -20,58 +20,14 @@
 
 @section('contenu')
 
-@if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+  <!-- Affiche les messages de succes/erreur de validation -->
+  <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
     
     <div class="container-fluid">
         <div class="card shadow border-0 mb-7">
             <div class="table-responsive">
-                {{-- {{dd($user)}} --}}
-{{-- 
-                <form action="{{ route('update_user', ['id_user' => $user[0]->id_user]) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-
-                    <label for="nom_user">Nom</label>
-                    <input type="text" name="nom_user" value="{{$user[0]->nom_user}}" required>
-
-                    <label for="prenom_user">Prénom</label>
-                    <input type="text" name="prenom_user" value="{{ $user[0]->prenom_user }}" required>
-
-                    <label for="mail_user">Mail</label>
-                    <input type="text" name="mail_user" value="{{ $user[0]->mail_user }}" required>
-                    
-                    <label for="privilege_user">Privilège</label>
-                    <select name="privilege_user" id="privilege_user" value="{{ $user[0]->privilege_user }}" required>
-                        @foreach(['1' => 'Lecture', '2' => 'Ecriture', '3' => 'Admin'] as $value => $label)
-                            <option value="{{ $value }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
-
-                    <label for="id_services">Affecter au service</label>
-                    <select name="id_services[]" id="id_service" value="{{ $services[0]->id_service }}" multiple>
-                        @foreach($services as $service)
-                            <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
-                        @endforeach
-                    </select>
-
-                    <button type="submit">Mettre à jour</button>
-                </form> --}}
-
-
-
 
                 <form action="{{ route('update_user', ['id_user' => $user->id_user]) }}" method="POST">
                     @csrf

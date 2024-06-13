@@ -15,21 +15,10 @@
 
 <!-- Contenu de la page -->
 @section('contenu')
-    <!-- Affiche les messages d'erreur de validation -->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+  <!-- Affiche les messages de succes/erreur de validation -->
+  <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
 
 <div class="container-fluid">
 
@@ -48,9 +37,6 @@
             <input type="file" name="scan_courrier">
 
             <label for="courriers"></label>
-            <input type="hidden" name="destinataire_courrier" placeholder="Destinataire" value="{{ old('destinataire_courrier') }}" >
-
-            <label for="courriers"></label>
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
             <label for="centres">Centre</label>
@@ -63,24 +49,24 @@
                 @endforelse
             </select>
 
-            <label for="services">Service</label>
-            <select name="id_service" id="id_service" >
-                <option value="{{ old('id_service') }}">-- Choisir un service --</option>
+            <label for="id_service">Service</label>
+            <select name="id_service[]" id="id_service" multiple>
                 @forelse($services as $service)
-                    <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
+                    <option value="{{ $service->id_service }}" {{ in_array($service->id_service, old('id_service', [])) ? 'selected' : '' }}>
+                        {{ $service->nom_service }}
+                    </option>
                 @empty
-                    <!-- Aucun service disponible -->
+                    <option value="" disabled>Aucun service disponible</option>
                 @endforelse
             </select>
             
-            <label for="courrier">Déstinataire</label>
-            <select name="destinataire_courrier" id="destinataire_courrier" >
-                <option value="{{ old('destinataire_courrier') }}">-- Choisir un déstinataire --</option>
-                @forelse($users as $user)
-                    <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
-                @empty
-                    <!-- Aucun service disponible -->
-                @endforelse
+            
+            <label for="destinataire_courrier">Déstinataire</label>
+            <select name="destinataire_courrier[]" id="destinataire_courrier" multiple>
+                <option value="{{ old('destinataire_courrier[]') }}">-- Choisir un déstinataire --</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
+                    @endforeach
             </select>
 
             <button type="submit">Envoyer</button>

@@ -16,20 +16,10 @@
 @endsection
 
 @section('contenu')
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <!-- Affiche les messages de succes/erreur de validation -->
+        <x-alert type="danger" :message="$errors->all()" />
+        <x-alert type="success" :message="session('success')" />
+        <x-alert type="danger" :message="session('error')" />
 
     <div class="container-fluid">
         <div class="col-sm-6 col-12 mb-4 mb-sm-0" style="display: flex">

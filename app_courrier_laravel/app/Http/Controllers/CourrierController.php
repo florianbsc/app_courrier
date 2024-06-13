@@ -65,6 +65,25 @@ class CourrierController extends Controller
 
     public function createCourrier(Request $request)
         {
+            // dd($request->destinataire_courrier);
+          
+            $rules =[
+                'objet_courrier' => 'required|string|max:50',
+                // 'destinataire_courrier' => 'nullable|numeric',
+                'description_courrier' => 'nullable|string|max:255',
+                'scan_courrier' => 'nullable|file|max:250',
+                'id_centre' => 'nullable|numeric',
+                'id_user' => 'required|numeric',
+                // 'id_service' => 'nullable|numeric',
+            ];
+
+            $messages = [
+                'required' => 'Le champ :attribute est requis.',
+                'string' => 'Le champ :attribute doit être une chaîne de caractères.',
+                'max' => 'Le champ :attribute ne doit pas dépasser :max caractères.',
+                'numeric' => 'Le champ :attribute doit être un nombre.'
+            ];
+
             $date_maintenant = now()->toDateString();
             
             $request->validate(['scan_courrier' => 'file|mimes:pdf',]);
@@ -79,24 +98,6 @@ class CourrierController extends Controller
                 // Gérer le cas où aucun fichier n'est pas téléchargé
                 $chemin = null;
             }
-
-            $rules =[
-                'objet_courrier' => 'required|string|max:50',
-                'destinataire_courrier' => 'nullable|numeric',
-                'description_courrier' => 'nullable|string|max:255',
-                'scan_courrier' => 'nullable|file|max:250',
-                'id_centre' => 'nullable|numeric',
-                'id_user' => 'required|numeric',
-                'id_service' => 'nullable|numeric',
-            ];
-
-            $messages = [
-                'required' => 'Le champ :attribute est requis.',
-                'string' => 'Le champ :attribute doit être une chaîne de caractères.',
-                'max' => 'Le champ :attribute ne doit pas dépasser :max caractères.',
-                'numeric' => 'Le champ :attribute doit être un nombre.'
-            ];
-
             $validator = Validator::make($request->all(), $rules, $messages);
         
 
@@ -108,8 +109,8 @@ class CourrierController extends Controller
             }
 
             DB::transaction(function () use ($request, $chemin ,$date_maintenant) {
-                // Création de l'utilisateur
-                Courrier::create([
+                // Création du courrier
+                $courrier = Courrier::create([
                     'date_courrier' => $date_maintenant,
                     'objet_courrier' => $request->objet_courrier,
                     'destinataire_courrier' => $request->destinataire_courrier,
@@ -119,6 +120,16 @@ class CourrierController extends Controller
                     'id_user' => auth()->user()->id_user,
                     'id_service' => $request->id_service,
                 ]);
+
+                if (!is_int($courrier->id_courrier)) {
+                    throw new \Exception('L\'ID de du courrier n\'a pas été récupéré');
+                }
+
+                foreach ($request->id_users as $id_user) {
+                    DB::table('users')->insert([
+                        'id_user' => $id_user,
+                    ]);
+                }
             });
 
             // Redirigez vers la vue de création de courrier avec un message de succès
@@ -130,23 +141,29 @@ class CourrierController extends Controller
         {
             // Recherche du courrier avec les relations
             $courrier = Courrier::with(['centre', 'user', 'service'])
-                ->find($id_courrier);
-
-            if($courrier->id_user !== auth()->user()->id_user && auth()->user()->id_user !== 4 )
-                {
-                    return view('gestion.erreur');
-                }
-            // Vérifiez si le courrier existe
-            if (!$courrier) 
-                {
-                    // Redirigez ou affichez une erreur selon vos besoins
-                    return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
-                }
-
+            ->find($id_courrier);
+            
             // Récupérez également les listes de centres, utilisateurs et services
             $centres = Centre::all();
             $users = User::all();
             $services = Service::all();
+
+            // Vérifiez si le courrier existe
+            if ($courrier == null) 
+            {
+                // Message d'erreur
+                return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'a pas été trouvé.');
+            }
+            if($courrier->id_)
+
+            // verrifie si l'utilisateur connecter à les droits d'accéder au courrier
+            if($courrier->id_user !== auth()->user()->id_user && auth()->user()->privilege_user !== 3 )
+                {
+                    return view('gestion.erreur');
+                }
+            
+
+           
 
             // Passez le courrier et les listes aux vues
             return view('courriers.editCourrier', [

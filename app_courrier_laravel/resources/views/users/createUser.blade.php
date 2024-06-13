@@ -19,21 +19,11 @@
 
 <!-- Contenu de la page -->
 @section('contenu')
-    <!-- Affiche les messages d'erreur de validation -->
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+  <!-- Affiche les messages de succes/erreur de validation -->
+  <x-alert type="danger" :message="$errors->all()" />
+    <x-alert type="success" :message="session('success')" />
+    <x-alert type="danger" :message="session('error')" />
+
 {{-- {{dd($services)}} --}}
 <div class="container-fluid">
  <!-- Formulaire d'ajout d'utilisateur -->
@@ -49,17 +39,31 @@
 
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
+               
+                
+
+
+
                 
                 <label for="id_services">Affecter au service</label>
-                <select id="id_service" name="id_services[]" multiple>
-                    @foreach($services as $service)
-                        <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
-                    @endforeach
+                <select id="id_service" name="id_services[]" multiple required>
+                    <option value="{{ old('id_service') }}">-- Attribuer service --</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
+                        @endforeach
                 </select>
 
+
+
+
+
+
+
+
+
                 <label for="privilege_user">Niveau de privilège</label>
-                <select name="privilege_user" id="privilege_user" required>
-                    <option selected disabled>-- Privilège --</option>
+                <select name="privilege_user" id="privilege_user" >
+                    <option selected disabled>-- Privilège --</option required>
                     @foreach(['1' => 'Lecture', '2' => 'Ecriture', '3' => 'Admin'] as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach

@@ -38,7 +38,7 @@ class ServiceController extends Controller
         // Définir les règles de validation
         $rules = [
             'nom_service' => 'required|string|max:255',
-            'telephone_service' => 'required|string|min:10|max:14',
+            'telephone_service' => 'nullable|string|max:14',
         ];
 
         // Définir les messages d'erreur
@@ -65,7 +65,7 @@ class ServiceController extends Controller
         ]);
 
         // Rediriger vers la liste des services
-        return redirect()->route('liste_services');
+        return redirect()->route('liste_services')->with('success','Le servie à été ajouté');
     }
 
     // Affiche le formulaire d'édition d'un service
@@ -89,7 +89,7 @@ class ServiceController extends Controller
         // Définir les règles de validation
         $rules = [
             'nom_service' => 'required|string|max:255',
-            'telephone_service' => 'required|string|min:10|max:14',
+            'telephone_service' => 'nullable|string|max:14',
         ];
 
         // Définir les messages d'erreur
@@ -113,7 +113,7 @@ class ServiceController extends Controller
         $service->update($request->all());
 
         // Rediriger vers la liste des services
-        return redirect()->route('liste_services');
+        return redirect()->route('liste_services')->with('success','le service à bien été mis à jour');
     }
 
     // Supprime un service existant
@@ -129,6 +129,6 @@ class ServiceController extends Controller
         }
 
         // Rediriger vers la liste des services (on pourrait ajouter un message de succès ici)
-        return redirect()->route('liste_services');
+        return redirect()->route('liste_services')->with('success','Le service à bien été suprimé');
     }
 }
