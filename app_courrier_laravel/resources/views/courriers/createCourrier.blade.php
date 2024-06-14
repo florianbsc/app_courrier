@@ -39,9 +39,9 @@
             <label for="courriers"></label>
             <input type="hidden" name="description_courrier" placeholder="Description" value="{{ old('description_courrier') }}">
  
-            <label for="centres">Centre</label>
-            <select name="id_centre" id="id_centre" >
-                <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option>
+            <select name="id_centre" id="id_centre" hidden>
+                <option value="6" selected>-- Choisir un centre --</option>
+                {{-- <option value="{{ old('id_centre') }}" selected>-- Choisir un centre --</option> --}}
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
                 @empty
@@ -50,11 +50,12 @@
             </select>
 
             <label for="id_service">Service</label>
-            <select name="id_service[]" id="id_service" multiple>
+            <select name="id_service" id="id_service" >
+                <option value="11" selected>-- Choisir un service --</option>
+
                 @forelse($services as $service)
-                    <option value="{{ $service->id_service }}" {{ in_array($service->id_service, old('id_service', [])) ? 'selected' : '' }}>
-                        {{ $service->nom_service }}
-                    </option>
+                <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
+
                 @empty
                     <option value="" disabled>Aucun service disponible</option>
                 @endforelse
@@ -62,8 +63,8 @@
             
             
             <label for="destinataire_courrier">Déstinataire</label>
-            <select name="destinataire_courrier[]" id="destinataire_courrier" multiple>
-                <option value="{{ old('destinataire_courrier[]') }}">-- Choisir un déstinataire --</option>
+            <select name="destinataire_courrier" id="destinataire_courrier" >
+                <option value="54" selected>-- Choisir un déstinataire --</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
                     @endforeach

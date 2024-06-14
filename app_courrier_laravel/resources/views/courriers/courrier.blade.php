@@ -65,7 +65,7 @@
                                         <!-- <th scope="col"><b>destinataire</b></th> -->
                                         <!-- <th scope="col"><b>Description</b></th> -->
                                         <!-- <th scope="col"><b>Enregistré par</b></th> -->
-                                        <th scope="col"><b>Centre</b></th>
+                                        {{-- <th scope="col"><b>Centre</b></th> --}}
                                         <th scope="col"><b>Service</b></th>
                                         <th scope="col"><b>Scan</b></th>
                                         <th scope="col"><b>Action</b></th>
@@ -77,7 +77,7 @@
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
-                                            <td>{{ $courrier->nom_centre }}</td>
+                                            {{-- <td>{{ $courrier->nom_centre }}</td> --}}
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
                                                 @if($courrier->id_user === $userConnected ||

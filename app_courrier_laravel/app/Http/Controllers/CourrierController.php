@@ -69,7 +69,7 @@ class CourrierController extends Controller
           
             $rules =[
                 'objet_courrier' => 'required|string|max:50',
-                // 'destinataire_courrier' => 'nullable|numeric',
+                'destinataire_courrier' => 'nullable|numeric',
                 'description_courrier' => 'nullable|string|max:255',
                 'scan_courrier' => 'nullable|file|max:250',
                 'id_centre' => 'nullable|numeric',
@@ -121,15 +121,15 @@ class CourrierController extends Controller
                     'id_service' => $request->id_service,
                 ]);
 
-                if (!is_int($courrier->id_courrier)) {
-                    throw new \Exception('L\'ID de du courrier n\'a pas été récupéré');
-                }
+                // if (!is_int($courrier->id_courrier)) {
+                //     throw new \Exception('L\'ID de du courrier n\'a pas été récupéré');
+                // }
 
-                foreach ($request->id_users as $id_user) {
-                    DB::table('users')->insert([
-                        'id_user' => $id_user,
-                    ]);
-                }
+                // foreach ($request->id_users as $id_user) {
+                //     DB::table('users')->insert([
+                //         'id_user' => $id_user,
+                //     ]);
+                // }
             });
 
             // Redirigez vers la vue de création de courrier avec un message de succès
@@ -231,23 +231,61 @@ class CourrierController extends Controller
             return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
         }
 
+    // public function showSearchCourrier()
+    //     {
+    //         $recherche = request()->recherche;
+
+    //         // Recherche des courriers en fonction du terme de recherche
+    //         $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
+    //             ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
+    //             ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
+    //             ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
+    //             ->where(function ($query) use ($recherche) {
+    //                 $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
+    //                     ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
+    //                     ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
+    //                     ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
+    //                     ->orWhere('centres.nom_centre', 'LIKE', "%$recherche%")
+    //                     ->orWhere('users.nom_user', 'LIKE', "%$recherche%")
+    //                     ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
+    //             })
+    //             ->get();
+
+    //         // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()
+    //         $centres = Centre::pluck('nom_centre', 'id_centre');
+    //         $users = User::pluck('nom_user', 'id_user');
+    //         $services = Service::pluck('nom_service', 'id_service');
+
+    //         return view('courriers.courrier', [
+    //             'courriers' => $courriers,
+    //             'centres' => $centres,
+    //             'users' => $users,
+    //             'services' => $services,
+    //             'valeur_recherche' => $recherche
+    //         ]);
+    //     }
     public function showSearchCourrier()
         {
-            $recherche = request()->recherche;
+            $recherche = request()->input('recherche');
 
             // Recherche des courriers en fonction du terme de recherche
-            $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
-                ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
-                ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
-                ->leftJoin('users', 'courriers.id_user', '=', 'users.id_user')
-                ->where(function ($query) use ($recherche) {
-                    $query->where('courriers.date_courrier', 'LIKE', "%$recherche%")
-                        ->orWhere('courriers.objet_courrier', 'LIKE', "%$recherche%")
-                        ->orWhere('courriers.destinataire_courrier', 'LIKE', "%$recherche%")
-                        ->orWhere('courriers.description_courrier', 'LIKE', "%$recherche%")
-                        ->orWhere('centres.nom_centre', 'LIKE', "%$recherche%")
-                        ->orWhere('users.nom_user', 'LIKE', "%$recherche%")
-                        ->orWhere('services.nom_service', 'LIKE', "%$recherche%");
+            $courriers = Courrier::with(['centre', 'service', 'user'])
+                ->when($recherche, function ($query, $recherche) {
+                    $query->where(function ($query) use ($recherche) {
+                        $query->where('date_courrier', 'LIKE', "%$recherche%")
+                            ->orWhere('objet_courrier', 'LIKE', "%$recherche%")
+                            ->orWhere('destinataire_courrier', 'LIKE', "%$recherche%")
+                            ->orWhere('description_courrier', 'LIKE', "%$recherche%")
+                            ->orWhereHas('centre', function ($query) use ($recherche) {
+                                $query->where('nom_centre', 'LIKE', "%$recherche%");
+                            })
+                            ->orWhereHas('service', function ($query) use ($recherche) {
+                                $query->where('nom_service', 'LIKE', "%$recherche%");
+                            })
+                            ->orWhereHas('user', function ($query) use ($recherche) {
+                                $query->where('nom_user', 'LIKE', "%$recherche%");
+                            });
+                    });
                 })
                 ->get();
 
@@ -264,7 +302,7 @@ class CourrierController extends Controller
                 'valeur_recherche' => $recherche
             ]);
         }
-    
+
     public function depotScanCourrier(Request $request, $id_courrier)
         {
 

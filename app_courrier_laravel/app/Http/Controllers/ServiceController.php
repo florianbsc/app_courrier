@@ -131,4 +131,6 @@ class ServiceController extends Controller
         // Rediriger vers la liste des services (on pourrait ajouter un message de succès ici)
         return redirect()->route('liste_services')->with('success','Le service à bien été suprimé');
     }
+
+    
 }

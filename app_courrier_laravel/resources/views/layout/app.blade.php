@@ -136,7 +136,7 @@
                                     @endif
                                 <!-- Centre -->
 
-                                    @if( $hasAccess2 )
+                                    {{-- @if( $hasAccess2 )
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_centres')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
@@ -159,7 +159,7 @@
                                                 Affecter
                                             </a>
                                         </li>
-                                    @endif
+                                    @endif --}}
                             </ul>
                         <!-- Divider -->
                             <hr class="navbar-divider my-5 opacity-20">
