@@ -61,8 +61,8 @@
                 @endforelse
             </select>
 
-            <label for="id_centre">Centre</label>
-            <select name="id_centre" id="id_centre" >
+            {{-- <label for="id_centre">Centre</label> --}}
+            <select name="id_centre" id="id_centre" hidden >
                 <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
                 @forelse($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>

@@ -62,10 +62,6 @@
                                     <tr>
                                         <th scope="col"><b>Date</b></th>
                                         <th scope="col"><b>objet</b></th>
-                                        <!-- <th scope="col"><b>destinataire</b></th> -->
-                                        <!-- <th scope="col"><b>Description</b></th> -->
-                                        <!-- <th scope="col"><b>Enregistré par</b></th> -->
-                                        {{-- <th scope="col"><b>Centre</b></th> --}}
                                         <th scope="col"><b>Service</b></th>
                                         <th scope="col"><b>Scan</b></th>
                                         <th scope="col"><b>Action</b></th>
@@ -77,26 +73,26 @@
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
-                                            {{-- <td>{{ $courrier->nom_centre }}</td> --}}
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>
+                                                <!-- voir le scan -->
                                                 @if($courrier->id_user === $userConnected ||
                                                     $courrier->destinataire_courrier === $userConnected || 
-                                                    auth()->user()->inService($courrier->id_service)  || 
+                                                    auth()->user()->inService($courrier->id_service) || 
                                                     $hasAccess3 )
                                                     <!-- icone d'upload -->
-                                                    @if(empty($courrier->scan_courrier))
+                                                    @if(empty($courrier->scan_courrier) || $courrier->id_user === $userConnected)
                                                         <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
                                                             @csrf
                                                             <label for="courriers" >
                                                                 <input type="hidden" name="id_courrier" value="{{ $courrier->id_courrier }}">
                                                                 <input name="scan_courrier" class="courrier_file" type="file" >
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                                    fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                                                    <path
-                                                                        d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                        fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                                                        <path
+                                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                                                        <path
+                                                                            d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                                     </svg>
                                                             </label>     
                                                         </form>

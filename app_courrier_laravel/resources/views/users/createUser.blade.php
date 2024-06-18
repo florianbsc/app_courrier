@@ -40,26 +40,12 @@
                 <label for="mail_user" name="mail_user"></label>
                 <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
                
-                
-
-
-
-                
                 <label for="id_services">Affecter au service</label>
                 <select id="id_service" name="id_services[]" multiple required>
-                    <option value="{{ old('id_service') }}">-- Attribuer service --</option>
-                        @foreach($services as $service)
-                            <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
-                        @endforeach
+                    @foreach($services as $service)
+                        <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
+                    @endforeach
                 </select>
-
-
-
-
-
-
-
-
 
                 <label for="privilege_user">Niveau de privilège</label>
                 <select name="privilege_user" id="privilege_user" >
@@ -74,9 +60,6 @@
 
                 <label for="password_confirmation"></label>
                 <input type="password_confirmation" name="password_confirmation" placeholder="Confirmer mot de passe" required >
-
-                <!-- <label for="privilege_user" name="privilege_user"></label>
-                <input type="number" name="privilege_user" placeholder="privilege_user"> -->
 
                 <button type="submit">Envoyer</button>
             </form>
