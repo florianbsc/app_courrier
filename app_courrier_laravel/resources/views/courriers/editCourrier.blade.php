@@ -33,35 +33,31 @@
             <label for="objet_courrier">Objet</label>
             <input type="text" name="objet_courrier" value="{{$courrier->objet_courrier}}"  required>
 
-             {{-- <label for="destinataire_courrier">Destinataire</label>
-            <input type="text" name="destinataire_courrier" value="{{$courrier->destinataire_courrier}}"  required> --}}
-
-            <!-- <label for="description_courrier">Description</label>
-            <input type="text" name="description_courrier" value="{{$courrier->description_courrier}}" > -->
-
-
             <label for="id_service">Service</label>
             <select name="id_service" id="id_service" >
-                <option value="{{$courrier->id_service}}" selected>{{$courrier->service->nom_service}}</option>
-                @forelse($services as $service)
-                    <option value="{{ $service->id_service }}">{{ $service->nom_service }}</option>
-                @empty
-                    <option value="" disabled>Aucun service disponible</option>
-                @endforelse
+                @foreach($services as $service)
+                    <option value="{{ $service->id_service }}" {{ $service->id_service == $courrier->id_service ? 'selected' : '' }}>
+                        {{ $service->nom_service}}
+                    </option>
+                @endforeach
+                @if($services->isEmpty())
+                    <option value="" disabled>Aucun destinataire disponible</option>
+                @endif
             </select>
             
             <label for="destinataire_courrier">Destinataire</label>
             <select name="destinataire_courrier" id="destinataire_courrier" >
-                {{-- <option value="{{$courrier->destinataire_courrier}}" selected>{{$courrier->user->nom_user.' '.$courrier->user->prenom_user}}</option> --}}
-                <option value="{{$courrier->destinataire_courrier}}" selected>{{'faire une liaison pour recupe le nom/prenom du destinataire'}}</option>
-                @forelse($users as $user)
-                    <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
-                @empty
-                    <option value="" disabled>Aucun service disponible</option>
-                @endforelse
+                @foreach($users as $user)
+                    <option value="{{ $user->id_user }}" {{ $user->id_user == $courrier->destinataire_courrier ? 'selected' : '' }}>
+                        {{ $user->nom_user . ' ' . $user->prenom_user }}
+                    </option>
+                @endforeach
+                @if($users->isEmpty())
+                    <option value="" disabled>Aucun destinataire disponible</option>
+                @endif
             </select>
 
-            {{-- <label for="id_centre">Centre</label> --}}
+            {{-- <label for="id_centre">Centre</label>  --}}
             <select name="id_centre" id="id_centre" hidden >
                 <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
                 @forelse($centres as $centre)

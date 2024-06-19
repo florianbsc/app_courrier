@@ -42,15 +42,15 @@
                     <label for="mail_user">Mail</label>
                     <input type="text" name="mail_user" value="{{ $user->mail_user }}" required>
                     
-                        <label for="id_services">Affecter au service</label>
-                        <select name="id_services[]" id="id_service" multiple>
-                            @foreach($services as $service)
-                                <option value="{{ $service->id_service }}"
-                                    @if($user->services->contains($service->id_service)) selected @endif>
-                                    {{ $service->nom_service }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <label for="id_services">Affecter au service</label>
+                    <select name="id_services[]" id="id_service" multiple>
+                        @foreach($services as $service)
+                            <option value="{{ $service->id_service }}"
+                                @if($user->services->contains($service->id_service)) selected @endif>
+                                {{ $service->nom_service }}
+                            </option>
+                        @endforeach
+                    </select>
                     
                     <label for="privilege_user">Privilège</label>
                     <select name="privilege_user" id="privilege_user" required>
