@@ -121,15 +121,6 @@ class CourrierController extends Controller
                     'id_service' => $request->id_service,
                 ]);
 
-                // if (!is_int($courrier->id_courrier)) {
-                //     throw new \Exception('L\'ID de du courrier n\'a pas été récupéré');
-                // }
-
-                // foreach ($request->id_users as $id_user) {
-                //     DB::table('users')->insert([
-                //         'id_user' => $id_user,
-                //     ]);
-                // }
             });
 
             // Redirigez vers la vue de création de courrier avec un message de succès
