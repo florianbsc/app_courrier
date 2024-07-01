@@ -55,9 +55,11 @@
 
 <!-- Controle acces user -->
     @php
-        $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
-        $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
-        $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
+        $is_inviter = \App\Http\Controllers\UserController::hasAccess(1);
+        $is_employer = \App\Http\Controllers\UserController::hasAccess(2);
+        $is_directeur = \App\Http\Controllers\UserController::hasAccess(3);
+        $is_admin = \App\Http\Controllers\UserController::hasAccess(4);
+        $is_desabled = \App\Http\Controllers\UserController::hasAccess(0);
     @endphp
 
 <!-- Dashboard -->
@@ -103,7 +105,7 @@
                                         </a>
                                     </li>
                                 <!-- Courrier -->
-                                    @if($hasAccess1 )
+                                    @if($is_employer )
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_courriers')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
@@ -114,7 +116,7 @@
                                         </li>
                                     @endif
                                 <!-- Users -->
-                                    @if( $hasAccess3 )
+                                    @if( $is_admin )
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_users')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -125,7 +127,7 @@
                                         </li>
                                     @endif
                                 <!-- Service -->
-                                    @if( $hasAccess2 )
+                                    @if( $is_employer )
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_services')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-buildings" viewBox="0 0 16 16">

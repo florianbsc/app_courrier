@@ -320,13 +320,18 @@ class CourrierController extends Controller
         }
 
 
-    public function download ($chemin) 
+        public function download($chemin) 
         {
+            // Vérifie si le fichier existe dans le système de fichiers
+            if (Storage::exists($chemin)) {
+                // Télécharge le fichier en utilisant Storage::download
+                return Storage::download($chemin, 'COURRIER - '.Carbon::now('Europe/Paris')->format('d-m-Y').'.pdf');
+            }
         
-            // return Storage::download($chemin);
-            return Storage::download($chemin, 'COURRIER - '.'-'.Carbon::now('Europe/Paris')->format('d-m-Y').'.pdf');
+            // Redirige vers la liste des courriers avec un message d'erreur si le fichier n'existe pas
+            return redirect()->route('liste_courriers')->with('error', 'Le scan n\'a pas été trouvé.');
         }
-
+        
     
     public function deleteScan ($id_courrier)
         {
@@ -334,7 +339,7 @@ class CourrierController extends Controller
         $courrier = Courrier::find($id_courrier);
 
         // Vérification si le courrier existe
-        if ($courrier) {
+        if ($courrier->scan_courrier) {
             
             // Suppression du scan courrier en local
             Storage::delete($courrier->scan_courrier );
@@ -348,7 +353,7 @@ class CourrierController extends Controller
         }
 
         // Redirection vers la liste des courriers avec un message d'erreur
-        return redirect()->route('liste_courriers')->with('error', 'Le courrier n\'à pas été trouvé.');
+        return redirect()->route('liste_courriers')->with('error', 'Le scan n\'à pas été trouvé.');
         }
 }
 

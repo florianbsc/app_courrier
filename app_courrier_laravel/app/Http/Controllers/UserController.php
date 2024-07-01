@@ -267,8 +267,7 @@ class UserController extends Controller
         $credentials = request()->only('mail_user', 'password');
 
         // Tente de connecter l'utilisateur avec les informations fournies
-        $auth = Auth::attempt($credentials, false);
-        if ($auth) 
+        if (Auth::attempt($credentials, false)) 
         { 
             // Regénère la session pour des raisons de sécurité
             Session::regenerate();
@@ -278,20 +277,39 @@ class UserController extends Controller
             $privilege_user = null;
 
             // Vérifie si l'utilisateur est administrateur
-            $is_admin = User::where('id_user', auth()->user()->privilege_user)->exists();
+            // $is_admin = User::where('id_user', auth()->user()->privilege_user)->exists();
 
             // Définit le niveau de privilège en fonction du statut de l'utilisateur
-            if($is_admin){
-                $privilege_user = '3';
-            } else {
-                // Vérifie si l'utilisateur est un utilisateur standard
-                $is_user = User::where('id_user', auth()->user()->privilege_user)->exists();
-                if($is_user){
-                    $privilege_user = '2';
-                } else {
+            // if($is_admin){
+            //     $privilege_user = '3';
+            // } else {
+            //     // Vérifie si l'utilisateur est un utilisateur standard
+            //     $is_user = User::where('id_user', auth()->user()->privilege_user)->exists();
+            //     if($is_user){
+            //         $privilege_user = '2';
+            //     } else {
+            //         $privilege_user = '1';
+            //     }
+            // }
+            // Détermine le niveau de privilège de l'utilisateur
+            $lvl = $auth->privilege_user; // Supposant que le niveau de privilège est stocké dans 'privilege_user'
+
+            switch ($lvl):
+                case 1: 
                     $privilege_user = '1';
-                }
-            }
+                    break;
+                case 2:
+                    $privilege_user = '2';
+                    break;
+                case 3:
+                    $privilege_user = '3';
+                    break;
+                case 4: 
+                    $privilege_user = '4';
+                    break;
+                default:
+                    $privilege_user = '0';
+            endswitch;
 
             // Stocke le privilège utilisateur dans la session
             Session::put('privilege_user', $privilege_user);

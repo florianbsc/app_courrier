@@ -18,7 +18,7 @@ class Affecter extends Model
     // Définit une relation inverse avec le modèle User
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id_user'); 
+        return $this->belongsTo(User::class, 'id_user', 'id_user'); //remplacer belongsTo par hasmany pour select plx sevices et users
         // Cette relation indique qu'un enregistrement de la table 'affecters' appartient à un enregistrement de la table 'users' via 'id_user'
     }
 

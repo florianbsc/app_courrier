@@ -4,10 +4,12 @@
 
 @section('nav')
     @php
-            $hasAccess1 = \App\Http\Controllers\UserController::hasAccess(1);
-            $hasAccess2 = \App\Http\Controllers\UserController::hasAccess(2);
-            $hasAccess3 = \App\Http\Controllers\UserController::hasAccess(3);
-            $userConnected = auth()->user()->id_user;
+        $is_inviter = \App\Http\Controllers\UserController::hasAccess(1);
+        $is_employer = \App\Http\Controllers\UserController::hasAccess(2);
+        $is_directeur = \App\Http\Controllers\UserController::hasAccess(3);
+        $is_admin = \App\Http\Controllers\UserController::hasAccess(4);
+        $is_desabled = \App\Http\Controllers\UserController::hasAccess(0);
+        $userConnected = auth()->user()->id_user;
     @endphp
 
         <h1 class="h2 mb-0 ls-tight">Liste Courrier</h1>
@@ -15,7 +17,7 @@
                 <li class="nav-item">
                     <a href="{{ route('liste_courriers') }}" class="nav-link active">Liste</a>
                 </li>
-                @if( $hasAccess2)
+                @if( $is_employer)
 
                     <li class="nav-item">
                         <a href="{{ route('creation_courrier') }}" class="nav-link font-regular">Ajouter</a>
@@ -63,6 +65,7 @@
                                         <th scope="col"><b>Date</b></th>
                                         <th scope="col"><b>objet</b></th>
                                         <th scope="col"><b>Service</b></th>
+                                        <th scope="col"><b>Destinataueure</b></th>
                                         <th scope="col"><b>Scan</b></th>
                                         <th scope="col"><b>Action</b></th>
                                     </tr>
@@ -70,18 +73,22 @@
                             <!-- Ligne tableau -->
                                 <tbody>
                                     @foreach ($courriers as $courrier)
+                                    {{-- {{dd(auth()->user()->privilege_user)}} --}}
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
+                                            <td>{{ $courrier->destinataire_courrier  }}</td>
                                             <td>
                                                 <!-- voir le scan -->
                                                 @if($courrier->id_user === $userConnected ||                // auteur du courrier est l'user connecté
                                                     $courrier->destinataire_courrier === $userConnected ||  // destinataire du courrier est l'user connecté
-                                                    auth()->user()->inService($courrier->id_service) ||     // uesr connecté est dans le service attribué
-                                                    $hasAccess3 )                                                                                               
+                                                    auth()->user()->inService($courrier->id_service)    ||     // user connecté est dans le service attribué
+                                                    auth()->user()->privilege_user >=3 )      
                                                     <!-- deposé un scan -->
-                                                    @if(empty($courrier->scan_courrier))      {{-- l'auteur du courrier est l'user connecté --}}
+                                                    @if(empty($courrier->scan_courrier) && $courrier->id_user === $userConnected || 
+                                                        empty($courrier->scan_courrier) && $is_admin)      {{-- l'auteur du courrier est l'user connecté --}}
+                                                        
                                                         <form method="POST" action="{{ route('depot_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}" enctype='multipart/form-data'>
                                                             @csrf
                                                             <label for="courriers" style="position: relative; display: inline-block; cursor: pointer;">
@@ -93,7 +100,10 @@
                                                                 </svg>
                                                             </label> 
                                                         </form>
-                                                    @else
+                                                    @endif
+                                                    @if(!empty($courrier->scan_courrier) && auth()->user()->privilege_user >=2 ||
+                                                        !empty($courrier->scan_courrier) && $courrier->id_user === $userConnected ||                // auteur du courrier est l'user connecté
+                                                        !empty($courrier->scan_courrier) && $courrier->destinataire_courrier === $userConnected)
                                                         <!-- telecharger le scan -->
                                                         <a href="{{ route('download_scan_courrier', ['chemin' => $courrier->scan_courrier]) }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="color:  #3392ff ">
@@ -101,6 +111,9 @@
                                                                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
                                                             </svg>
                                                         </a>
+                                                    @endif
+                                                    @if(!empty($courrier->scan_courrier) && $courrier->id_user === $userConnected ||
+                                                        !empty($courrier->scan_courrier) && $is_admin)
                                                         <!-- Btn sup scan -->
                                                         <a href="{{ route('delete_scan_courrier', ['id_courrier' => $courrier->id_courrier]) }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill" viewBox="0 0 16 16">
@@ -110,9 +123,10 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            
                                             <td>
                                                 <!-- Bouton  action -->
-                                                    @if($courrier->id_user === $userConnected || $hasAccess3 )
+                                                    @if($courrier->id_user === $userConnected || $is_admin )
                                                         <ul class="nav">
                                                             <!-- Btn sup -->
                                                                 <li class="nav-item">
