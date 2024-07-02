@@ -53,9 +53,8 @@ class CourrierController extends Controller
     public function showCreateCourrier ()
         {
             $centres = Centre::all();
-            $users = User::all();
-            $services = Service::all();
-
+            $users = User::where('privilege_user', '>=', 2)->orderBy('nom_user')->get();
+            $services = Service::orderBy('nom_service')->get();
             return view('courriers.createCourrier', [
                 'centres' => $centres,
                 'users' => $users,
@@ -131,13 +130,17 @@ class CourrierController extends Controller
     public function showEditCourrier($id_courrier)
         {
             // Recherche du courrier avec les relations
-            $courrier = Courrier::with(['centre', 'user', 'service'])
-            ->find($id_courrier);
+            $courrier = Courrier::with(['centre', 'user', 'service'])->find($id_courrier);
             
             // Récupérez également les listes de centres, utilisateurs et services
             $centres = Centre::all();
             $users = User::all();
-            $services = Service::all();
+            $services = Service::orderBy('nom_service')->get();
+            // $services = Service::all();
+            
+            // $users = User::where('privilege_user', '>=', 2)->orderBy('nom_user')->get();
+            
+           
 
             // Vérifiez si le courrier existe
             if ($courrier == null) 

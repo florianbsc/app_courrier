@@ -76,6 +76,8 @@ Route::prefix('services')->middleware('auth')->group(function()
             Route::get('/edit/{id_service}',[ServiceController::class, 'showEditService'])->name('edit_service'); // Formulaire d'édition
             Route::put('/update/{id_service}', [ServiceController::class, 'updateService'])->name('update_service'); // Met à jour un service
             Route::get('/delete/{id_service}', [ServiceController::class, 'deleteService'])->name('delete_service'); // Supprime un service
+            Route::post('/search', [ServiceController::class, 'searchService'])->name('liste_service_recherche'); // Recherche de service
+
         });
     });
 

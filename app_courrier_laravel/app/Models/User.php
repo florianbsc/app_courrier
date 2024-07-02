@@ -66,29 +66,36 @@ class User extends Authenticatable
     }
 
 
- // Définir la relation avec les services via la table 'affecters'
- public function services()
- {
-     // Relation plusieurs-à-plusieurs avec le modèle Service via la table 'affecters'
-     return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
- }
+    // Définir la relation avec les services via la table 'affecters'
+    public function services()
+    {
+        // Relation plusieurs-à-plusieurs avec le modèle Service via la table 'affecters'
+        return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
+    }
 
- // Méthode statique pour vérifier si l'utilisateur appartient à un service spécifique
- public static function inService($serviceAChecker)
- {
-     // Récupère l'utilisateur authentifié
-     $user = auth()->user()->id_user;
+    // Définir la relation entre User et Courrier
+    public function courriers()
+    {
+        return $this->hasMany(Courrier::class, 'id_user');
+    }
 
-     // Compte le nombre d'affectations de l'utilisateur pour le service spécifique
-     $affecterUsers = Affecter::select('*')
-         ->where('id_user', '=', $user)  // Filtre par l'ID de l'utilisateur
-         ->where('id_service', '=', $serviceAChecker) // Filtre par l'ID du service
-         ->groupBy('id_user')  // Regroupe les résultats par utilisateur
-         ->count(); // Compte le nombre de résultats
 
-     // Retourne le nombre d'affectations trouvées
-     return $affecterUsers;
- }
+    // Méthode statique pour vérifier si l'utilisateur appartient à un service spécifique
+    public static function inService($serviceAChecker)
+    {
+        // Récupère l'utilisateur authentifié
+        $user = auth()->user()->id_user;
+
+        // Compte le nombre d'affectations de l'utilisateur pour le service spécifique
+        $affecterUsers = Affecter::select('*')
+            ->where('id_user', '=', $user)  // Filtre par l'ID de l'utilisateur
+            ->where('id_service', '=', $serviceAChecker) // Filtre par l'ID du service
+            ->groupBy('id_user')  // Regroupe les résultats par utilisateur
+            ->count(); // Compte le nombre de résultats
+
+        // Retourne le nombre d'affectations trouvées
+        return $affecterUsers;
+    }
 }
 
 

@@ -18,4 +18,11 @@ class Service extends Model
         return $this->belongsToMany(User::class, 'affecters', 'id_service', 'id_user');
     }
 
+    // Définir la relation entre Service et Courrier
+    public function courriers()
+    {
+        return $this->hasMany(Courrier::class, 'id_user');
+    }
+
+
 }

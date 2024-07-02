@@ -40,9 +40,6 @@
                         {{ $service->nom_service}}
                     </option>
                 @endforeach
-                @if($services->isEmpty())
-                    <option value="" disabled>Aucun destinataire disponible</option>
-                @endif
             </select>
             
             <label for="destinataire_courrier">Destinataire</label>
@@ -52,19 +49,14 @@
                         {{ $user->nom_user . ' ' . $user->prenom_user }}
                     </option>
                 @endforeach
-                @if($users->isEmpty())
-                    <option value="" disabled>Aucun destinataire disponible</option>
-                @endif
             </select>
 
             {{-- <label for="id_centre">Centre</label>  --}}
             <select name="id_centre" id="id_centre" hidden >
                 <option value="{{$courrier->id_centre}}" selected>{{$courrier->centre->nom_centre}}</option>
-                @forelse($centres as $centre)
+                @foreach($centres as $centre)
                     <option value="{{ $centre->id_centre }}">{{ $centre->nom_centre }}</option>
-                @empty
-                    <option value="" disabled>Aucun centre disponible</option>
-                @endforelse
+                @endforeach
             </select>
 
             <button type="submit">Mise à jour</button>

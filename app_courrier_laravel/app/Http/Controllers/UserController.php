@@ -18,8 +18,9 @@ class UserController extends Controller
         {
             // Récupère les utilisateurs avec leurs services associés
             $users = User::select('users.*', 'services.nom_service')
+            ->where('nom_user', '!=', 'aucun')
             ->leftJoin('affecters','users.id_user' , '=', 'affecters.id_user')
-            ->leftJoin('services', 'services.id_service', '=','affecters.id_service', )
+            ->leftJoin('services', 'services.id_service', '=','affecters.id_service')
             ->orderBy('users.nom_user', 'asc')
             ->get();
 
@@ -32,14 +33,11 @@ class UserController extends Controller
     // Affiche le formulaire de création d'utilisateur
     public function showCreateUser()
     {
-        // Récupère tous les utilisateurs
-        $users = User::all();
         // Récupère tous les services
-        $services = Service::all();
+        $services = Service::orderBy('nom_service')->get();
 
         // Retourne la vue de création d'utilisateur avec les utilisateurs et les services
         return view('users.createUser', [
-            'users' => $users,
             'services' => $services,
         ]);
     }
@@ -79,6 +77,12 @@ class UserController extends Controller
 
         // Utilisation d'une transaction pour garantir l'intégrité des opérations de base de données
         DB::transaction(function () use ($request) {
+            
+            // dd($request);
+            // if($request->privilege_user === null ) si pas de previlege le mettre en lvl 0 doit user desactiver
+            // {
+            //     $request->privilege_user == 0;
+            // }
             // Création de l'utilisateur
             $user = User::create([
                 'nom_user' => $request->nom_user,
@@ -138,7 +142,7 @@ class UserController extends Controller
         $rules = [
             'nom_user' => 'required|string',
             'prenom_user' => 'required|string',
-            'mail_user' => 'required|email',
+            'mail_user' => 'required|email|unique:users',
             'privilege_user' => 'nullable|int',
             'id_services' => 'array',
             'id_services.*' => 'int|exists:services,id_service',
@@ -190,14 +194,26 @@ class UserController extends Controller
         // Trouve l'utilisateur par son ID
         $user = User::find($id_user);
 
-        // Si l'utilisateur existe, le supprime
-        if($user) {
+        // Si l'utilisateur existe
+        if ($user) {
+            // Vérifie s'il existe des courriers liés à l'utilisateur
+            $courriers = $user->courriers; // Assurez-vous que la relation 'courriers' est définie dans le modèle User
+
+            // Si l'utilisateur a des courriers liés, retournez une réponse ou lancez une exception
+            if ($courriers->count() > 0) {
+                $user->update(['privilege_user' => 0]);
+                return redirect()->route('liste_users')->with('error', 'Utilisateur est lié à des courriers. Suppression impossible, il à été desactivé'); 
+            }
+
+            // Si aucun courrier n'est trouvé, supprime l'utilisateur
             $user->delete();
+            return redirect()->route('liste_users')->with('success', 'Utilisateur supprimé avec succès.'); // Code de statut HTTP 200 pour une réussite
         }
 
-        // Redirige vers la liste des utilisateurs
-        return redirect()->route('liste_users');
+        // Si l'utilisateur n'existe pas, retournez une réponse indiquant l'absence de l'utilisateur
+        return redirect()->route('liste_users')->with('error', 'Utilisateur non trouvé.'); 
     }
+
 
     // Affiche les résultats de recherche des utilisateurs
     public function showSearchUser()
@@ -207,6 +223,7 @@ class UserController extends Controller
 
         // Recherche les utilisateurs en fonction du terme de recherche
         $users = User::select('users.*', 'services.nom_service')
+        ->where('nom_user', "!=", 'aucun')
             ->leftJoin('affecters', 'users.id_user', '=', 'affecters.id_user')
             ->leftJoin('services', 'services.id_service', '=', 'affecters.id_service')
             ->where(function ($query) use ($recherche) {
@@ -216,8 +233,7 @@ class UserController extends Controller
                     ->orWhere('mail_user', 'LIKE', "%$recherche%")
                     ->orWhere('nom_service', 'LIKE', "%$recherche%")
                     ->orWhere('privilege_user', 'LIKE', "%$recherche%");
-            })
-            ->get();
+            })->orderBy('nom_user')->get();
 
         // Passe les résultats de la recherche et le terme de recherche à la vue
         return view('users.listeUsers', [
@@ -276,21 +292,6 @@ class UserController extends Controller
             // Initialisation de la variable de privilège
             $privilege_user = null;
 
-            // Vérifie si l'utilisateur est administrateur
-            // $is_admin = User::where('id_user', auth()->user()->privilege_user)->exists();
-
-            // Définit le niveau de privilège en fonction du statut de l'utilisateur
-            // if($is_admin){
-            //     $privilege_user = '3';
-            // } else {
-            //     // Vérifie si l'utilisateur est un utilisateur standard
-            //     $is_user = User::where('id_user', auth()->user()->privilege_user)->exists();
-            //     if($is_user){
-            //         $privilege_user = '2';
-            //     } else {
-            //         $privilege_user = '1';
-            //     }
-            // }
             // Détermine le niveau de privilège de l'utilisateur
             $lvl = $auth->privilege_user; // Supposant que le niveau de privilège est stocké dans 'privilege_user'
 

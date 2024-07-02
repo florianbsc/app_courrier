@@ -12,7 +12,7 @@ class ServiceController extends Controller
     public function showService()
     {
         // Récupère tous les services
-        $services = Service::all();
+        $services = Service::where('nom_service', '!=', 'aucun')->orderBy('nom_service')->get();
 
         // Retourne la vue avec la liste des services
         return view('services.listeServices', [
@@ -37,7 +37,7 @@ class ServiceController extends Controller
     {
         // Définir les règles de validation
         $rules = [
-            'nom_service' => 'required|string|max:255',
+            'nom_service' => 'required|string|max:255|unique:services',
             'telephone_service' => 'nullable|string|max:14',
         ];
 
@@ -45,7 +45,9 @@ class ServiceController extends Controller
         $messages = [
             'required' => 'Le champ :attribute est requis.',
             'min' => 'Le champ :attribute doit avoir au moins :min caractères.',
-            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.'
+            'max' => 'Le champ :attribute ne doit pas dépasser les :max caractères.',
+            'unique' => 'Le champ :attribute est déjà utilisée.',
+
         ];
 
         // Valider les données
@@ -124,13 +126,34 @@ class ServiceController extends Controller
 
         // Vérifier si le service existe
         if ($service) {
+
+            $courriers = $service->courriers;
+// dd($service);
+            if($courriers->count() > 0 ) {
+                return redirect()->route('liste_services')->with('error', 'Service lié à des courriers. Suppression impossible');
+            }
             // Supprimer le service
             $service->delete();
+            
+                    // Rediriger vers la liste des services (on pourrait ajouter un message de succès ici)
+                    return redirect()->route('liste_services')->with('success','Le service à bien été suprimé');
         }
-
-        // Rediriger vers la liste des services (on pourrait ajouter un message de succès ici)
-        return redirect()->route('liste_services')->with('success','Le service à bien été suprimé');
     }
 
-    
+    public function searchService()
+    {
+        $recherche = request()->recherche;
+
+        $services = Service::select('services.*')
+        ->where('nom_service', '!=', 'aucun')
+            ->where(function($query) use ($recherche){
+                $query->where('nom_service', 'LIKE', "%$recherche%")
+                ->orWhere('telephone_service', 'LIKE', "%$recherche%");
+            })->orderBy('nom_service')->get();
+
+        return view('services.listeServices',[
+            'services' => $services,
+            'valeur_recherche' => $recherche
+        ]);
+    }
 }

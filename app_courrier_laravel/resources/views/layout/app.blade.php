@@ -105,7 +105,7 @@
                                         </a>
                                     </li>
                                 <!-- Courrier -->
-                                    @if($is_employer )
+                                    @if($is_inviter)
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_courriers')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
@@ -116,7 +116,7 @@
                                         </li>
                                     @endif
                                 <!-- Users -->
-                                    @if( $is_admin )
+                                    @if( $is_admin)
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_users')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -127,7 +127,7 @@
                                         </li>
                                     @endif
                                 <!-- Service -->
-                                    @if( $is_employer )
+                                    @if( $is_employer)
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{route('liste_services')}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-buildings" viewBox="0 0 16 16">

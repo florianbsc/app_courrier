@@ -65,11 +65,21 @@
                     </select>
                     
                     <!-- Sélecteur pour choisir le destinataire -->
-                    <label for="destinataire_courrier">Déstinataire</label>
+                    {{-- <label for="destinataire_courrier">Déstinataire</label>
                     <select name="destinataire_courrier" id="destinataire_courrier">
                         <option value="54" selected>-- Choisir un déstinataire --</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id_user }}">{{ $user->nom_user.' '.$user->prenom_user }}</option>
+                        @endforeach
+                    </select> --}}
+
+                    <label for="destinataire_courrier">Destinataire</label>
+                    <select name="destinataire_courrier" id="destinataire_courrier">
+                        <option value="54" {{ old('destinataire_courrier', $courrier->destinataire_courrier ?? 54) == 54 ? 'selected' : '' }}>-- Choisir un destinataire --</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id_user }}" {{ old('destinataire_courrier', $courrier->destinataire_courrier ?? '') == $user->id_user ? 'selected' : '' }}>
+                                {{ $user->nom_user . ' ' . $user->prenom_user }}
+                            </option>
                         @endforeach
                     </select>
 
