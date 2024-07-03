@@ -72,11 +72,9 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
                     <!-- Brand -->
-                    
                         <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="{{route('accueil')}}">
                             <img src="{{asset('images/logo-legta.png')}}" alt="logo">
-                        </a>
-                                            
+                        </a>             
                     <!-- User menu (mobile) -->
                         <div class="navbar-user d-lg-none">
                             <!-- Dropdown -->

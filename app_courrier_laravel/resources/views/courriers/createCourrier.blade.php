@@ -34,7 +34,7 @@
 
                     <!-- Champ pour l'objet du courrier -->
                     <label for="courriers">Courrier</label>
-                    <input type="text" name="objet_courrier" placeholder="Objet" value="{{ old('objet_courrier') }}" autofocus required>
+                    <input type="text" name="objet_courrier" placeholder="Objet, Expéditeur, n° facture" value="{{ old('objet_courrier') }}" autofocus required>
 
                     <!-- Champ pour télécharger le scan du courrier -->
                     <label for="courriers">Scan du Courrier</label>

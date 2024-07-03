@@ -65,7 +65,7 @@
                                         <th scope="col"><b>Date</b></th>
                                         <th scope="col"><b>objet</b></th>
                                         <th scope="col"><b>Service</b></th>
-                                        <th scope="col"><b>Destinataueure</b></th>
+                                        <th scope="col"><b>Destinataire</b></th>
                                         <th scope="col"><b>Scan</b></th>
                                         <th scope="col"><b>Action</b></th>
                                     </tr>
@@ -73,7 +73,6 @@
                             <!-- Ligne tableau -->
                                 <tbody>
                                     @foreach ($courriers as $courrier)
-                                    {{-- {{dd(auth()->user()->privilege_user)}} --}}
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>

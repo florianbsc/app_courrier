@@ -128,7 +128,6 @@ class ServiceController extends Controller
         if ($service) {
 
             $courriers = $service->courriers;
-// dd($service);
             if($courriers->count() > 0 ) {
                 return redirect()->route('liste_services')->with('error', 'Service lié à des courriers. Suppression impossible');
             }

@@ -142,7 +142,7 @@ class UserController extends Controller
         $rules = [
             'nom_user' => 'required|string',
             'prenom_user' => 'required|string',
-            'mail_user' => 'required|email|unique:users',
+            'mail_user' => 'required|email',
             'privilege_user' => 'nullable|int',
             'id_services' => 'array',
             'id_services.*' => 'int|exists:services,id_service',

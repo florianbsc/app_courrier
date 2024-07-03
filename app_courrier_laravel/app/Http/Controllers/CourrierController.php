@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\select;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 // back end de l'app
 
@@ -29,7 +30,8 @@ class CourrierController extends Controller
             // assigne les valeurs de la table `courrier` a la variable $courriers
             // MODELE ELOQUENT
 
-            $courriers = Courrier::select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
+            $courriers = Courrier::
+            select('courriers.*', 'centres.nom_centre', 'services.nom_service', 'users.nom_user', 'users.prenom_user')
             ->orderByDesc('id_courrier')
                 ->leftJoin('centres', 'courriers.id_centre', '=', 'centres.id_centre')
                 ->leftJoin('services', 'courriers.id_service', '=', 'services.id_service')
@@ -55,10 +57,27 @@ class CourrierController extends Controller
             $centres = Centre::all();
             $users = User::where('privilege_user', '>=', 2)->orderBy('nom_user')->get();
             $services = Service::orderBy('nom_service')->get();
+
+            $courriers = Courrier::all();
+// ajouter une fonction qui regarde s'il y a deja eu un nouveau courrier de saissi et de lanser qu'une seul fois la fonctin de suppression
+            // Parcourir chaque courrier et vérifier si plus de 2 jours se sont écoulés
+            foreach ($courriers as $courrier) {
+                $dateCourrier = Carbon::parse($courrier->date_courrier);
+                // Vérifier si le courrier est plus vieux d'un an
+                if ($dateCourrier->lt(Carbon::now()->subYear(5))) {
+                    $courrier->delete();
+                    Log::info('Courrier ID ' . $courrier->id_courrier . ' a été supprimé car il est vieux de plus de 5 ans');
+                    echo 'Courrier ID ' . $courrier->id_courrier . ' a été supprimé<br>';
+                }
+            }
+
+
+            
             return view('courriers.createCourrier', [
                 'centres' => $centres,
                 'users' => $users,
                 'services' => $services,
+                'courriers' => $courriers,
             ]);
         }
 

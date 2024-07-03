@@ -54,12 +54,14 @@
                     
                     <label for="privilege_user">Privilège</label>
                     <select name="privilege_user" id="privilege_user" required>
-                        @foreach(['1' => 'Lecture', '2' => 'Ecriture', '3' => 'Admin'] as $value => $label)
+                        @foreach(['1' => 'Invité', '2' => 'Employer', '3' => 'Directeur', '4' => 'Admin', '0' => 'Désactivé'] as $value => $label)
                             <option value="{{ $value }}" {{ $user->privilege_user == $value ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
                     </select>
+
+                   
                 
                     <button type="submit">Mettre à jour</button>
                 </form>

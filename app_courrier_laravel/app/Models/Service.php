@@ -21,7 +21,7 @@ class Service extends Model
     // Définir la relation entre Service et Courrier
     public function courriers()
     {
-        return $this->hasMany(Courrier::class, 'id_user');
+        return $this->hasMany(Courrier::class, 'id_service');
     }
 
 

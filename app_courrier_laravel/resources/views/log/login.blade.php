@@ -138,7 +138,7 @@
                 @csrf
                 <div class="txt_field">
                     <label for="mail_user"></label>
-                    <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required>
+                    <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required autofocus>
                 </div>
                 <div class="txt_field">
                     <label for="mdp_user"></label>
