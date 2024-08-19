@@ -1,5 +1,10 @@
 <?php
-
+/*
+Le `CourrierController` gère les opérations relatives aux courriers dans l'application. Il permet d'afficher la liste des courriers,
+créer, éditer, et supprimer des courriers, ainsi que télécharger ou supprimer les scans de ces courriers. 
+Il inclut également une fonctionnalité pour supprimer automatiquement les courriers vieux de plus de cinq ans.
+Le contrôleur gère les validations, les interactions avec la base de données, et les vues associées.
+*/
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -59,7 +64,9 @@ class CourrierController extends Controller
             $services = Service::orderBy('nom_service')->get();
 
             $courriers = Courrier::all();
-// ajouter une fonction qui regarde s'il y a deja eu un nouveau courrier de saissi et de lanser qu'une seul fois la fonctin de suppression
+
+
+            // ajouter une fonction qui regarde s'il y a deja eu un nouveau courrier de saissi et de lanser qu'une seul fois la fonctin de suppression
             // Parcourir chaque courrier et vérifier si plus de 2 jours se sont écoulés
             foreach ($courriers as $courrier) {
                 $dateCourrier = Carbon::parse($courrier->date_courrier);

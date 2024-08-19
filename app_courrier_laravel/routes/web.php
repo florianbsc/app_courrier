@@ -7,9 +7,13 @@ use App\Http\Controllers\CentreController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 // Routes pour la CONNEXION (accessible uniquement aux invités)
 Route::middleware('guest')->group(function()
     {
+        Route::get('/', function () { return redirect('/login'); });  // redirection http://127.0.0.1:8000 vers la page "login"
         Route::get('/login', [UserController::class, 'showLoginForm'])->name('login'); // Affiche le formulaire de connexion
         Route::post('/login', [UserController::class, 'login']); // Traite la connexion
     });
@@ -17,9 +21,9 @@ Route::middleware('guest')->group(function()
 // Route pour la page d'accueil, accessible uniquement après connexion
 Route::get('/accueil', function () 
     {
-    return view('welcome');
-    // Renvoie vers la page d'accueil après connexion
-})->middleware('auth')->name('accueil');
+        return view('welcome');
+        // Renvoie vers la page d'accueil après connexion
+    })->middleware('auth')->name('accueil');
 
 
 

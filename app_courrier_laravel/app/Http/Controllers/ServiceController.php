@@ -1,5 +1,11 @@
 <?php
-
+/*
+Afficher la liste des services, de créer, modifier, et supprimer des services,
+rechercher des services spécifiques en fonction de critères comme le nom ou le numéro de téléphone.
+Le contrôleur utilise des règles de validation pour s'assurer que les données saisies sont correctes et
+gère les interactions avec la base de données et les vues associées. 
+Il empêche la suppression des services liés à des courriers existants.
+ */
 namespace App\Http\Controllers;
 
 use App\Models\Service;

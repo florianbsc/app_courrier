@@ -1,5 +1,8 @@
 <?php
-
+/* La classe CentreController gère les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) pour les centres,
+ y compris l'affichage de la liste des centres, la création, l'édition, la mise à jour et la suppression de centres,
+ avec validation des données et gestion des messages d'erreur.
+*/
 namespace App\Http\Controllers;
 
 use App\Models\Centre;

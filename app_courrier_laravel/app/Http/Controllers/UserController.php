@@ -1,5 +1,11 @@
 <?php
-
+/*
+Gère les opérations relatives aux utilisateurs, notamment l'affichage de la liste des utilisateurs avec
+leurs services associés, la création et la modification d'utilisateurs en validant les données saisies, la gestion de la
+suppression d'utilisateurs, en prenant en compte les éventuels courriers associés.
+Il permet également la recherche d'utilisateurs selon divers critères, vérifie les privilèges d'accès et prend en charge
+le processus de connexion et de déconnexion, tout en assurant la gestion des sessions et des niveaux de privilège.
+ */
 namespace App\Http\Controllers;
 
 use App\Models\User;

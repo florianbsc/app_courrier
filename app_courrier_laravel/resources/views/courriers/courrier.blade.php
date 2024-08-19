@@ -100,10 +100,10 @@
                                                             </label> 
                                                         </form>
                                                     @endif
+                                                    <!-- telecharger le scan -->
                                                     @if(!empty($courrier->scan_courrier) && auth()->user()->privilege_user >=2 ||
                                                         !empty($courrier->scan_courrier) && $courrier->id_user === $userConnected ||                // auteur du courrier est l'user connecté
                                                         !empty($courrier->scan_courrier) && $courrier->destinataire_courrier === $userConnected)
-                                                        <!-- telecharger le scan -->
                                                         <a href="{{ route('download_scan_courrier', ['chemin' => $courrier->scan_courrier]) }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="color:  #3392ff ">
                                                                 <path fill-rule="evenodd"

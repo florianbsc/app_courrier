@@ -1,5 +1,6 @@
 <?php
-
+// Cette fonction récupère et affiche la liste des affectations des utilisateurs à des services,
+// en triant les utilisateurs par nom et en incluant les noms des utilisateurs et des services associés.
 namespace App\Http\Controllers;
 
 use App\Models\Affecter;
