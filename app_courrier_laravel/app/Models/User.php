@@ -65,7 +65,6 @@ class User extends Authenticatable
         return 'mail_user';
     }
 
-
     // Définir la relation avec les services via la table 'affecters'
     public function services()
     {
@@ -96,75 +95,24 @@ class User extends Authenticatable
         // Retourne le nombre d'affectations trouvées
         return $affecterUsers;
     }
+
+    // fonction qui lie l'intitulé au niveau de privilege
+    public function getPrivilegeTitleAttribute()
+    {
+        switch ($this->privilege_user) {
+            case 1:
+                return 'Invité';
+            case 2:
+                return 'Employé';
+            case 3:
+                return 'Directeur';
+            case 4:
+                return 'Admin';
+            case 0:
+            default:
+                return 'Désactivé';
+        }
+    }
+
 }
 
-
-// <?php
-
-// namespace App\Models;
-
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-// use Illuminate\Foundation\Auth\User as Authenticatable;
-// use Illuminate\Notifications\Notifiable;
-// use Laravel\Sanctum\HasApiTokens;
-
-// class User extends Authenticatable
-// {
-//     use HasApiTokens, HasFactory, Notifiable;
-
-//     protected $fillable = [
-//         'id_user',
-//         'nom_user',
-//         'prenom_user',
-//         'mail_user',
-//         'password',
-//         'privilege_user',
-//     ];
-
-//     protected $hidden = [
-//         'password',
-//         'remember_token',
-//     ];
-
-//     protected $casts = [
-//         'email_verified_at' => 'datetime',
-//         'password' => 'hashed',
-//     ];
-
-//     public $timestamps = false;
-//     protected $primaryKey = 'id_user';
-
-//     public function getAuthPassword()
-//     {
-//         return $this->attributes['password'];
-//     }
-
-//     public function username()
-//     {
-//         return 'mail_user';
-//     }
-
-
-//     // Définir la relation avec les services via la table 'affecters'
-//     public function services()
-//     {
-//         return $this->belongsToMany(Service::class, 'affecters', 'id_user', 'id_service');
-//     }
-
-//     public function courriers(): BelongsToMany
-//     {
-//         return $this->belongsToMany(Courrier::class, 'affecters', 'id_user', 'id_courrier');
-//     }
-
-//     public static function inService($serviceAChecker) 
-//     {
-//         $user = auth()->user()->id_user;
-//         $affecterUsers = Affecter::select('*')
-//             ->where('id_user', '=', $user)
-//             ->where('id_service', '=', $serviceAChecker)
-//             ->groupBy('id_user')
-//             ->count();
-//         return $affecterUsers;
-//     }
-// }

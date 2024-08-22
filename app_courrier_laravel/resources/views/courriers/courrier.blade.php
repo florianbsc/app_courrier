@@ -73,11 +73,13 @@
                             <!-- Ligne tableau -->
                                 <tbody>
                                     @foreach ($courriers as $courrier)
+                                    {{-- {{dd($courriers)}} --}}
                                         <tr>
                                             <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
-                                            <td>{{ $courrier->destinataire_courrier  }}</td>
+                                            <td>{{ $courrier->destinataire->nom_user }} {{ $courrier->destinataire->prenom_user }}</td>
+                                            {{-- <td>{{ dd($courrier->destinataire_courrier)  }}</td> --}}
                                             <td>
                                                 <!-- voir le scan -->
                                                 @if($courrier->id_user === $userConnected ||                // auteur du courrier est l'user connecté

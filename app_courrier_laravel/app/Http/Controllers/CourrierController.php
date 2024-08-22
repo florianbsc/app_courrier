@@ -77,8 +77,6 @@ class CourrierController extends Controller
                     echo 'Courrier ID ' . $courrier->id_courrier . ' a été supprimé<br>';
                 }
             }
-
-
             
             return view('courriers.createCourrier', [
                 'centres' => $centres,

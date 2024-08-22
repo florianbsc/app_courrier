@@ -34,6 +34,11 @@ class Courrier extends Model
         // Un courrier appartient à un service (relation BelongsTo)
         return $this->belongsTo(Service::class, 'id_service');
     }
+    
+    public function destinataire()
+    {
+        return $this->belongsTo(User::class, 'destinataire_courrier');
+    }
 
     // Désactivation des timestamps automatiques
     public $timestamps = false;
