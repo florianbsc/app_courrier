@@ -75,7 +75,7 @@
                                     @foreach ($courriers as $courrier)
                                     {{-- {{dd($courriers)}} --}}
                                         <tr>
-                                            <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('D j M Y') }}</td>
+                                            <td style="text-transform: capitalize;">{{ $courrier->date_courrier->translatedFormat('d/m/Y') }}</td>
                                             <td>{{ $courrier->objet_courrier }}</td>
                                             <td>{{ $courrier->nom_service }}</td>
                                             <td>{{ $courrier->destinataire->nom_user }} {{ $courrier->destinataire->prenom_user }}</td>

@@ -295,17 +295,17 @@ class CourrierController extends Controller
                             ->orWhere('objet_courrier', 'LIKE', "%$recherche%")
                             ->orWhere('destinataire_courrier', 'LIKE', "%$recherche%")
                             ->orWhere('description_courrier', 'LIKE', "%$recherche%")
-                            ->orWhereHas('centre', function ($query) use ($recherche) {
-                                $query->where('nom_centre', 'LIKE', "%$recherche%");
-                            })
                             ->orWhereHas('service', function ($query) use ($recherche) {
                                 $query->where('nom_service', 'LIKE', "%$recherche%");
                             })
                             ->orWhereHas('user', function ($query) use ($recherche) {
                                 $query->where('nom_user', 'LIKE', "%$recherche%");
                             });
+                            // ->orWhereHas('centre', function ($query) use ($recherche) {
+                            //     $query->where('nom_centre', 'LIKE', "%$recherche%");
+                            // });
                     });
-                })
+                })->orderByDesc('id_courrier')
                 ->get();
 
             // Charger uniquement les centres, utilisateurs et services nécessaires en utilisant pluck()

@@ -61,8 +61,9 @@
                         @endforeach
                     </select>
 
-                   
-                
+                    <label for="password">Mot de passe</label>
+                    <input type="text" name="password" value="{{$user->password}}" required >
+
                     <button type="submit">Mettre à jour</button>
                 </form>
                 

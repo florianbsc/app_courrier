@@ -268,15 +268,15 @@ class UserController extends Controller
     {
         try {
             // Récupère tous les utilisateurs de la base de données
-            $users = User::all();
+            // $users = User::all();
 
             // Retourne la vue de connexion avec la liste des utilisateurs
             return view('log.login', [
-                'user' => $users,
+                // 'user' => $users,
             ]);
         } catch (\Exception $e) {
             // En cas d'erreur, retourne une vue d'erreur personnalisée avec un message d'erreur
-            return view('errors.custom_error', [
+            return view('gestion.erreur', [
                 'error_message' => "Une erreur s'est produite lors du chargement des employés.",
             ]);
         }
@@ -287,6 +287,7 @@ class UserController extends Controller
     {
         // Récupère les informations d'identification (email et mot de passe) de la requête
         $credentials = request()->only('mail_user', 'password');
+        
 
         // Tente de connecter l'utilisateur avec les informations fournies
         if (Auth::attempt($credentials, false)) 

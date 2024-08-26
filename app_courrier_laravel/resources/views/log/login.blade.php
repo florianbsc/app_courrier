@@ -135,7 +135,7 @@
 
         <!-- Formulaire de connecxion -->
             <form action="{{ route('login') }}" method="post">
-                @csrf
+                
                 <div class="txt_field">
                     <label for="mail_user"></label>
                     <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required autofocus>
