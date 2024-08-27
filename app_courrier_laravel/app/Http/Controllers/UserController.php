@@ -55,8 +55,9 @@ class UserController extends Controller
         $rules = [
             'nom_user' => 'required|string',
             'prenom_user' => 'required|string',
-            'mail_user' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
+            'login_user' => 'required|string|unique:users',
+            'mail_user' => 'email|unique:users',
+            'password' => 'required|string',
             'privilege_user' => 'nullable|int',
             // 'id_services' => 'required|int|exists:services,id_service',
         ];
@@ -93,6 +94,7 @@ class UserController extends Controller
             $user = User::create([
                 'nom_user' => $request->nom_user,
                 'prenom_user' => $request->prenom_user,
+                'login_user' => $request->login_user,
                 'mail_user' => $request->mail_user,
                 'password' => bcrypt($request->password),
                 'privilege_user' => $request->privilege_user,
@@ -148,8 +150,10 @@ class UserController extends Controller
         $rules = [
             'nom_user' => 'required|string',
             'prenom_user' => 'required|string',
-            'mail_user' => 'required|email',
+            'login_user' => 'required|string',
+            'mail_user' => 'email',
             'privilege_user' => 'nullable|int',
+            'password' => 'required|string',
             'id_services' => 'array',
             'id_services.*' => 'int|exists:services,id_service',
         ];
@@ -181,9 +185,13 @@ class UserController extends Controller
             $user->update([
                 'nom_user' => $request->nom_user,
                 'prenom_user' => $request->prenom_user,
+                'login_user' => $request->login_user,
                 'mail_user' => $request->mail_user,
+                'password' => bcrypt($request->password),
                 'privilege_user' => $request->privilege_user,
             ]);
+            // dd($request->login_user);
+
 
             // Mise à jour des services associés
             $user->services()->sync($request->id_services);
@@ -237,6 +245,7 @@ class UserController extends Controller
                 $query->where('nom_user', 'LIKE', "%$recherche%")
                     ->orWhere('prenom_user', 'LIKE', "%$recherche%")
                     ->orWhere('mail_user', 'LIKE', "%$recherche%")
+                    ->orWhere('login_user', 'LIKE', "%$recherche%")
                     ->orWhere('nom_service', 'LIKE', "%$recherche%")
                     ->orWhere('privilege_user', 'LIKE', "%$recherche%");
             })->orderBy('nom_user')->get();
@@ -286,7 +295,8 @@ class UserController extends Controller
     public function login(Request $request)
     {
         // Récupère les informations d'identification (email et mot de passe) de la requête
-        $credentials = request()->only('mail_user', 'password');
+        // $credentials = request()->only('mail_user', 'password');
+        $credentials = request()->only('login_user', 'password');
         
 
         // Tente de connecter l'utilisateur avec les informations fournies

@@ -38,7 +38,10 @@
                 <input type="text" name="prenom_user" placeholder="Prénom" value="{{ old('prenom_user') }}" required>
 
                 <label for="mail_user" name="mail_user"></label>
-                <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" required>
+                <input type="mail" name="mail_user" placeholder="Mail" value="{{ old('mail_user') }}" >
+
+                <label for="login_user" name="login_user"></label>
+                <input type="text" name="login_user" placeholder="Identifiant connexion" value="{{ old('login_user') }}" required >
                
                 <label for="id_services">Affecter à ou plusieur services</label>
                 <select id="id_service" name="id_services[]" multiple required>

@@ -47,7 +47,7 @@
                     <thead>
                         <tr>
                             <th scope="col"><b>Nom Prenom</b></th>
-                            <th scope="col"><b>Mail</b></th>
+                            <th scope="col"><b>Identifiant</b></th>
                             <th scope="col"><b>Service</b></th>
                             <th scope="col"><b>Privilège</b></th>
                             <th scope="col"><b>Action</b></th>
@@ -57,7 +57,7 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{$user->nom_user .' '. $user->prenom_user}}</td>
-                                <td>{{$user->mail_user}}</td>
+                                <td>{{$user->login_user}}</td>
                                 <td>{{$user->nom_service}}</td>
                                 <td>{{$user->privilege_title}}</td>
                                 <td>

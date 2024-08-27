@@ -40,7 +40,10 @@
                     <input type="text" name="prenom_user" value="{{ $user->prenom_user }}" required>
                     
                     <label for="mail_user">Mail</label>
-                    <input type="text" name="mail_user" value="{{ $user->mail_user }}" required>
+                    <input type="email" name="mail_user" value="{{ $user->mail_user }}" >
+
+                    <label for="login_user">Identifiant</label>
+                    <input type="text" name="login_user" value="{{ $user->login_user }}" required>
                     
                     <label for="id_services">Affecter au service</label>
                     <select name="id_services[]" id="id_service" multiple>

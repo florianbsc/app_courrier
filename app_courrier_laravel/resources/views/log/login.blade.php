@@ -136,12 +136,16 @@
         <!-- Formulaire de connecxion -->
             <form action="{{ route('login') }}" method="post">
                 
-                <div class="txt_field">
+                {{-- <div class="txt_field">
                     <label for="mail_user"></label>
-                    <input type="email" id="mail_user" name="mail_user" placeholder="Identifiant" required autofocus>
+                    <input type="email" id="mail_user" name="mail_user" placeholder="Mail" required autofocus>
+                </div> --}}
+                <div class="txt_field">
+                    <label for="login_user"></label>
+                    <input type="text" id="login_user" name="login_user" placeholder="Identifiant"  autofocus>
                 </div>
                 <div class="txt_field">
-                    <label for="mdp_user"></label>
+                    <label for="password"></label>
                     <input name="password" type="password" placeholder="Mot de passe" required>
                 </div>
 

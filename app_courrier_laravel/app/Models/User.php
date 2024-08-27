@@ -22,6 +22,7 @@ class User extends Authenticatable
         'id_user',           // ID de l'utilisateur
         'nom_user',          // Nom de l'utilisateur
         'prenom_user',       // Prénom de l'utilisateur
+        'login_user',
         'mail_user',         // Email de l'utilisateur
         'password',          // Mot de passe de l'utilisateur
         'privilege_user',    // Privilège de l'utilisateur
